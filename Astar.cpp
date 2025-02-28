@@ -9,7 +9,6 @@ using namespace std;
 
 struct ANode {
   string _name;
-  int _index;
   double _x;
   double _y;
   double _hn; // h(n) = heuristic. Admissible -> never overestimate the actual path cost
@@ -20,9 +19,7 @@ struct ANode {
   double _gn; // g(n) = operating cost = how many units we moved from start node
   shared_ptr<ANode> _parent = nullptr;
 
-  static int _counter;
-
-  ANode(string name, double x, double y) : _name(name), _x(x), _y(y), _index(_counter++) {}
+  ANode(string name, double x, double y) : _name(name), _x(x), _y(y) {}
 
   void computeHeuristic(shared_ptr<ANode> goal) {
     // let's use Euclidean distance for heuristic
@@ -41,7 +38,6 @@ struct ANode {
       return evaluate() < other.evaluate();
   }
 };
-int ANode::_counter = 0;
 
 class AStar {
   private:
@@ -76,16 +72,15 @@ class AStar {
       }
       // Using lambda to compare elements.
       auto cmp = [](shared_ptr<ANode> left, shared_ptr<ANode> right) { 
-        //cout << left->evaluate() << "<" <<right->evaluate() << "? " << (left->evaluate() < right->evaluate()) <<std::endl;
-        return left->evaluate() > right->evaluate(); };
+        return left->evaluate() > right->evaluate(); }; // want the smallest values popped first
       std::priority_queue<shared_ptr<ANode>,vector<shared_ptr<ANode>>,decltype(cmp)> open(cmp);
-      //priority_queue<shared_ptr<ANode>,vector<shared_ptr<ANode>>,greater<>> open;
       open.push(_start);
       while(!open.empty()) {
         auto nd1 = open.top();
         open.pop();
         cout << "Considering " << nd1->_name << ": " << nd1->evaluate() << endl;
         if(nd1 == _goal) {
+          cout <<"Final Path Length = " << nd1->_gn << endl;
           break;
         }
         closed.insert(nd1);
@@ -106,7 +101,7 @@ class AStar {
       shared_ptr<ANode> curr = _goal;
       cout << "I found this path: " << endl;
       while(curr != nullptr) {
-        cout << curr->_name << " -> ";
+        cout << curr->_name << "(" << curr->_gn << ") -> ";
         curr = curr->_parent;
       }
       cout << endl;
@@ -122,36 +117,63 @@ int main() {
   vector<double> weights;
 
   shared_ptr<ANode> start = make_shared<ANode>("Start", 0,0);
-  shared_ptr<ANode> a = make_shared<ANode>("A", 1,1);
-  shared_ptr<ANode> b = make_shared<ANode>("B", 1,3);
-  shared_ptr<ANode> c = make_shared<ANode>("C", 5,1);
-  shared_ptr<ANode> d = make_shared<ANode>("D", 3,3);
-  shared_ptr<ANode> goal = make_shared<ANode>("Goal", 3,5);
+  shared_ptr<ANode> a = make_shared<ANode>("A", 4,3);
+  shared_ptr<ANode> b = make_shared<ANode>("B", 1,7);
+  shared_ptr<ANode> c = make_shared<ANode>("C", 4,11);
+  shared_ptr<ANode> d = make_shared<ANode>("D", 8,8);
+  shared_ptr<ANode> e = make_shared<ANode>("E", 4,5);
+  shared_ptr<ANode> f = make_shared<ANode>("F", 8,2);
+  shared_ptr<ANode> goal = make_shared<ANode>("Goal", 10,5);
 
   nodes.push_back(start);
   nodes.push_back(a);
   nodes.push_back(b);
   nodes.push_back(c);
   nodes.push_back(d);
+  nodes.push_back(e);
+  nodes.push_back(f);
   nodes.push_back(goal);
 
+  int obs = 1;
+
   edges.push_back({start,a});
-  weights.push_back(2);
+  weights.push_back(6);
 
   edges.push_back({a,b});
-  weights.push_back(2);
+  weights.push_back(6);
 
   edges.push_back({a,c});
-  weights.push_back(4);
+  weights.push_back(10);
+
+  edges.push_back({a,e});
+  weights.push_back(obs+3);
+
+  edges.push_back({b,c});
+  weights.push_back(7);
 
   edges.push_back({b,d});
-  weights.push_back(2);
+  weights.push_back(10);
+
+  edges.push_back({b,e});
+  weights.push_back(obs+5);
 
   edges.push_back({c,d});
-  weights.push_back(4);
+  weights.push_back(6);
+
+  edges.push_back({c,e});
+  weights.push_back(obs+6);
+
+  edges.push_back({d,e});
+  weights.push_back(obs+5);
 
   edges.push_back({d,goal});
-  weights.push_back(3);
+  weights.push_back(4);
+
+  edges.push_back({e,f});
+  weights.push_back(6);
+
+  edges.push_back({e,goal});
+  weights.push_back(7);
 
   AStar astar(nodes, edges, weights);
   astar.findPath(start, goal);
