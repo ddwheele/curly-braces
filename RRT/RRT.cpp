@@ -2,8 +2,6 @@
 #include <iostream>
 #include "RRT.hpp"
 
-
-
 using namespace std;
 
 RRT::RRT() {
