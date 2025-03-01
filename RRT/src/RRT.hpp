@@ -3,18 +3,10 @@
 
 #include <memory>
 #include <opencv2/opencv.hpp>
+#include "utils.h"
 
 using namespace std;
 
-struct Node {
-  double x, y;
-  shared_ptr<Node> parent;
-
-  Node(double _x, double _y, shared_ptr<Node> _parent = nullptr) 
-  : x(_x), y(_y), parent(_parent) {
-
-  }
-};
 
 class RRT {
 private:
