@@ -4,7 +4,7 @@
 #include <yaml-cpp/yaml.h>
 #include <opencv2/opencv.hpp>
 
-#include "RRT.hpp"
+#include "RRT.h"
 
 using namespace std;
 
@@ -52,11 +52,7 @@ int main(int argc, char** argv) {
   }
 
   RRT rrt = loadYamlToRrt(params_file);
+  rrt.drawTree();
 
-
-  rrt.printMe();
-
-
-  cout << "Estoy terminado" << endl;
   return 0;
 }

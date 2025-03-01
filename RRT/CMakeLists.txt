@@ -27,7 +27,10 @@ endif()
 link_directories(${YAML_CPP_LIBRARY_DIR})
 
 # Add executable
-add_executable(runRRT ${CMAKE_SOURCE_DIR}/src/runRRT.cpp ${CMAKE_SOURCE_DIR}/src/RRT.cpp)
+add_executable(runRRT
+	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
+	${CMAKE_SOURCE_DIR}/src/runRRT.cpp
+	${CMAKE_SOURCE_DIR}/src/RRT.cpp)
 
 # Link libraries
 target_link_libraries(runRRT PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
