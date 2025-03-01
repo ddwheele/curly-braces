@@ -17,11 +17,14 @@ struct Node {
     : x(_x), y(_y), parent(_parent) {
   }
 
-  bool isInBounds() {
-    if(x<0 || y<0 || x > Constants::WIDTH || y > Constants::HEIGHT) {
-      return false;
-    }
-    return true;
+  double distanceTo(const double ox, const double oy) const {
+    double dx = x - ox;
+    double dy = y - oy;
+    return sqrt( dx*dx + dy*dy );
+  }
+
+  double distanceTo(const Node& other) const {
+    return distanceTo(other.x, other.y);
   }
 
   void printMe() const {

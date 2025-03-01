@@ -11,19 +11,20 @@
 using namespace std;
 
 class Obstacle {
-  double minx, miny, maxx, maxy; // two corners of the obstacle
-
 public:
   Obstacle(double x1, double y1, double x2, double y2);
 
+  // checks the line between a Node and its parent
   bool intersects(const Node& n) const;
-
-  cv::Point getMinCvPoint() const;
-
-  cv::Point getMaxCvPoint() const;
 
   void printMe() const;
 
+  cv::Point getMinCvPoint() const;
+  cv::Point getMaxCvPoint() const;
+  bool pointIsInside(const double x, const double y) const;
+
+private:
+  double minx, miny, maxx, maxy; // two corners of the obstacle
 };
 
 #endif

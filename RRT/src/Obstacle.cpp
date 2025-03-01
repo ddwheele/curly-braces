@@ -13,20 +13,38 @@ Obstacle::Obstacle(double x1, double y1, double x2, double y2) {
   maxy = max(y1, y2);
 }
 
-// checks the line between a Node and its parent
+bool Obstacle::pointIsInside(const double x, const double y) const {
+  if(x >= minx && x <= maxx && y >= miny && y <= maxy) {
+    return true;
+  }
+  return false;
+}
+
 bool Obstacle::intersects(const Node& n) const{
-  if(n.parent) {
-    if(n.x < minx && n.parent->x < minx) {
-      return false;
-    }
-  } else {
-    if(n.x < minx) {
-      return false;
-    }
+  if(!n.parent) {
+    return pointIsInside(n.x, n.y);
   }
 
+  double ax = min(n.x, n.parent->x);
+  double ay = min(n.y, n.parent->y);
+  double bx = max(n.x, n.parent->x);
+  double by = max(n.y, n.parent->y);
+  
+  if(pointIsInside(ax,ay) || pointIsInside(bx,by)) {
+    return true;
+  }
+
+  // line can't intersect obstacle
+  if(bx < minx || ax > maxx || by < miny || ay > maxy) {
+    return false;
+  }
+
+  if(ax < minx) {
+    // find problematic slopes
 
 
+
+  }
 
 
   return true;

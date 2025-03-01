@@ -21,6 +21,13 @@ struct Constants {
 	static inline cv::Scalar GREEN = cv::Scalar(0, 255, 0);
 	static inline cv::Scalar BLUE = cv::Scalar(255, 0, 0);
 	static inline cv::Scalar GRAY = cv::Scalar(100, 100, 100);
+
+	static bool isInBounds(const double x, const double y) {
+		if(x >=0 && x <= WIDTH && y>=0 && y <= HEIGHT) {
+			return true;
+		}
+		return false;
+	}
 };
 
 #endif
