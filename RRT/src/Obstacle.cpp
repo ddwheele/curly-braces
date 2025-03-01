@@ -21,34 +21,106 @@ bool Obstacle::pointIsInside(const double x, const double y) const {
 }
 
 bool Obstacle::intersects(const Node& n) const{
-  if(!n.parent) {
+  // no parent or parent is same point
+  if(!n.parent || (Constants::equals(n.x, n.parent->x) && Constants::equals(n.y, n.parent->y))) {
     return pointIsInside(n.x, n.y);
   }
 
-  double ax = min(n.x, n.parent->x);
-  double ay = min(n.y, n.parent->y);
-  double bx = max(n.x, n.parent->x);
-  double by = max(n.y, n.parent->y);
-  
-  if(pointIsInside(ax,ay) || pointIsInside(bx,by)) {
+  // n has parent, check if either end is inside
+  if(pointIsInside(n.x, n.y) || pointIsInside(n.parent->x,n.parent->y)) {
+    return true;
+  }
+
+  double lx, ly, rx, ry; // label as left and right points
+  if(n.x < n.parent->x) {
+    // point is lefter
+    lx = n.x;
+    ly = n.y;
+    rx = n.parent->x;
+    ry = n.parent->y;
+  } else if(n.x > n.parent->x) {
+    rx = n.x;
+    ry = n.y;
+    lx = n.parent->x;
+    ly = n.parent->y;
+  } else {
+    // line is vertical, label as upper and lower
+    double tx,ty, bx, by;
+    if(n.y > n.parent->y) {
+      tx = n.x;
+      ty = n.y;
+      bx = n.parent->x;
+      by = n.parent->y;
+    } else {
+      bx = n.x;
+      by = n.y;
+      tx = n.parent->x;
+      ty = n.parent->y;
+    }
+    // vertical line can't intersect obstacle
+    if(ty < miny || by > maxy || (tx < minx) || (tx > maxx)) {
+      return false;
+    }
+    // vertical line must straddle obstacle
     return true;
   }
 
   // line can't intersect obstacle
-  if(bx < minx || ax > maxx || by < miny || ay > maxy) {
+  if(rx < minx || lx > maxx || (ly < miny && ry < miny) || (ly > maxy && ry > maxy)) {
     return false;
   }
 
-  if(ax < minx) {
-    // find problematic slopes
-
-
-
+  // TODO: cases where boundary slope is vertical
+  if(Constants::equals(lx,minx) || Constants::equals(lx,maxx)) {
+    cout << "Unimplemented case" << endl;
   }
 
+  // divide into ninths and find boundary slopes
+  double actualSlope = (ly-ry) / (lx-rx);
+  if(lx < minx) {
+    double upperSlope, lowerSlope;
+    if(ly > maxy) {
+      // upper left ninth
+      // upper slope intersects maxx, maxy
+      // lower slope intersects minx, miny
+      upperSlope = (ly-maxy) / (lx-maxx);
+      lowerSlope = (ly-miny) / (lx-minx);
+    } else if(ly < miny) {
+      // lower left ninth
+      // upper slope intersects minx, maxy
+      // lower slope intersects maxx, miny
+      upperSlope = (ly-maxy) / (lx-minx);
+      lowerSlope = (ly-miny) / (lx-maxx);
+    } else {
+      // straight to the left
+      // problem if < (minx, maxy) AND > (minx, miny)
+      upperSlope = (ly-maxy) / (lx-minx);
+      lowerSlope = (ly-miny) / (lx-minx);
+    }
+   if(actualSlope < upperSlope && actualSlope > lowerSlope) {
+     return true;
+   }
+  } else if(lx < maxx) { // in middle column
+    if(ly > maxy) {
+      // straight above
+      // relevant corner is maxx, maxy
+      double minSlope = (ly-maxy) / (lx-maxx);
 
-  return true;
+      if(actualSlope < minSlope) {
+       return true;
+      }
+    } else { // must be below, or point would be inside
+      // straight below
+      // relevant corner is maxx, miny
+      double maxSlope = (ly-miny) / (lx-maxx);
+      
+      if(actualSlope > maxSlope) {
+        return true;
+      }
+    }
+  } // already handled where ax > maxx
 
+  return false;
 }
 
 cv::Point Obstacle::getMinCvPoint() const {

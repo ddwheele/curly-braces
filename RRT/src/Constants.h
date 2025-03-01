@@ -28,6 +28,16 @@ struct Constants {
 		}
 		return false;
 	}
+
+	static constexpr double EPSILON = 0.00001;
+
+	static bool equals(double a, double b) {
+	  if(abs(a - b) < EPSILON) {
+	    return true;
+	  }
+	  return false;
+	}
+
 };
 
 #endif
