@@ -18,7 +18,6 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories("/usr/local/Cellar/opencv/4.11.0_1/include/opencv4")
 include_directories(${YAML_CPP_INCLUDE_DIR})
 
-
 # If yaml-cpp is not found automatically, use find_library to manually find it
 if (NOT yaml-cpp_FOUND)
     find_library(YAML_CPP_LIBRARY yaml-cpp)
@@ -26,15 +25,20 @@ endif()
 
 link_directories(${YAML_CPP_LIBRARY_DIR})
 
-# Add executable
 add_executable(runRRT
-	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
 	${CMAKE_SOURCE_DIR}/src/runRRT.cpp
+	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
+	${CMAKE_SOURCE_DIR}/src/RRT.cpp)
+add_executable(testRRT
+	${CMAKE_SOURCE_DIR}/src/testRRT.cpp
+	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
 	${CMAKE_SOURCE_DIR}/src/RRT.cpp)
 
 # Link libraries
 target_link_libraries(runRRT PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
+target_link_libraries(testRRT PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 
 # Include directories for OpenCV and yaml-cpp
 target_include_directories(runRRT PRIVATE ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
+target_include_directories(testRRT PRIVATE ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
 
