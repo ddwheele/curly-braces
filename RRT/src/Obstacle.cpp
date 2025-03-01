@@ -13,6 +13,26 @@ Obstacle::Obstacle(double x1, double y1, double x2, double y2) {
   maxy = max(y1, y2);
 }
 
+// checks the line between a Node and its parent
+bool Obstacle::intersects(const Node& n) const{
+  if(n.parent) {
+    if(n.x < minx && n.parent->x < minx) {
+      return false;
+    }
+  } else {
+    if(n.x < minx) {
+      return false;
+    }
+  }
+
+
+
+
+
+  return true;
+
+}
+
 cv::Point Obstacle::getMinCvPoint() const {
   return cv::Point(static_cast<int>(minx*Constants::SCALE), static_cast<int>(miny*Constants::SCALE));
 }

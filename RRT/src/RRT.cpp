@@ -10,6 +10,13 @@ RRT::RRT(shared_ptr<Node> _start, shared_ptr<Node> _goal, vector<Obstacle> _obst
 }
 
 void RRT::findPath() {
+  shared_ptr<Node> candidateNode = make_shared<Node>(0,0);
+  //
+  for(auto& o : obstacles) {
+    if(o.intersects(*candidateNode)) {
+      // candidate ist durchgefallen
+    }
+  }
 
 }
 

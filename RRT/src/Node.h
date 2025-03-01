@@ -17,6 +17,13 @@ struct Node {
     : x(_x), y(_y), parent(_parent) {
   }
 
+  bool isInBounds() {
+    if(x<0 || y<0 || x > Constants::WIDTH || y > Constants::HEIGHT) {
+      return false;
+    }
+    return true;
+  }
+
   void printMe() const {
     cout << x << " " << y << endl;;
   }
