@@ -5,8 +5,12 @@
 using namespace std;
 
 
-RRT::RRT(Node _start, Node _goal, vector<Obstacle> _obstacles) 
- : start(_start), goal(_goal), obstacles(_obstacles) {
+RRT::RRT(shared_ptr<Node> _start, shared_ptr<Node> _goal, vector<Obstacle> _obstacles) 
+ :  start(std::move(_start)), goal(std::move(_goal)), obstacles(_obstacles) {
+}
+
+void RRT::findPath() {
+
 }
 
 void RRT::drawTree() {
@@ -20,8 +24,8 @@ void RRT::drawTree() {
   cv::waitKey(0);
 }
 
-void RRT::drawNode(const Node& n, const cv::Scalar& color) const {
-  cv::circle(mat, n.getCvPoint(), Constants::RADIUS_PX, color, -1);
+void RRT::drawNode(shared_ptr<Node> n, const cv::Scalar& color) const {
+  cv::circle(mat, n->getCvPoint(), Constants::RADIUS_PX, color, -1);
 }
 
 void RRT::drawObstacle(const Obstacle& o) const {
@@ -30,9 +34,9 @@ void RRT::drawObstacle(const Obstacle& o) const {
 
 void RRT::printMe() const {
   cout << "Start: ";
-  start.printMe();
+  start->printMe();
   cout << "Goal: ";
-  goal.printMe();
+  goal->printMe();
   for(auto& o : obstacles) {
     o.printMe();
   }

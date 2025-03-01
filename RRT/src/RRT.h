@@ -9,28 +9,22 @@
 
 using namespace std;
 
-
 class RRT {
 public:
+  RRT(shared_ptr<Node> _start, shared_ptr<Node> _goal, const vector<Obstacle> _obstacles);
 
-
-  RRT(Node _start, Node _goal, vector<Obstacle> _obstacles);
-
+  void findPath();
   void drawTree();
-
   void printMe() const;
 
 private:
-
   cv::Mat mat;
-  Node start;
-  Node goal;
+  shared_ptr<Node> start;
+  shared_ptr<Node> goal;
   vector<Obstacle> obstacles;
 
   void drawObstacle(const Obstacle& o) const;
-
-  void drawNode(const Node& n, const cv::Scalar& color) const;
-
+  void drawNode(shared_ptr<Node>  n, const cv::Scalar& color) const;
 
 };
 

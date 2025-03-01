@@ -14,7 +14,7 @@ struct Node {
   shared_ptr<Node> parent;
 
   Node(double _x, double _y, shared_ptr<Node> _parent = nullptr) 
-  : x(_x), y(_y), parent(_parent) {
+    : x(_x), y(_y), parent(_parent) {
   }
 
   void printMe() const {

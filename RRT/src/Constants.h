@@ -13,8 +13,7 @@ struct Constants {
   static constexpr int HEIGHT_PX = HEIGHT * SCALE; // size of canvas in pixels
   static constexpr int WIDTH_PX = WIDTH * SCALE; // size of canvas in pixels
 
-  static constexpr int RADIUS_PX = 15; // for drawing Nodes
-
+  static constexpr int RADIUS_PX = 15; // for drawing Node
 
 	static inline cv::Scalar WHITE = cv::Scalar(255, 255, 255);
 	static inline cv::Scalar BLACK = cv::Scalar(0, 0, 0);
@@ -22,8 +21,6 @@ struct Constants {
 	static inline cv::Scalar GREEN = cv::Scalar(0, 255, 0);
 	static inline cv::Scalar BLUE = cv::Scalar(255, 0, 0);
 	static inline cv::Scalar GRAY = cv::Scalar(100, 100, 100);
-
 };
-
 
 #endif

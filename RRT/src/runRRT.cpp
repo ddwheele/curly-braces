@@ -17,8 +17,8 @@ RRT loadYamlToRrt(string params_file) {
   double starty = config["start"]["y"].as<double>();
   double goalx = config["goal"]["x"].as<double>();
   double goaly = config["goal"]["y"].as<double>();
-  Node start(startx, starty);
-  Node goal(goalx, goaly);
+  shared_ptr<Node> start = make_shared<Node>(startx, starty);
+  shared_ptr<Node> goal = make_shared<Node>(goalx, goaly);
 
   // Read in obstacles
   vector<Obstacle> obstacles;
@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
   }
 
   RRT rrt = loadYamlToRrt(params_file);
-  rrt.drawTree();
-
+  rrt.findPath();
+  //rrt.drawTree();
   return 0;
 }
