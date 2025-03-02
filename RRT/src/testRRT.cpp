@@ -45,20 +45,21 @@ void testNodeDistanceTo() {
 
 void testNodeGrowToward() {
   shared_ptr<Node> papa = make_shared<Node>(0,0);
+  double stepSize = 1;
 
-  shared_ptr<Node> seymour = Node::growToward(papa, 0, 12);
+  shared_ptr<Node> seymour = Node::growToward(papa, 0, 12, stepSize);
   assert(Constants::equals(seymour->x, 0));
-  assert(Constants::equals(seymour->y, Constants::STEP_SIZE));
+  assert(Constants::equals(seymour->y, stepSize));
   assert(seymour->parent == papa);
 
-  shared_ptr<Node> joe = Node::growToward(papa, 20, 0);
-  assert(Constants::equals(joe->x, Constants::STEP_SIZE));
+  shared_ptr<Node> joe = Node::growToward(papa, 20, 0, stepSize);
+  assert(Constants::equals(joe->x, stepSize));
   assert(Constants::equals(joe->y, 0));
   assert(joe->parent == papa);
 
-  shared_ptr<Node> neg = Node::growToward(papa, -5, -5);
-  assert(Constants::equals(neg->x, -Constants::STEP_SIZE/sqrt(2.0)));
-  assert(Constants::equals(neg->y, -Constants::STEP_SIZE/sqrt(2.0)));
+  shared_ptr<Node> neg = Node::growToward(papa, -5, -5, stepSize);
+  assert(Constants::equals(neg->x, -stepSize/sqrt(2.0)));
+  assert(Constants::equals(neg->y, -stepSize/sqrt(2.0)));
   assert(neg->parent == papa);
 
   cout << "  Passed testNodeGrowToward" << endl;

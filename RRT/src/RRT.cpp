@@ -6,8 +6,8 @@
 using namespace std;
 
 
-RRT::RRT(shared_ptr<Node> _start, shared_ptr<Node> _goal, vector<Obstacle> _obstacles) 
- :  start(std::move(_start)), goal(std::move(_goal)), obstacles(_obstacles) {
+RRT::RRT(shared_ptr<Node> _start, shared_ptr<Node> _goal, vector<Obstacle> _obstacles, double _stepSize) 
+ : start(std::move(_start)), goal(std::move(_goal)), stepSize(_stepSize), obstacles(_obstacles) {
   startTree.push_back(start);
   goalTree.push_back(goal);
 }
@@ -21,9 +21,6 @@ shared_ptr<Node> RRT::findNearest(const vector<shared_ptr<Node>>& tree, double x
       closest = dist;
       ret = node;
     }
-  }
-  if(!ret) {
-    cout << "x = " << x << ", y = " << y << ", size of tree = " << tree.size() << endl;
   }
   return ret;
 }
@@ -43,20 +40,10 @@ void RRT::findPath() {
   bool useStartTree = true;
 
   for(int i=0; i<Constants::NUM_STEPS; i++) {
-    cout << "=========================" << i <<  "=========================" << endl;
     // create random point
     double randX = std::rand() % static_cast<int>(Constants::WIDTH);
     double randY = std::rand() % static_cast<int>(Constants::HEIGHT);
 
-    if(std::isnan(randX)) {
-      cout << "randX is nan" << endl;
-    }
-
-    if(std::isnan(randY)) {
-      cout << "randY is nan" << endl;
-    }
-
-    cout << "Rand"<< endl;;
     // find nearest Node from current tree
     shared_ptr<Node> nearest; 
     if(useStartTree) {
@@ -64,19 +51,14 @@ void RRT::findPath() {
     } else {
       nearest = findNearest(goalTree, randX, randY); 
     }
-   cout << "nearest: ";
-   nearest->printMe();
-   cout << ">>>>>>>>>> randX, randY = " << randX << ", " <<randY << endl;
 
     // Make new node and add to tree if they don't intersect obstacle
-    shared_ptr<Node> candidateNode = Node::growToward(nearest, randX, randY);
-    cout << "New candidateNode is: ";
-    candidateNode->printMe();
+    shared_ptr<Node> candidateNode = Node::growToward(nearest, randX, randY, stepSize);
+
     if(hitsAnObstacle(candidateNode)) {
-      cout << "Hit Obstacle"<< endl;;
+
       continue;
     }
-       cout << "Looking for nearestOther"<< endl;;
     shared_ptr<Node> nearestOther;
     if(useStartTree) {
       startTree.push_back(candidateNode);
@@ -85,32 +67,28 @@ void RRT::findPath() {
       goalTree.push_back(candidateNode);
       nearestOther = findNearest(startTree, candidateNode->x, candidateNode->y);
     }
-    cout << "Last"<< endl;
 
     if(!nearestOther) {
-      cout << "IT WAS NULL!!!!!!!!\nCandidate: " << endl;
       candidateNode->printMe();
     }
     //if(candidateNode->distanceTo(*nearestOther) < Constants::STEP_SIZE)
     double nx = nearestOther->x;
     double ny = nearestOther->y;
-    cout << "Got nearestOther"<< endl;
-    if(candidateNode->distanceTo(nx, ny) < Constants::STEP_SIZE) {
-      cout << "Inside if"<< endl;
+    if(candidateNode->distanceTo(nx, ny) < stepSize) {
+
       linkNode1 = candidateNode;
       linkNode2 = nearestOther;
-      cout << "Before drawTree()"<< endl;
+      cout << i << " steps" << endl;
       drawTree();
-      cout << "Before drawFinalPath()"<< endl;
       drawFinalPath();
       return;
     }
 
- cout << "drawTree"<< endl;;
     drawTree();
 
     useStartTree = !useStartTree;
   }
+  cout << "Ran out of steps! " << Constants::NUM_STEPS << endl;
 }
 
 void RRT::drawFinalPath() {

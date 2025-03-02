@@ -12,6 +12,7 @@ RRT loadYamlToRrt(string params_file) {
   // Load the YAML file
   YAML::Node config = YAML::LoadFile(params_file);
 
+  double stepSize = config["step_size"].as<double>();
   // Read in start and goal points
   double startx = config["start"]["x"].as<double>();
   double starty = config["start"]["y"].as<double>();
@@ -30,8 +31,10 @@ RRT loadYamlToRrt(string params_file) {
     Obstacle obs(x1, y1, x2, y2);
     obstacles.push_back(obs);
   }
+  cout << "read in all the stuff"<< endl;
+  cout << "stepSize = " << stepSize << endl;
 
-  RRT rrt(start, goal, obstacles);
+  RRT rrt(start, goal, obstacles, stepSize);
   return rrt;
 }
 

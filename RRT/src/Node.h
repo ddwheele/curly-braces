@@ -25,7 +25,7 @@ struct Node {
    * 
    * returns ptr to Node that is STEP_SIZE toward rx, ry, with papa as parent
    */
-  static shared_ptr<Node> growToward(shared_ptr<Node> papa, double rx, double ry) {
+  static shared_ptr<Node> growToward(shared_ptr<Node> papa, double rx, double ry, double stepSize) {
     double xdist = rx - papa->x;
     double ydist = ry - papa->y;
 
@@ -34,11 +34,11 @@ struct Node {
     double newX, newY;
     if(Constants::equals(len, 0)) {
       // could be more random, but ...
-      newX = papa->x + Constants::STEP_SIZE;
-      newY = papa->y + Constants::STEP_SIZE;
+      newX = papa->x + stepSize;
+      newY = papa->y + stepSize;
     } else {
-      newX = papa->x + xdist/len*Constants::STEP_SIZE;
-      newY = papa->y + ydist/len*Constants::STEP_SIZE;
+      newX = papa->x + xdist/len*stepSize;
+      newY = papa->y + ydist/len*stepSize;
     } 
     return make_shared<Node>(newX, newY, papa);
   }

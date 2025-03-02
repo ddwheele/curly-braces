@@ -8,14 +8,13 @@ struct Constants {
 
   static constexpr double HEIGHT = 10.0; // size of canvas in units
   static constexpr double WIDTH = 10.0; // size of canvas in units
-  static constexpr double STEP_SIZE = 0.1; // for building tree
 
   static constexpr int HEIGHT_PX = HEIGHT * SCALE; // size of canvas in pixels
   static constexpr int WIDTH_PX = WIDTH * SCALE; // size of canvas in pixels
 
   static constexpr int RADIUS_PX = 15; // for drawing Node
 
-  static constexpr int NUM_STEPS = 5000; // how long to search for a path
+  static constexpr int NUM_STEPS = 10000; // how long to search for a path
 
   static constexpr int SHOW_DELAY = 10; // in ms
 

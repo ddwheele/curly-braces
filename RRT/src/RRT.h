@@ -11,7 +11,7 @@ using namespace std;
 
 class RRT {
 public:
-  RRT(shared_ptr<Node> _start, shared_ptr<Node> _goal, const vector<Obstacle> _obstacles);
+  RRT(shared_ptr<Node> _start, shared_ptr<Node> _goal, const vector<Obstacle> _obstacles, double _stepSize=0.2);
 
   void findPath();
   void printMe() const;
@@ -26,6 +26,7 @@ private:
   vector<Obstacle> obstacles;
   shared_ptr<Node> linkNode1;
   shared_ptr<Node> linkNode2;
+  double stepSize;
 
   void drawObstacle(const Obstacle& o) const;
   void drawEndpoint(const shared_ptr<Node>& n, const cv::Scalar& color) const;
