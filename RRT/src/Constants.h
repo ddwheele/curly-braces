@@ -8,7 +8,7 @@ struct Constants {
 
   static constexpr double HEIGHT = 10.0; // size of canvas in units
   static constexpr double WIDTH = 10.0; // size of canvas in units
-  static constexpr double STEP_SIZE = 0.1; // for building tree
+  static constexpr double STEP_SIZE = 1.0; // for building tree
 
   static constexpr int HEIGHT_PX = HEIGHT * SCALE; // size of canvas in pixels
   static constexpr int WIDTH_PX = WIDTH * SCALE; // size of canvas in pixels

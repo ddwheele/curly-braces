@@ -32,6 +32,7 @@ private:
   void drawTree();
   void drawFinalPath();
   void drawNode(const shared_ptr<Node>& n, const cv::Scalar& color, int width=1) const;
+  bool hitsAnObstacle(const shared_ptr<Node>& n);
 };
 
 #endif

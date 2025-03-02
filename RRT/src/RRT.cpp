@@ -24,11 +24,20 @@ shared_ptr<Node> RRT::findNearest(const vector<shared_ptr<Node>>& tree, double x
   return ret;
 }
 
+bool RRT::hitsAnObstacle(const shared_ptr<Node>& n) {
+  for(auto& o : obstacles) {
+    if(o.intersects(*n)) {
+      cout << "** HIT AN OBSTACLE - ABORT" << endl;
+      return true;
+    }
+  }
+  return false;
+}
+
 void RRT::findPath() {
   std::srand(std::time(0));
 
-  vector<shared_ptr<Node>> tree = startTree;
-  vector<shared_ptr<Node>> otherTree = goalTree;
+  bool useStartTree = true;
 
   for(int i=0; i<Constants::NUM_STEPS; i++) {
     // create random point
@@ -36,20 +45,31 @@ void RRT::findPath() {
     double randY = std::rand() % static_cast<int>(Constants::HEIGHT);
 
     // find nearest Node from current tree
-    shared_ptr<Node> nearest = findNearest(tree, randX, randY); 
+    shared_ptr<Node> nearest; 
+    if(useStartTree) {
+      nearest = findNearest(startTree, randX, randY); 
+    } else {
+      nearest = findNearest(goalTree, randX, randY); 
+    }
 
     // Make new node and add to tree if they don't intersect obstacle
     shared_ptr<Node> candidateNode = Node::growToward(nearest, randX, randY);
 
-    for(auto& o : obstacles) {
-      if(o.intersects(*candidateNode)) {
-        continue;
-      }
-    }
-    tree.push_back(candidateNode);
+    cout << "candidateNode = ";
+    candidateNode->printMe();
 
-    // check if this new Node is close to the other tree
-    shared_ptr<Node> nearestOther = findNearest(otherTree, candidateNode->x, candidateNode->y);
+    if(hitsAnObstacle(candidateNode)) {
+      continue;
+    }
+    
+    shared_ptr<Node> nearestOther;
+    if(useStartTree) {
+      startTree.push_back(candidateNode);
+      nearestOther = findNearest(goalTree, candidateNode->x, candidateNode->y);
+    } else {
+      goalTree.push_back(candidateNode);
+      nearestOther = findNearest(startTree, candidateNode->x, candidateNode->y);
+    }
 
     if(candidateNode->distanceTo(*nearestOther) < Constants::STEP_SIZE) {
       linkNode1 = candidateNode;
@@ -62,13 +82,7 @@ void RRT::findPath() {
 
     drawTree();
 
-    // switch trees
-    tree = otherTree;
-    if(tree == startTree) {
-      otherTree = goalTree;
-    } else {
-      otherTree = startTree;
-    }
+    useStartTree = !useStartTree;
   }
 }
 
@@ -83,6 +97,8 @@ void RRT::drawFinalPath() {
     drawNode(curr, Constants::BLUE, 2);
     curr = curr->parent;
   }
+  cv::imshow("Tree", mat);
+  cv::waitKey(0);
 } 
 
 void RRT::drawTree() {
@@ -106,7 +122,7 @@ void RRT::drawTree() {
   }
 
   cv::imshow("Tree", mat);
-  cv::waitKey(0);
+  cv::waitKey(1000);
 }
 
 void RRT::drawNode(const shared_ptr<Node>& n, const cv::Scalar& color, int width) const {
