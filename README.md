@@ -1,2 +1,2 @@
 # curly-braces
-Small C++ snippets
+Programming in C++
