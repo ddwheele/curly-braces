@@ -1,5 +1,6 @@
 #include <iostream>
-
+#include <limits>
+#include <cmath>
 #include "RRT.h"
 
 using namespace std;
@@ -13,7 +14,7 @@ RRT::RRT(shared_ptr<Node> _start, shared_ptr<Node> _goal, vector<Obstacle> _obst
 
 shared_ptr<Node> RRT::findNearest(const vector<shared_ptr<Node>>& tree, double x, double y) const {
   shared_ptr<Node> ret;
-  double closest = Constants::HEIGHT + Constants::WIDTH;
+  double closest = std::numeric_limits<double>::max();
   for(const auto& node : tree) {
     double dist = node->distanceTo(x, y);
     if(dist < closest) {
@@ -21,13 +22,15 @@ shared_ptr<Node> RRT::findNearest(const vector<shared_ptr<Node>>& tree, double x
       ret = node;
     }
   }
+  if(!ret) {
+    cout << "x = " << x << ", y = " << y << ", size of tree = " << tree.size() << endl;
+  }
   return ret;
 }
 
 bool RRT::hitsAnObstacle(const shared_ptr<Node>& n) {
   for(auto& o : obstacles) {
     if(o.intersects(*n)) {
-      cout << "** HIT AN OBSTACLE - ABORT" << endl;
       return true;
     }
   }
@@ -40,10 +43,20 @@ void RRT::findPath() {
   bool useStartTree = true;
 
   for(int i=0; i<Constants::NUM_STEPS; i++) {
+    cout << "=========================" << i <<  "=========================" << endl;
     // create random point
     double randX = std::rand() % static_cast<int>(Constants::WIDTH);
     double randY = std::rand() % static_cast<int>(Constants::HEIGHT);
 
+    if(std::isnan(randX)) {
+      cout << "randX is nan" << endl;
+    }
+
+    if(std::isnan(randY)) {
+      cout << "randY is nan" << endl;
+    }
+
+    cout << "Rand"<< endl;;
     // find nearest Node from current tree
     shared_ptr<Node> nearest; 
     if(useStartTree) {
@@ -51,17 +64,19 @@ void RRT::findPath() {
     } else {
       nearest = findNearest(goalTree, randX, randY); 
     }
+   cout << "nearest: ";
+   nearest->printMe();
+   cout << ">>>>>>>>>> randX, randY = " << randX << ", " <<randY << endl;
 
     // Make new node and add to tree if they don't intersect obstacle
     shared_ptr<Node> candidateNode = Node::growToward(nearest, randX, randY);
-
-    cout << "candidateNode = ";
+    cout << "New candidateNode is: ";
     candidateNode->printMe();
-
     if(hitsAnObstacle(candidateNode)) {
+      cout << "Hit Obstacle"<< endl;;
       continue;
     }
-    
+       cout << "Looking for nearestOther"<< endl;;
     shared_ptr<Node> nearestOther;
     if(useStartTree) {
       startTree.push_back(candidateNode);
@@ -70,16 +85,28 @@ void RRT::findPath() {
       goalTree.push_back(candidateNode);
       nearestOther = findNearest(startTree, candidateNode->x, candidateNode->y);
     }
+    cout << "Last"<< endl;
 
-    if(candidateNode->distanceTo(*nearestOther) < Constants::STEP_SIZE) {
+    if(!nearestOther) {
+      cout << "IT WAS NULL!!!!!!!!\nCandidate: " << endl;
+      candidateNode->printMe();
+    }
+    //if(candidateNode->distanceTo(*nearestOther) < Constants::STEP_SIZE)
+    double nx = nearestOther->x;
+    double ny = nearestOther->y;
+    cout << "Got nearestOther"<< endl;
+    if(candidateNode->distanceTo(nx, ny) < Constants::STEP_SIZE) {
+      cout << "Inside if"<< endl;
       linkNode1 = candidateNode;
       linkNode2 = nearestOther;
+      cout << "Before drawTree()"<< endl;
       drawTree();
+      cout << "Before drawFinalPath()"<< endl;
       drawFinalPath();
-      cout <<"Goodnight and thank you" << endl;
       return;
     }
 
+ cout << "drawTree"<< endl;;
     drawTree();
 
     useStartTree = !useStartTree;
@@ -88,6 +115,7 @@ void RRT::findPath() {
 
 void RRT::drawFinalPath() {
   shared_ptr<Node> curr = linkNode1;
+
   while(curr && curr->parent) {
     drawNode(curr, Constants::BLUE, 2);
     curr = curr->parent;
@@ -97,6 +125,11 @@ void RRT::drawFinalPath() {
     drawNode(curr, Constants::BLUE, 2);
     curr = curr->parent;
   }
+
+  cv::line(mat, linkNode1->getCvPoint(), 
+              linkNode2->getCvPoint(),
+              Constants::BLUE, 2);
+
   cv::imshow("Tree", mat);
   cv::waitKey(0);
 } 
@@ -122,7 +155,7 @@ void RRT::drawTree() {
   }
 
   cv::imshow("Tree", mat);
-  cv::waitKey(1000);
+  cv::waitKey(Constants::SHOW_DELAY);
 }
 
 void RRT::drawNode(const shared_ptr<Node>& n, const cv::Scalar& color, int width) const {

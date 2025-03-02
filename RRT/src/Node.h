@@ -31,9 +31,15 @@ struct Node {
 
     double len = sqrt(xdist*xdist + ydist*ydist);
 
-    double newX = papa->x + xdist/len*Constants::STEP_SIZE;
-    double newY = papa->y + ydist/len*Constants::STEP_SIZE;
-
+    double newX, newY;
+    if(Constants::equals(len, 0)) {
+      // could be more random, but ...
+      newX = papa->x + Constants::STEP_SIZE;
+      newY = papa->y + Constants::STEP_SIZE;
+    } else {
+      newX = papa->x + xdist/len*Constants::STEP_SIZE;
+      newY = papa->y + ydist/len*Constants::STEP_SIZE;
+    } 
     return make_shared<Node>(newX, newY, papa);
   }
 
