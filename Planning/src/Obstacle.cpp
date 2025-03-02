@@ -20,7 +20,7 @@ bool Obstacle::pointIsInside(const double x, const double y) const {
   return false;
 }
 
-bool Obstacle::intersects(const Node& n) const{
+bool Obstacle::intersects(const RrtNode& n) const{
   // no parent or parent is same point
   if(!n.parent || (Constants::equals(n.x, n.parent->x) && Constants::equals(n.y, n.parent->y))) {
     return pointIsInside(n.x, n.y);

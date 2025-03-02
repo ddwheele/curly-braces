@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <opencv2/opencv.hpp>
-#include "Node.h"
+#include "RrtNode.h"
 #include "Obstacle.h"
 #include "Constants.h"
 
@@ -11,29 +11,29 @@ using namespace std;
 
 class RRT {
 public:
-  RRT(shared_ptr<Node> _start, shared_ptr<Node> _goal, const vector<Obstacle> _obstacles, double _stepSize=0.2);
+  RRT(shared_ptr<RrtNode> _start, shared_ptr<RrtNode> _goal, const vector<Obstacle> _obstacles, double _stepSize=0.2);
 
   void findPath();
   void printMe() const;
-  shared_ptr<Node> findNearest(const vector<shared_ptr<Node>>& tree, double x, double y) const;
+  shared_ptr<RrtNode> findNearest(const vector<shared_ptr<RrtNode>>& tree, double x, double y) const;
 
 private:
   cv::Mat mat;
-  shared_ptr<Node> start;
-  shared_ptr<Node> goal;
-  vector<shared_ptr<Node>> startTree;
-  vector<shared_ptr<Node>> goalTree;
+  shared_ptr<RrtNode> start;
+  shared_ptr<RrtNode> goal;
+  vector<shared_ptr<RrtNode>> startTree;
+  vector<shared_ptr<RrtNode>> goalTree;
   vector<Obstacle> obstacles;
-  shared_ptr<Node> linkNode1;
-  shared_ptr<Node> linkNode2;
+  shared_ptr<RrtNode> linkRrtNode1;
+  shared_ptr<RrtNode> linkRrtNode2;
   double stepSize;
 
   void drawObstacle(const Obstacle& o) const;
-  void drawEndpoint(const shared_ptr<Node>& n, const cv::Scalar& color) const;
+  void drawEndpoint(const shared_ptr<RrtNode>& n, const cv::Scalar& color) const;
   void drawTree();
   void drawFinalPath();
-  void drawNode(const shared_ptr<Node>& n, const cv::Scalar& color, int width=1) const;
-  bool hitsAnObstacle(const shared_ptr<Node>& n);
+  void drawRrtNode(const shared_ptr<RrtNode>& n, const cv::Scalar& color, int width=1) const;
+  bool hitsAnObstacle(const shared_ptr<RrtNode>& n);
 };
 
 #endif

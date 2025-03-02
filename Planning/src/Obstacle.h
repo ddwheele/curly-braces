@@ -6,7 +6,7 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include "Constants.h"
-#include "Node.h"
+#include "RrtNode.h"
 
 using namespace std;
 
@@ -15,7 +15,7 @@ public:
   Obstacle(double x1, double y1, double x2, double y2);
 
   // checks the line between a Node and its parent
-  bool intersects(const Node& n) const;
+  bool intersects(const RrtNode& n) const;
 
   void printMe() const;
 
