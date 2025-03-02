@@ -6,6 +6,21 @@
 
 using namespace std;
 
+void testRrtFindNearest() {
+  vector<shared_ptr<Node>> vec;
+
+  for(int i=0; i<6; i++) {
+    vec.push_back(make_shared<Node>(1,i));
+  }
+
+  RRT rrt(make_shared<Node>(0,0), make_shared<Node>(1,1), vector<Obstacle>());
+
+  shared_ptr<Node> near = rrt.findNearest(vec, 3, 3);
+  assert(Constants::equals(near->x, 1));
+  assert(Constants::equals(near->y, 3));
+
+  cout << "  Passed testRrtFindNearest" << endl;
+}
 
 void testConstantsIsInBounds() {
   assert(Constants::isInBounds(Constants::WIDTH/2, Constants::HEIGHT/2));
@@ -26,6 +41,27 @@ void testNodeDistanceTo() {
   assert(Constants::equals(n.distanceTo(n0), sqrt(2)));
 
   cout << "  Passed testNodeDistanceTo" << endl;
+}
+
+void testNodeGrowToward() {
+  shared_ptr<Node> papa = make_shared<Node>(0,0);
+
+  shared_ptr<Node> seymour = Node::growToward(papa, 0, 12);
+  assert(Constants::equals(seymour->x, 0));
+  assert(Constants::equals(seymour->y, Constants::STEP_SIZE));
+  assert(seymour->parent == papa);
+
+  shared_ptr<Node> joe = Node::growToward(papa, 20, 0);
+  assert(Constants::equals(joe->x, Constants::STEP_SIZE));
+  assert(Constants::equals(joe->y, 0));
+  assert(joe->parent == papa);
+
+  shared_ptr<Node> neg = Node::growToward(papa, -5, -5);
+  assert(Constants::equals(neg->x, -Constants::STEP_SIZE/sqrt(2.0)));
+  assert(Constants::equals(neg->y, -Constants::STEP_SIZE/sqrt(2.0)));
+  assert(neg->parent == papa);
+
+  cout << "  Passed testNodeGrowToward" << endl;
 }
 
 void testObstaclePointIsInside() {
@@ -200,10 +236,14 @@ int main(int argc, char** argv) {
 
   cout << "Testing Node ..." << endl;
   testNodeDistanceTo();
+  testNodeGrowToward();
 
   cout << "Testing Obstacle" << endl;
   testObstaclePointIsInside();
   testObstacleIntersects();
+
+  cout << "Testing RRT" << endl;
+  testRrtFindNearest();
 
   cout << "All tests passed!" << endl;
   return 0;

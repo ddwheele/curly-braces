@@ -15,6 +15,8 @@ struct Constants {
 
   static constexpr int RADIUS_PX = 15; // for drawing Node
 
+  static constexpr int NUM_STEPS = 5000; // how long to search for a path
+
 	static inline cv::Scalar WHITE = cv::Scalar(255, 255, 255);
 	static inline cv::Scalar BLACK = cv::Scalar(0, 0, 0);
 	static inline cv::Scalar RED = cv::Scalar(0, 0, 255);

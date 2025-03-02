@@ -17,7 +17,27 @@ struct Node {
     : x(_x), y(_y), parent(_parent) {
   }
 
-  double distanceTo(const double ox, const double oy) const {
+  /**
+   * Inputs
+   * - papa - node that needs to grow
+   * - rx - x coord to grow toward
+   * - ry - y coord to grow toward
+   * 
+   * returns ptr to Node that is STEP_SIZE toward rx, ry, with papa as parent
+   */
+  static shared_ptr<Node> growToward(shared_ptr<Node> papa, double rx, double ry) {
+    double xdist = rx - papa->x;
+    double ydist = ry - papa->y;
+
+    double len = sqrt(xdist*xdist + ydist*ydist);
+
+    double newX = papa->x + xdist/len*Constants::STEP_SIZE;
+    double newY = papa->y + ydist/len*Constants::STEP_SIZE;
+
+    return make_shared<Node>(newX, newY, papa);
+  }
+
+  double distanceTo(double ox, double oy) const {
     double dx = x - ox;
     double dy = y - oy;
     return sqrt( dx*dx + dy*dy );
