@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Set the project name and version
-project(RRTProject VERSION 1.0)
+project(PlanningProject VERSION 1.0)
 
 # Specify C++ standard
 set(CMAKE_CXX_STANDARD 17)
@@ -28,10 +28,12 @@ link_directories(${YAML_CPP_LIBRARY_DIR})
 add_executable(runRRT
 	${CMAKE_SOURCE_DIR}/src/runRRT.cpp
 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
+	${CMAKE_SOURCE_DIR}/src/Node.cpp
 	${CMAKE_SOURCE_DIR}/src/RRT.cpp)
 add_executable(testRRT
 	${CMAKE_SOURCE_DIR}/src/testRRT.cpp
 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
+	${CMAKE_SOURCE_DIR}/src/Node.cpp
 	${CMAKE_SOURCE_DIR}/src/RRT.cpp)
 
 # Link libraries
