@@ -1,0 +1,66 @@
+nodes:
+  - name: Start
+    x: 0
+    y: 0
+  - name: A
+    x: 4
+    y: 3
+  - name: B
+    x: 1
+    y: 7
+  - name: C
+    x: 4
+    y: 11
+  - name: D
+    x: 8
+    y: 8
+  - name: E
+    x: 4
+    y: 5
+  - name: F
+    x: 8
+    y: 2
+  - name: Goal
+    x: 10
+    y: 5
+edges:
+  - s: Start
+    d: A
+    w: 6
+  - s: A
+    d: B
+    w: 6
+  - s: A
+    d: C
+    w: 10
+  - s: A
+    d: E
+    w: 12
+  - s: B
+    d: C
+    w: 7
+  - s: B
+    d: D
+    w: 10
+  - s: B
+    d: E
+    w: 15
+  - s: C
+    d: D
+    w: 6
+  - s: C
+    d: E
+    w: 16
+  - s: D
+    d: E
+    w: 15
+  - s: D
+    d: Goal
+    w: 4
+  - s: E
+    d: F
+    w: 6
+  - s: E
+    d: Goal
+    w: 7
+  

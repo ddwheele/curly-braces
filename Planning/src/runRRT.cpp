@@ -31,7 +31,7 @@ RRT loadYamlToRrt(string params_file) {
     Obstacle obs(x1, y1, x2, y2);
     obstacles.push_back(obs);
   }
-  cout << "read in all the stuff"<< endl;
+  cout << "Finished reading params_file"<< endl;
   cout << "stepSize = " << stepSize << endl;
 
   RRT rrt(start, goal, obstacles, stepSize);
@@ -56,6 +56,5 @@ int main(int argc, char** argv) {
 
   RRT rrt = loadYamlToRrt(params_file);
   rrt.findPath();
-  //rrt.drawTree();
   return 0;
 }

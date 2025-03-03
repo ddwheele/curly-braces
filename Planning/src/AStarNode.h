@@ -1,6 +1,8 @@
 #ifndef ASTAR_NODE_H
 #define ASTAR_NODE_H
 
+#include "Node.h"
+
 using namespace std;
 
 class AStarNode : public Node  {
@@ -19,14 +21,14 @@ public:
 
     void computeHeuristic(shared_ptr<AStarNode> goal) {
     // let's use Euclidean distance for heuristic
-    double xdiff = goal->_x - _x;
-    double ydiff = goal->_y - _y;
-    _hn = sqrt(xdiff*xdiff + ydiff*ydiff);
+    double xdiff = goal->x - x;
+    double ydiff = goal->y - y;
+    hn = sqrt(xdiff*xdiff + ydiff*ydiff);
   }
 
   double evaluate() const  {
     // f(n) = g(n) + h(n)
-    return _gn + _hn;
+    return gn + hn;
   }
 
 };
