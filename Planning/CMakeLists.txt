@@ -25,6 +25,11 @@ endif()
 
 link_directories(${YAML_CPP_LIBRARY_DIR})
 
+add_executable(runAStar
+	${CMAKE_SOURCE_DIR}/src/runAStar.cpp
+	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
+	${CMAKE_SOURCE_DIR}/src/Node.cpp
+	${CMAKE_SOURCE_DIR}/src/AStar.cpp)
 add_executable(runRRT
 	${CMAKE_SOURCE_DIR}/src/runRRT.cpp
 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
@@ -37,10 +42,12 @@ add_executable(testRRT
 	${CMAKE_SOURCE_DIR}/src/RRT.cpp)
 
 # Link libraries
+target_link_libraries(runAStar PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 target_link_libraries(runRRT PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 target_link_libraries(testRRT PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 
 # Include directories for OpenCV and yaml-cpp
+target_include_directories(runAStar PRIVATE ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
 target_include_directories(runRRT PRIVATE ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
 target_include_directories(testRRT PRIVATE ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
 

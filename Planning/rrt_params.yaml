@@ -1,4 +1,4 @@
-step_size: .1
+step_size: 2
 start:
   x: 0
   y: 10
