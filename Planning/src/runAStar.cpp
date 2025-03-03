@@ -14,8 +14,6 @@ AStar loadYamlToAStar(string params_file) {
   // Load the YAML file
   YAML::Node config = YAML::LoadFile(params_file);
 
-  shared_ptr<AStarNode> startnode, goalnode;
-
   unordered_map<string,shared_ptr<AStarNode>> node_map;
   for (const auto& node : config["nodes"]) {
     string name = node["name"].as<string>();
@@ -23,11 +21,6 @@ AStar loadYamlToAStar(string params_file) {
     double y = node["y"].as<double>();
     shared_ptr<AStarNode> nd = make_shared<AStarNode>(name, x, y);
     node_map[name] = nd;
-    if(name == "Start") {
-    	startnode = nd;
-    } else if(name == "Goal") {
-    	goalnode = nd;
-    }
   }
 
   vector<shared_ptr<AStarNode>> nodes(std::views::values(node_map).begin(), std::views::values(node_map).end());
@@ -45,12 +38,6 @@ AStar loadYamlToAStar(string params_file) {
   }
 
   AStar astar(nodes, edges, weights);
-  if(!startnode || !goalnode) {
-  	cout << "Didn't see a start or goal node" << endl;
-  } else {
-  	astar.findPath(startnode, goalnode);
-  }
-
   return astar;
 }
 
@@ -71,5 +58,6 @@ int main(int argc, char** argv) {
   }
 
   AStar astar = loadYamlToAStar(params_file);
+    astar.findPath();
 	return 0;
 }

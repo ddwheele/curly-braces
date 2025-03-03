@@ -2,11 +2,21 @@
 
 AStar::AStar(vector<shared_ptr<AStarNode>> nodes,
 	vector<pair<shared_ptr<AStarNode>,shared_ptr<AStarNode>>> edges, 
-	vector<double> weights) : nodes(nodes) {}
+	vector<double> weights) : PathPlanner(), nodes(nodes) {
+	for(const auto& n : nodes) {
+		if(n->getName() == "Start") {
+			start = n;
+		} else if(n->getName() == "Goal") {
+			goal = n;
+		}
+	}
+}
 
- void AStar::findPath(shared_ptr<AStarNode> _start, shared_ptr<AStarNode> _goal){
-      start = _start;
-      goal = _goal;
+ void AStar::findPath(){
+      if(!start || !goal) {
+      	cout << "No nodes named Start or Goal found, aborting" << endl;
+      	return;
+      }
 
       set<shared_ptr<AStarNode>> closed;
 
@@ -22,9 +32,9 @@ AStar::AStar(vector<shared_ptr<AStarNode>> nodes,
       while(!open.empty()) {
         auto nd1 = open.top();
         open.pop();
-        cout << "Considering " << nd1->name << ": " << nd1->evaluate() << endl;
+        cout << "Considering " << nd1->getName() << ": " << nd1->evaluate() << endl;
         if(nd1 == goal) {
-          cout <<"Final Path Length = " << nd1->gn << endl;
+          cout <<"Final Path Length = " << nd1->getGn() << endl;
           break;
         }
         closed.insert(nd1);
@@ -35,9 +45,9 @@ AStar::AStar(vector<shared_ptr<AStarNode>> nodes,
           if(closed.count(nd2)) {
             continue;
           }
-          nd2->gn = nd1->gn + w; // cost to neighbor = cost to old node + edge length
-          nd2->parent = nd1;
-          cout << "Adding " << nd2->name << ": " << nd2->evaluate() << endl;;
+          nd2->setGn(nd1->getGn() + w); // cost to neighbor = cost to old node + edge length
+          nd2->setParent(nd1);
+          cout << "Adding " << nd2->getName() << ": " << nd2->evaluate() << endl;;
           open.push(nd2);
         }
       }
@@ -45,8 +55,8 @@ AStar::AStar(vector<shared_ptr<AStarNode>> nodes,
       shared_ptr<AStarNode> curr = goal;
       cout << "I found this path: " << endl;
       while(curr != nullptr) {
-        cout << curr->name << "(" << curr->gn << ") -> ";
-        curr = curr->parent;
+        cout << curr->getName() << "(" << curr->getGn() << ") -> ";
+        curr = curr->getParent();
       }
       cout << endl;
     }

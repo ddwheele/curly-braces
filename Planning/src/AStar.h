@@ -3,15 +3,16 @@
 
 #include <vector>
 #include <memory>
+#include "PathPlanner.h"
 #include "AStarNode.h"
 
-class AStar {
+class AStar : public PathPlanner {
 public:
 	AStar(vector<shared_ptr<AStarNode>> nodes,
 		vector<pair<shared_ptr<AStarNode>,shared_ptr<AStarNode>>> edges, 
 		vector<double> weights);
 
-	void findPath(shared_ptr<AStarNode> start, shared_ptr<AStarNode> goal);
+	void findPath();
 
 
 private:
