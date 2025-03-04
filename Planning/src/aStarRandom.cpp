@@ -1,82 +1,91 @@
-#include <cmath>
-#include <iostream>
-#include <fstream>
-#include <ranges>
-#include <yaml-cpp/yaml.h>
-#include <opencv2/opencv.hpp>
-#include <cstdlib>
-#include <ctime>
-
 #include "AStar.h"
-#include "StarNode.h"
-#include "Utils.h"
 
-using namespace std;
 
-vector<shared_ptr<StarNode>> createGraph(int num) {
-  // create nodes
-  vector<shared_ptr<StarNode>> nodes;
-  shared_ptr<StarNode> start = make_shared("Start", 1,1);
-  shared_ptr<StarNode> goal = make_shared("Goal", Utils::WIDTH-1,Utils::HEIGHT-1);
-  nodes.push_back(start);
-  nodes.push_back(goal);
+AStar::AStar(vector<shared_ptr<AStarNode>> nodes,
+	vector<pair<shared_ptr<AStarNode>,shared_ptr<AStarNode>>> edges, 
+	vector<double> weights) : nodes(nodes), drawMap(*this) {
+	for(const auto& n : nodes) {
+		if(n->getName() == "Start") {
+			start = n;
+		} else if(n->getName() == "Goal") {
+			goal = n;
+		}
+	}
 
-  for(int i=0; i<num; i++) {
-    nodes.push_back(make_shared(string(1, 'A' + num)));
+  for(int i=0; i<edges.size(); i++) {
+    auto e = edges[i];
+    auto e1 = e.first;
+    auto e2 = e.second;
+    auto w = weights[i];
+    adj[e1].push_back({e2,w});
+    adj[e2].push_back({e1,w});
   }
+}
 
-  // every node needs some neighbors
-  int REQUIRED_NEIGHBORS = 3;ß
-  std::srand(std::time(0));
-  for(auto nd : nodes) {
-    int neigh = REQUIRED_NEIGHBORS;
-    while(neigh) {
-      int index = std::rand() % (num+2);
-      bool added = nd->addNeighbor(nodes[index]);
-      if(added) {
-        neigh--;
-      }
+void AStar::findPath(){
+
+  if(!start || !goal) {
+  	cout << "No nodes named Start or Goal found, aborting" << endl;
+  	return;
+  }
+  cout << "Start = ";
+  start->printMe();
+   cout << "Goal = ";
+  goal->printMe();
+
+  set<shared_ptr<AStarNode>> closed;
+
+  for(auto n : nodes) {
+    n->computeHeuristic(goal);
+  }
+  // Using lambda to compare elements.
+  auto cmp = [](shared_ptr<AStarNode> left, shared_ptr<AStarNode> right) { 
+    return left->evaluate() > right->evaluate(); }; // want the smallest values popped first
+
+  std::priority_queue<shared_ptr<AStarNode>,vector<shared_ptr<AStarNode>>,decltype(cmp)> open(cmp);
+  open.push(start);
+  while(!open.empty()) {
+    auto nd1 = open.top();
+    open.pop();
+    //cout << "Considering ";
+    //nd1->printMe();
+
+    if(nd1 == goal) {
+      cout <<"Final Path Length = " << nd1->getGn() << endl;
+      break;
     }
-
+    closed.insert(nd1);
+    auto neigh = adj[nd1];
+    for(auto& pr: neigh) {
+      auto nd2 = pr.first;
+      double w = pr.second;
+      if(closed.count(nd2)) {
+        continue;
+      }
+      nd2->setGn(nd1->getGn() + w); // cost to neighbor = cost to old node + edge length
+      nd2->setParent(nd1);
+     // cout << "Adding " << nd2->getName() << ": " << nd2->evaluate() << endl;;
+      open.push(nd2);
+    }
   }
 
-}
+  shared_ptr<AStarNode> curr = goal;
+  cout << "I found this path: " << endl;
 
-AStar loadYamlToAStar(string params_file) {
-  // Load the YAML file
-  YAML::Node config = YAML::LoadFile(params_file);
-
-  unordered_map<string,shared_ptr<AStarNode>> node_map;
-  for (const auto& node : config["nodes"]) {
-    string name = node["name"].as<string>();
-    double x = node["x"].as<double>();
-    double y = node["y"].as<double>();
-    shared_ptr<AStarNode> nd = make_shared<AStarNode>(name, x, y);
-    node_map[name] = nd;
+  while(curr != nullptr) {
+    cout << curr->getName() << "(" << curr->getGn() << ") -> ";
+    curr = curr->getParent();
   }
-
-  vector<shared_ptr<AStarNode>> nodes(std::views::values(node_map).begin(), std::views::values(node_map).end());
-
-	vector<pair<shared_ptr<AStarNode>,shared_ptr<AStarNode>>> edges;
-	vector<double> weights;
-
-  for (const auto& edge : config["edges"]) {
-    string src = edge["s"].as<string>();
-    string dst = edge["d"].as<string>();
-    double w = edge["w"].as<double>();
-
-    edges.push_back({node_map[src], node_map[dst]});
-    weights.push_back(w);
-  }
-
-  AStar astar(nodes, edges, weights);
-  return astar;
+  cout << endl;
+  drawMap.drawMap();
+  drawMap.drawFinalPath();
 }
 
-int main(int argc, char** argv) {
-  
-
-  AStar astar = loadYamlToAStar(params_file);
-  astar.findPath();
-	return 0;
+map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double>>> AStar::getAdjacencyMatrix() const {
+			return adj;
 }
+
+	shared_ptr<AStarNode> AStar::getGoal() const {
+		return goal;
+	}
+
