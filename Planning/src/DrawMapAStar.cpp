@@ -30,12 +30,26 @@ void DrawMapAStar::drawMap() {
     	drawAStarEdge(*node1, *pr.first, pr.second);
     }
   }
+
+}
+
+void DrawMapAStar::drawFinalPath() {
+  auto curr = astar.getGoal();
+  cout << "Initial node: ";
+  curr->printMe();
+  while(curr != nullptr) {
+    curr->printMe();
+    highlightNode(*curr);
+    curr = curr->getParent();
+  }
   cv::imshow("AStar Map", mat);
   cv::waitKey(0);
 }
 
-void DrawMapAStar::drawFinalPath() {
-  
+void DrawMapAStar::highlightNode(const AStarNode& node) {
+  cv::Point nodeLoc = node.getCvPoint();
+
+  cv::circle(mat, nodeLoc, RADIUS_PX, GREEN, 2);
 }
 
 void DrawMapAStar::drawLabeledAStarNode(const AStarNode& anode) {

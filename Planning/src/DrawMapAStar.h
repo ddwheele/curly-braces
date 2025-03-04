@@ -22,6 +22,7 @@ private:
 
   void drawAStarEdge(const AStarNode& n1, const AStarNode& n2, double weight);
 	void drawLabeledAStarNode(const AStarNode& anode);
+  void highlightNode(const AStarNode& node);
 
   void calculateUnitSize();
 

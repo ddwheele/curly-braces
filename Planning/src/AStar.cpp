@@ -23,8 +23,6 @@ AStar::AStar(vector<shared_ptr<AStarNode>> nodes,
 }
 
 void AStar::findPath(){
- 	drawMap.drawMap();
-
 
   if(!start || !goal) {
   	cout << "No nodes named Start or Goal found, aborting" << endl;
@@ -73,14 +71,21 @@ void AStar::findPath(){
 
   shared_ptr<AStarNode> curr = goal;
   cout << "I found this path: " << endl;
+
   while(curr != nullptr) {
     cout << curr->getName() << "(" << curr->getGn() << ") -> ";
     curr = curr->getParent();
   }
   cout << endl;
+  drawMap.drawMap();
+  drawMap.drawFinalPath();
 }
 
 map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double>>> AStar::getAdjacencyMatrix() const {
 			return adj;
 }
+
+	shared_ptr<AStarNode> AStar::getGoal() const {
+		return goal;
+	}
 

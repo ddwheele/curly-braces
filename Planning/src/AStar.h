@@ -17,6 +17,8 @@ public:
 
 	map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double>>> getAdjacencyMatrix() const;
 
+	shared_ptr<AStarNode> getGoal() const;
+
 private:
 	DrawMapAStar drawMap;
 
