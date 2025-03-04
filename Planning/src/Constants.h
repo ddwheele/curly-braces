@@ -6,8 +6,8 @@
 struct Constants {
   static constexpr int SCALE = 50; // conversion from units to pixels for drawing
 
-  static constexpr double HEIGHT = 10.0; // size of canvas in units
-  static constexpr double WIDTH = 10.0; // size of canvas in units
+  static constexpr double HEIGHT = 10.0; // size of canvas in units (RRT)
+  static constexpr double WIDTH = 10.0; // size of canvas in units (RRT)
 
   static constexpr int HEIGHT_PX = HEIGHT * SCALE; // size of canvas in pixels
   static constexpr int WIDTH_PX = WIDTH * SCALE; // size of canvas in pixels
@@ -24,6 +24,7 @@ struct Constants {
 	static inline cv::Scalar GREEN = cv::Scalar(0, 255, 0);
 	static inline cv::Scalar BLUE = cv::Scalar(255, 0, 0);
 	static inline cv::Scalar GRAY = cv::Scalar(100, 100, 100);
+	static inline cv::Scalar LT_GRAY = cv::Scalar(200, 200, 200);
 
 	static bool isInBounds(const double x, const double y) {
 		if(x >=0 && x <= WIDTH && y>=0 && y <= HEIGHT) {

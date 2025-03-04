@@ -34,10 +34,10 @@ private:
 
   static constexpr int FONT_FACE = cv::FONT_HERSHEY_SIMPLEX;
   static constexpr int FILL_SHAPE = -1;
-  static constexpr double FONT_SCALE = 1;
+  static constexpr double FONT_SCALE = 0.5;
   static constexpr double FONT_THICKNESS = 2;
 
-  static inline cv::Point NODE_LABEL_OFFSET = cv::Point(-Constants::RADIUS_PX/2, -Constants::RADIUS_PX/2);
+  static inline cv::Point NODE_LABEL_OFFSET = cv::Point(0,0);
 
 };
 

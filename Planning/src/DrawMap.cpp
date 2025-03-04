@@ -11,7 +11,6 @@ void DrawMap::drawAStarMap() {
     std::cout << "DrawMap does not have an AStar, aborting" << endl;
     return;
   } 
-
   mat = cv::Mat(Constants::HEIGHT_PX, Constants::WIDTH_PX, CV_8UC3, Constants::WHITE);
 
   for( auto& [node1, vec] : astar->getAdjacencyMatrix()) {
@@ -26,7 +25,7 @@ void DrawMap::drawAStarMap() {
 void DrawMap::drawLabeledAStarNode(const AStarNode& anode) {
 	cv::Point nodeLoc = anode.getCvPoint();
 
-	cv::circle(mat, nodeLoc, Constants::RADIUS_PX, Constants::GRAY, FILL_SHAPE);
+	cv::circle(mat, nodeLoc, Constants::RADIUS_PX, Constants::GRAY, 1);
 
 	std::string text = anode.getName();
 	
