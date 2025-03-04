@@ -29,20 +29,22 @@ add_executable(runAStar
 	${CMAKE_SOURCE_DIR}/src/runAStar.cpp
 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
 	${CMAKE_SOURCE_DIR}/src/Node.cpp
-	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp
-	${CMAKE_SOURCE_DIR}/src/RRT.cpp # needed for DrawMap
-	${CMAKE_SOURCE_DIR}/src/AStar.cpp)
+	${CMAKE_SOURCE_DIR}/src/RRT.cpp 
+	${CMAKE_SOURCE_DIR}/src/AStar.cpp
+	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp)
 add_executable(runRRT
 	${CMAKE_SOURCE_DIR}/src/runRRT.cpp
 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
 	${CMAKE_SOURCE_DIR}/src/Node.cpp
 	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp
+	${CMAKE_SOURCE_DIR}/src/AStar.cpp
 	${CMAKE_SOURCE_DIR}/src/RRT.cpp)
 add_executable(testRRT
 	${CMAKE_SOURCE_DIR}/src/testRRT.cpp
 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
 	${CMAKE_SOURCE_DIR}/src/Node.cpp
 	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp
+	${CMAKE_SOURCE_DIR}/src/AStar.cpp
 	${CMAKE_SOURCE_DIR}/src/RRT.cpp)
 
 # Link libraries

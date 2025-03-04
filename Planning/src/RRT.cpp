@@ -107,12 +107,12 @@ void RRT::findPath() {
       linkRrtNode1 = candidateRrtNode;
       linkRrtNode2 = nearestOther;
       cout << i << " steps" << endl;
-      drawMap.drawRrtTree();
+      drawMap.drawRrt();
       drawMap.drawFinalRrtPath();
       return;
     }
 
-    drawMap.drawRrtTree();
+    drawMap.drawRrt();
 
     useStartTree = !useStartTree;
   }

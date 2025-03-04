@@ -10,7 +10,7 @@ nodes:
     y: 7
   - name: C
     x: 4
-    y: 11
+    y: 10
   - name: D
     x: 8
     y: 8

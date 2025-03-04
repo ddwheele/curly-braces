@@ -14,11 +14,20 @@ public:
 
 	void findPath();
 
+	map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double>>> getAdjacencyMatrix() const;
+
+	vector<shared_ptr<AStarNode>> getNodes() const;
+
+	int getA() const;
 
 private:
-	cv::Mat mat;
   vector<shared_ptr<AStarNode> > nodes;
-  map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double> > > adj;
+
+  int a = 1;
+
+  // Adjacency matrix
+  map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double>>> adj;
+
   shared_ptr<AStarNode> goal;
   shared_ptr<AStarNode> start;
 };

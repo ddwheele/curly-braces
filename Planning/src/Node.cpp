@@ -1,7 +1,5 @@
 #include "Node.h"
 
-
-
 using namespace std;
 
 Node::Node(double _x, double _y) 

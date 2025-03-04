@@ -1,13 +1,53 @@
 #import "DrawMap.h"
-#import "AStar.h"
-#import "RRT.h"
+
+#include "RRT.h"
+#include "AStar.h"
 
 DrawMap::DrawMap(const PathPlanner& _planner) : planner(_planner) {}
 
-void DrawMap::drawRrtTree() {
+void DrawMap::drawAStarMap() {
+	auto* astar = dynamic_cast<const AStar*>(&planner);
+  if (!astar) {
+    std::cout << "DrawMap does not have an AStar, aborting" << endl;
+    return;
+  } 
+
+  mat = cv::Mat(Constants::HEIGHT_PX, Constants::WIDTH_PX, CV_8UC3, Constants::WHITE);
+
+  for( auto& [node1, vec] : astar->getAdjacencyMatrix()) {
+  	for(const auto& pr : vec) {
+    	drawAStarEdge(*node1, *pr.first, pr.second);
+    }
+  }
+  cv::imshow("AStar Map", mat);
+  cv::waitKey(0);
+}
+
+void DrawMap::drawLabeledAStarNode(const AStarNode& anode) {
+	cv::Point nodeLoc = anode.getCvPoint();
+
+	cv::circle(mat, nodeLoc, Constants::RADIUS_PX, Constants::GRAY, FILL_SHAPE);
+
+	std::string text = anode.getName();
+	
+	// Draw the text on the image
+	cv::putText(mat, text, nodeLoc + NODE_LABEL_OFFSET, 
+		FONT_FACE, FONT_SCALE, Constants::BLACK, FONT_THICKNESS);
+}
+
+void DrawMap::drawAStarEdge(const AStarNode& n1, const AStarNode& n2, double weight) {
+	drawLabeledAStarNode(n1);
+  drawLabeledAStarNode(n2);
+
+  cv::line(mat, n1.getCvPoint(), 
+              n2.getCvPoint(),
+              Constants::BLACK, 1);
+}
+
+void DrawMap::drawRrt() {
 	auto* rrt = dynamic_cast<const RRT*>(&planner);
   if (!rrt) {
-    std::cout << "Do not have an RRT, aborting" << endl;
+    std::cout << "DrawMap does not have an RRT, aborting" << endl;
     return;
   } 
 

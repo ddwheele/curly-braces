@@ -9,6 +9,7 @@ public:
 
 	virtual void findPath() = 0;
 
+	virtual ~PathPlanner() = default;
 
 protected:
 	DrawMap drawMap;
