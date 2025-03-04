@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <format>
 #include "DrawMap.h"
 #include "AStar.h"
 #include "Utils.h"
@@ -58,7 +59,7 @@ void DrawMapAStar::drawAStarEdge(const AStarNode& n1, const AStarNode& n2, doubl
 
   cv::Point midpoint = (n1.getCvPoint() + n2.getCvPoint()) / 2;
 
-  cv::putText(mat, to_string(weight), midpoint, 
+  cv::putText(mat, format("{:.1f}", weight), midpoint, 
     FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
 }
 
