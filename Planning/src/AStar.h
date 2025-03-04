@@ -13,7 +13,7 @@ public:
 		vector<pair<shared_ptr<AStarNode>,shared_ptr<AStarNode>>> edges, 
 		vector<double> weights);
 
-	void findPath();
+	void findPath() override;
 
 	map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double>>> getAdjacencyMatrix() const;
 

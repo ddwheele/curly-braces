@@ -11,7 +11,7 @@ class AStarRandom : public PathPlanner {
 public:
 	AStarRandom(vector<shared_ptr<StarNode>> nodes);
 
-	void findPath();
+	void findPath() override;
 
 	map<shared_ptr<StarNode>, vector<pair<shared_ptr<StarNode>,double>>> getAdjacencyMatrix() const;
 

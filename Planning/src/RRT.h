@@ -18,7 +18,7 @@ public:
     const vector<Obstacle> _obstacles,
     double _stepSize=0.2);
 
-  void findPath();
+  void findPath() override;
   void printMe() const;
   shared_ptr<RrtNode> findNearest(const vector<shared_ptr<RrtNode>>& tree,
    double x, double y) const;

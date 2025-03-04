@@ -2,70 +2,45 @@
 #define STAR_NODE_H
 
 #include <cmath>
+#include <limits>
 #include <unordered_set>
 #include "Node.h"
 #include "Utils.h"
 
 using namespace std;
 
-class StarNode : public Node  {
+class StarNode : public Node {
 public:
-  StarNode(string _name, double _x, double _y) :  Node(_x, _y), name(_name) {
-  };
+  StarNode(string _name, double _x, double _y);
+  StarNode(string _name);
 
-  StarNode(string _name) :  name(_name) {
-    // create random coordinates
-    std::srand(std::time(0));
-    x = std::rand() % static_cast<int>(Utils::WIDTH);
-    y = std::rand() % static_cast<int>(Utils::HEIGHT);
-  };
+  void computeHeuristic(shared_ptr<StarNode> goal);
 
-  void computeHeuristic(shared_ptr<StarNode> goal) {
-    // let's use Euclidean distance for heuristic
-    double xdiff = goal->x - x;
-    double ydiff = goal->y - y;
-    hn = sqrt(xdiff*xdiff + ydiff*ydiff);
-  }
+  double evaluate() const;
 
-  double evaluate() const  {
-    // f(n) = g(n) + h(n)
-    return gn + hn;
-  }
+  bool gnEqualsRhs() const;
 
-  string getName() const {
-    return name;
-  }
+  string getName() const;
 
-  double getGn() const {
-    return gn;
-  }
+  double getGn() const;
+  void setGn(double _gn);
 
-  void setGn(double _gn) {
-    gn = _gn;
-  }
+  double getRhs() const;
+  void setRhs(double _rhs);
 
-  void setParent(shared_ptr<StarNode> newParent) {
-    parent = newParent;
-  }
+  void setParent(shared_ptr<StarNode> newParent);
+  shared_ptr<StarNode> getParent() const;
 
-  shared_ptr<StarNode> getParent() const {
-    return parent;
-  }
+  bool addNeighbor(shared_ptr<StarNode> n);
+  unordered_set<shared_ptr<StarNode>> getNeighbors() const;
 
-  bool addNeighbor(shared_ptr<StarNode> n) {
-    auto res = neighbors.insert(n);
-    return res.second; // returns true if insert was successful
-  }
+  static double MAX_DOUBLE = std::numeric_limits<double>::max();
 
-  unordered_set<shared_ptr<StarNode>> getNeighbors() const {
-    return neighbors;
-  }
+  void printMe() const override;
 
-  void printMe() const override {
-    cout <<name <<": ("<< x << ", " << y << "), gn=" << gn <<", hn=" << hn << endl;
-  }
+  static double MAX_DOUBLE = std::numeric_limits<double>::max();
 
-private:
+protected:
   string name;
   double hn; // h(n) = heuristic. Admissible -> never overestimate the actual path cost
   // An admissible heuristic never overestimates the actual cost to reach the goal.
@@ -73,8 +48,9 @@ private:
   // node to the goal node is always less than or equal to the estimated distance from any 
   // neighboring vertex to the goal, plus the cost of reaching that neighbor.
   double gn; // g(n) = operating cost = how many units we moved from end node
+
   shared_ptr<StarNode> parent = nullptr;
-  unordered_set<shared_ptr<StarNode>> neighbors;
+  //unordered_set<shared_ptr<StarNode>> neighbors;
 
 };
 
