@@ -1,13 +1,22 @@
-#ifndef ASTAR_NODE_H
-#define ASTAR_NODE_H
+#ifndef STAR_NODE_H
+#define STAR_NODE_H
 
+#include <cmath>
+#include <unordered_set>
 #include "Node.h"
 
 using namespace std;
 
-class AStarNode : public Node  {
+class StarNode : public Node  {
 public:
-  AStarNode(string _name, double _x, double _y) : Node(_x, _y), name(_name) {
+  StarNode(string _name, double _xß, double _y) :  name(_name), x(_x), y(_y) {
+  };
+
+  StarNode(string _name) :  name(_name) {
+    // create random coordinates
+    std::srand(std::time(0));
+    x = std::rand() % static_cast<int>(Utils::WIDTH);
+    y = std::rand() % static_cast<int>(Utils::HEIGHT);
   };
 
   void computeHeuristic(shared_ptr<AStarNode> goal) {
@@ -34,12 +43,21 @@ public:
     gn = _gn;
   }
 
-  void setParent(shared_ptr<AStarNode> newParent) {
+  void setParent(shared_ptr<StarNode> newParent) {
     parent = newParent;
   }
 
-  shared_ptr<AStarNode> getParent() {
+  shared_ptr<StarNode> getParent() const {
     return parent;
+  }
+
+  bool addNeighbor(shared_ptr<StarNode> n) {
+    auto res = neighbors.insert(n);
+    return res.second; // returns true if insert was successful
+  }
+
+  unordered_set<shared_ptr<StarNode>> getNeighbors() const {
+    return neighbors;
   }
 
   void printMe() const override {
@@ -53,8 +71,9 @@ private:
   // A consistent heuristic satisfies the condition that the estimated cost from the current 
   // node to the goal node is always less than or equal to the estimated distance from any 
   // neighboring vertex to the goal, plus the cost of reaching that neighbor.
-  double gn; // g(n) = operating cost = how many units we moved from start node
-  shared_ptr<AStarNode> parent = nullptr;
+  double gn; // g(n) = operating cost = how many units we moved from end node
+  shared_ptr<StarNode> parent = nullptr;
+  unordered_set<shared_ptr<StarNode>> neighbors;
 
 };
 

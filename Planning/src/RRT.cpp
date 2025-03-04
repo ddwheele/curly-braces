@@ -72,7 +72,6 @@ void RRT::findPath() {
     if(!nearestOther) {
       candidateRrtNode->printMe();
     }
-    //if(candidateRrtNode->distanceTo(*nearestOther) < Constants::STEP_SIZE)
     double nx = nearestOther->x;
     double ny = nearestOther->y;
     if(candidateRrtNode->distanceTo(nx, ny) < stepSize) {
