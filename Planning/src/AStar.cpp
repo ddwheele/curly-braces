@@ -10,6 +10,15 @@ AStar::AStar(vector<shared_ptr<AStarNode>> nodes,
 			goal = n;
 		}
 	}
+
+  for(int i=0; i<edges.size(); i++) {
+    auto e = edges[i];
+    auto e1 = e.first;
+    auto e2 = e.second;
+    auto w = weights[i];
+    adj[e1].push_back({e2,w});
+    adj[e2].push_back({e1,w});
+  }
 }
 
  void AStar::findPath(){
@@ -17,6 +26,10 @@ AStar::AStar(vector<shared_ptr<AStarNode>> nodes,
       	cout << "No nodes named Start or Goal found, aborting" << endl;
       	return;
       }
+      cout << "Start = ";
+      start->printMe();
+       cout << "Goal = ";
+      goal->printMe();
 
       set<shared_ptr<AStarNode>> closed;
 
@@ -32,7 +45,9 @@ AStar::AStar(vector<shared_ptr<AStarNode>> nodes,
       while(!open.empty()) {
         auto nd1 = open.top();
         open.pop();
-        cout << "Considering " << nd1->getName() << ": " << nd1->evaluate() << endl;
+        //cout << "Considering ";
+        //nd1->printMe();
+
         if(nd1 == goal) {
           cout <<"Final Path Length = " << nd1->getGn() << endl;
           break;
@@ -47,7 +62,7 @@ AStar::AStar(vector<shared_ptr<AStarNode>> nodes,
           }
           nd2->setGn(nd1->getGn() + w); // cost to neighbor = cost to old node + edge length
           nd2->setParent(nd1);
-          cout << "Adding " << nd2->getName() << ": " << nd2->evaluate() << endl;;
+         // cout << "Adding " << nd2->getName() << ": " << nd2->evaluate() << endl;;
           open.push(nd2);
         }
       }

@@ -19,7 +19,7 @@ public:
 
   double distanceTo(const Node& other) const;
 
-  void printMe() const;
+  virtual void printMe() const;
 
   cv::Point getCvPoint() const;
 };

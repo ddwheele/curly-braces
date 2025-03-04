@@ -42,6 +42,10 @@ public:
     return parent;
   }
 
+  void printMe() const override {
+    cout <<name <<": ("<< x << ", " << y << "), gn=" << gn <<", hn=" << hn << endl;
+  }
+
 private:
   string name;
   double hn; // h(n) = heuristic. Admissible -> never overestimate the actual path cost

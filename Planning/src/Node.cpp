@@ -19,7 +19,7 @@ double Node::distanceTo(const Node& other) const {
 }
 
 void Node::printMe() const {
-  cout << x << " " << y << endl;;
+  cout << x << " " << y << endl;
 }
 
 cv::Point Node::getCvPoint() const {
