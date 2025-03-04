@@ -39,8 +39,8 @@ add_executable(runRRT
 	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp
 	${CMAKE_SOURCE_DIR}/src/DrawMapRrt.cpp
 	${CMAKE_SOURCE_DIR}/src/RRT.cpp)
-add_executable(testRRT
-	${CMAKE_SOURCE_DIR}/src/testRRT.cpp
+add_executable(testPlanning
+	${CMAKE_SOURCE_DIR}/src/testPlanning.cpp
 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
 	${CMAKE_SOURCE_DIR}/src/Node.cpp
 	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp
@@ -52,10 +52,10 @@ add_executable(testRRT
 # Link libraries
 target_link_libraries(runAStar PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 target_link_libraries(runRRT PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
-target_link_libraries(testRRT PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
+target_link_libraries(testPlanning PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 
 # Include directories for OpenCV and yaml-cpp
 target_include_directories(runAStar PRIVATE ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
 target_include_directories(runRRT PRIVATE ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
-target_include_directories(testRRT PRIVATE ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
+target_include_directories(testPlanning PRIVATE ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
 

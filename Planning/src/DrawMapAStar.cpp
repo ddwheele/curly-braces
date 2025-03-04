@@ -1,10 +1,28 @@
+#include <algorithm>
 #include "DrawMap.h"
 #include "AStar.h"
+#include "Utils.h"
+
+using namespace std;
 
 DrawMapAStar::DrawMapAStar(const AStar& _astar) : astar(_astar) {}
 
+void DrawMapAStar::calculateUnitSize() {
+  if(UNIT_X_SIZE > 0 && UNIT_Y_SIZE > 0) {
+    return;
+  }
+  double maxX = 0, maxY = 0;
+  for( auto& [node1, _] : astar.getAdjacencyMatrix()) {
+    maxX = std::max(maxX, node1->x);
+    maxY = std::max(maxY, node1->y);
+  }
+  UNIT_X_SIZE = maxX + 1;
+  UNIT_Y_SIZE = maxY + 1;
+}
+
 void DrawMapAStar::drawMap() {
-  mat = cv::Mat(Constants::HEIGHT_PX, Constants::WIDTH_PX, CV_8UC3, Constants::WHITE);
+  calculateUnitSize();
+  mat = cv::Mat(UNIT_X_SIZE*Utils::SCALE, UNIT_Y_SIZE*Utils::SCALE, CV_8UC3, WHITE);
 
   for( auto& [node1, vec] : astar.getAdjacencyMatrix()) {
   	for(const auto& pr : vec) {
@@ -22,20 +40,33 @@ void DrawMapAStar::drawFinalPath() {
 void DrawMapAStar::drawLabeledAStarNode(const AStarNode& anode) {
 	cv::Point nodeLoc = anode.getCvPoint();
 
-	cv::circle(mat, nodeLoc, Constants::RADIUS_PX, Constants::GRAY, 1);
+	cv::circle(mat, nodeLoc, RADIUS_PX, LT_GRAY, FILL_SHAPE);
 
 	std::string text = anode.getName();
 	
-	// Draw the text on the image
 	cv::putText(mat, text, nodeLoc + NODE_LABEL_OFFSET, 
-		FONT_FACE, FONT_SCALE, Constants::BLACK, FONT_THICKNESS);
+		FONT_FACE, FONT_SCALE_LARGE, BLACK, FONT_THICK);
 }
 
 void DrawMapAStar::drawAStarEdge(const AStarNode& n1, const AStarNode& n2, double weight) {
+  cv::line(mat, n1.getCvPoint(), 
+              n2.getCvPoint(),
+              BLACK, 1);
+
 	drawLabeledAStarNode(n1);
   drawLabeledAStarNode(n2);
 
-  cv::line(mat, n1.getCvPoint(), 
-              n2.getCvPoint(),
-              Constants::BLACK, 1);
+  cv::Point midpoint = (n1.getCvPoint() + n2.getCvPoint()) / 2;
+
+  cv::putText(mat, to_string(weight), midpoint, 
+    FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
 }
+
+
+
+
+
+
+
+
+

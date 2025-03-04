@@ -3,7 +3,9 @@
 #include "Node.h"
 #include "RrtNode.h"
 #include "Obstacle.h"
+#include "Utils.h"
 #include "RRT.h"
+#include "DrawMap.h"
 
 using namespace std;
 
@@ -17,29 +19,29 @@ void testRrtFindNearest() {
   RRT rrt(make_shared<RrtNode>(0,0), make_shared<RrtNode>(1,1), vector<Obstacle>());
 
   shared_ptr<RrtNode> near = rrt.findNearest(vec, 3, 3);
-  assert(Constants::equals(near->x, 1));
-  assert(Constants::equals(near->y, 3));
+  assert(Utils::equals(near->x, 1));
+  assert(Utils::equals(near->y, 3));
 
   cout << "  Passed testRrtFindNearest" << endl;
 }
 
-void testConstantsIsInBounds() {
-  assert(Constants::isInBounds(Constants::WIDTH/2, Constants::HEIGHT/2));
-  assert(!Constants::isInBounds(-10, Constants::HEIGHT));
-  assert(!Constants::isInBounds(Constants::WIDTH, -12));
-  assert(!Constants::isInBounds(Constants::WIDTH + 1,Constants::HEIGHT));
-  assert(!Constants::isInBounds(Constants::WIDTH,Constants::HEIGHT + 1));
-  cout << "  Passed testConstantsIsInBounds" << endl;
+void testDrawMapIsInBounds() {
+  assert(DrawMap::isInBounds(Utils::WIDTH/2, Utils::HEIGHT/2));
+  assert(!DrawMap::isInBounds(-10, Utils::HEIGHT));
+  assert(!DrawMap::isInBounds(Utils::WIDTH, -12));
+  assert(!DrawMap::isInBounds(Utils::WIDTH + 1,Utils::HEIGHT));
+  assert(!DrawMap::isInBounds(Utils::WIDTH,Utils::HEIGHT + 1));
+  cout << "  Passed testDrawMapIsInBounds" << endl;
 }
 
 void testNodeDistanceTo() {
   Node n(1,1);
-  assert(Constants::equals(n.distanceTo(3,1), 2));
-  assert(Constants::equals(n.distanceTo(1,12), 11));
+  assert(Utils::equals(n.distanceTo(3,1), 2));
+  assert(Utils::equals(n.distanceTo(1,12), 11));
 
   Node n0(0,0);
-  assert(Constants::equals(n0.distanceTo(-3,-4), 5));
-  assert(Constants::equals(n.distanceTo(n0), sqrt(2)));
+  assert(Utils::equals(n0.distanceTo(-3,-4), 5));
+  assert(Utils::equals(n.distanceTo(n0), sqrt(2)));
 
   cout << "  Passed testNodeDistanceTo" << endl;
 }
@@ -49,18 +51,18 @@ void testNodeGrowToward() {
   double stepSize = 1;
 
   shared_ptr<RrtNode> seymour = RrtNode::growToward(papa, 0, 12, stepSize);
-  assert(Constants::equals(seymour->x, 0));
-  assert(Constants::equals(seymour->y, stepSize));
+  assert(Utils::equals(seymour->x, 0));
+  assert(Utils::equals(seymour->y, stepSize));
   assert(seymour->parent == papa);
 
   shared_ptr<RrtNode> joe = RrtNode::growToward(papa, 20, 0, stepSize);
-  assert(Constants::equals(joe->x, stepSize));
-  assert(Constants::equals(joe->y, 0));
+  assert(Utils::equals(joe->x, stepSize));
+  assert(Utils::equals(joe->y, 0));
   assert(joe->parent == papa);
 
   shared_ptr<RrtNode> neg = RrtNode::growToward(papa, -5, -5, stepSize);
-  assert(Constants::equals(neg->x, -stepSize/sqrt(2.0)));
-  assert(Constants::equals(neg->y, -stepSize/sqrt(2.0)));
+  assert(Utils::equals(neg->x, -stepSize/sqrt(2.0)));
+  assert(Utils::equals(neg->y, -stepSize/sqrt(2.0)));
   assert(neg->parent == papa);
 
   cout << "  Passed testNodeGrowToward" << endl;
@@ -233,8 +235,8 @@ void testObstacleIntersects() {
 }
 
 int main(int argc, char** argv) {
-  cout << "Testing Constants ..." << endl;
-  testConstantsIsInBounds();
+  cout << "Testing DrawMap ..." << endl;
+  testDrawMapIsInBounds();
 
   cout << "Testing Node ..." << endl;
   testNodeDistanceTo();

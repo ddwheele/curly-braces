@@ -1,4 +1,5 @@
 #include "Node.h"
+#include "Utils.h"
 
 using namespace std;
 
@@ -21,6 +22,6 @@ void Node::printMe() const {
 }
 
 cv::Point Node::getCvPoint() const {
-  return cv::Point(static_cast<int>(x*Constants::SCALE), static_cast<int>(y*Constants::SCALE));
+  return cv::Point(static_cast<int>(x*Utils::SCALE), static_cast<int>(y*Utils::SCALE));
 }
 

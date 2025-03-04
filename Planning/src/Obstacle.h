@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <iostream>
 #include <opencv2/opencv.hpp>
-#include "Constants.h"
 #include "RrtNode.h"
 
 using namespace std;

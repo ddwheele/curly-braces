@@ -2,6 +2,7 @@
 #define RRT_NODE_H
 
 #include "Node.h"
+#include "Utils.h"
 
 class RrtNode : public Node {
 public:
@@ -25,7 +26,7 @@ public:
     double len = sqrt(xdist*xdist + ydist*ydist);
 
     double newX, newY;
-    if(Constants::equals(len, 0)) {
+    if(Utils::equals(len, 0)) {
       // could be more random, but ...
       newX = papa->x + stepSize;
       newY = papa->y + stepSize;

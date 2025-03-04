@@ -5,7 +5,6 @@
 #include <opencv2/opencv.hpp>
 #include "RrtNode.h"
 #include "Obstacle.h"
-#include "Constants.h"
 #include "DrawMap.h"
 
 class RRT;

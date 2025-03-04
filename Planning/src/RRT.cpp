@@ -40,10 +40,10 @@ void RRT::findPath() {
 
   bool useStartTree = true;
 
-  for(int i=0; i<Constants::NUM_STEPS; i++) {
+  for(int i=0; i<Utils::NUM_STEPS; i++) {
     // create random point
-    double randX = std::rand() % static_cast<int>(Constants::WIDTH);
-    double randY = std::rand() % static_cast<int>(Constants::HEIGHT);
+    double randX = std::rand() % static_cast<int>(Utils::WIDTH);
+    double randY = std::rand() % static_cast<int>(Utils::HEIGHT);
 
     // find nearest RrtNode from current tree
     shared_ptr<RrtNode> nearest; 
@@ -89,7 +89,7 @@ void RRT::findPath() {
 
     useStartTree = !useStartTree;
   }
-  cout << "Ran out of steps! " << Constants::NUM_STEPS << endl;
+  cout << "Ran out of steps! " << Utils::NUM_STEPS << endl;
 }
 
 

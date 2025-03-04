@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <iostream>
 #include <opencv2/opencv.hpp>
+#include "Utils.h"
 #include "Obstacle.h"
 
 using namespace std;
@@ -22,7 +23,7 @@ bool Obstacle::pointIsInside(const double x, const double y) const {
 
 bool Obstacle::intersects(const RrtNode& n) const{
   // no parent or parent is same point
-  if(!n.parent || (Constants::equals(n.x, n.parent->x) && Constants::equals(n.y, n.parent->y))) {
+  if(!n.parent || (Utils::equals(n.x, n.parent->x) && Utils::equals(n.y, n.parent->y))) {
     return pointIsInside(n.x, n.y);
   }
 
@@ -71,7 +72,7 @@ bool Obstacle::intersects(const RrtNode& n) const{
   }
 
   // TODO: cases where boundary slope is vertical
-  if(Constants::equals(lx,minx) || Constants::equals(lx,maxx)) {
+  if(Utils::equals(lx,minx) || Utils::equals(lx,maxx)) {
     cout << "Unimplemented case" << endl;
   }
 
@@ -124,11 +125,11 @@ bool Obstacle::intersects(const RrtNode& n) const{
 }
 
 cv::Point Obstacle::getMinCvPoint() const {
-  return cv::Point(static_cast<int>(minx*Constants::SCALE), static_cast<int>(miny*Constants::SCALE));
+  return cv::Point(static_cast<int>(minx*Utils::SCALE), static_cast<int>(miny*Utils::SCALE));
 }
 
 cv::Point Obstacle::getMaxCvPoint() const {
-  return cv::Point(static_cast<int>(maxx*Constants::SCALE), static_cast<int>(maxy*Constants::SCALE));
+  return cv::Point(static_cast<int>(maxx*Utils::SCALE), static_cast<int>(maxy*Utils::SCALE));
 }
 
 void Obstacle::printMe() const {
