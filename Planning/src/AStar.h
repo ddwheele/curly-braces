@@ -5,6 +5,7 @@
 #include <memory>
 #include "PathPlanner.h"
 #include "AStarNode.h"
+#include "DrawMapAStar.h"
 
 class AStar : public PathPlanner {
 public:
@@ -16,14 +17,10 @@ public:
 
 	map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double>>> getAdjacencyMatrix() const;
 
-	vector<shared_ptr<AStarNode>> getNodes() const;
-
-	int getA() const;
-
 private:
-  vector<shared_ptr<AStarNode> > nodes;
+	DrawMapAStar drawMap;
 
-  int a = 1;
+  vector<shared_ptr<AStarNode> > nodes;
 
   // Adjacency matrix
   map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double>>> adj;

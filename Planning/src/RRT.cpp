@@ -6,36 +6,9 @@
 
 using namespace std;
 
-vector<Obstacle> RRT::getObstacles() const {
-  return obstacles;
-} 
-
-const RrtNode& RRT::getStart() const {
-  return *start;
-}
-
-const RrtNode& RRT::getGoal() const {
-  return *goal;
-}
-
-shared_ptr<RrtNode> RRT::getLinkRrtNode1() const {
-  return linkRrtNode1;
-}
-
-shared_ptr<RrtNode> RRT::getLinkRrtNode2() const {
-  return linkRrtNode2;
-}
-
-vector<shared_ptr<RrtNode>> RRT::getStartTree() const {
-  return startTree;
-}
-
-vector<shared_ptr<RrtNode>> RRT::getGoalTree() const {
-  return goalTree;
-}
 
 RRT::RRT(shared_ptr<RrtNode> _start, shared_ptr<RrtNode> _goal, vector<Obstacle> _obstacles, double _stepSize) 
- : PathPlanner(), start(std::move(_start)), goal(std::move(_goal)), stepSize(_stepSize), obstacles(_obstacles) {
+ : start(std::move(_start)), goal(std::move(_goal)), stepSize(_stepSize), obstacles(_obstacles), drawMap(*this) {
   startTree.push_back(start);
   goalTree.push_back(goal);
 }
@@ -107,12 +80,12 @@ void RRT::findPath() {
       linkRrtNode1 = candidateRrtNode;
       linkRrtNode2 = nearestOther;
       cout << i << " steps" << endl;
-      drawMap.drawRrt();
-      drawMap.drawFinalRrtPath();
+      drawMap.drawMap();
+      drawMap.drawFinalPath();
       return;
     }
 
-    drawMap.drawRrt();
+    drawMap.drawMap();
 
     useStartTree = !useStartTree;
   }
@@ -128,5 +101,33 @@ void RRT::printMe() const {
   for(auto& o : obstacles) {
     o.printMe();
   }
+}
+
+vector<Obstacle> RRT::getObstacles() const {
+  return obstacles;
+} 
+
+const RrtNode& RRT::getStart() const {
+  return *start;
+}
+
+const RrtNode& RRT::getGoal() const {
+  return *goal;
+}
+
+shared_ptr<RrtNode> RRT::getLinkRrtNode1() const {
+  return linkRrtNode1;
+}
+
+shared_ptr<RrtNode> RRT::getLinkRrtNode2() const {
+  return linkRrtNode2;
+}
+
+vector<shared_ptr<RrtNode>> RRT::getStartTree() const {
+  return startTree;
+}
+
+vector<shared_ptr<RrtNode>> RRT::getGoalTree() const {
+  return goalTree;
 }
 

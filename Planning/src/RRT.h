@@ -7,6 +7,7 @@
 #include "Obstacle.h"
 #include "Constants.h"
 #include "PathPlanner.h"
+#include "DrawMapRrt.h"
 
 using namespace std;
 
@@ -35,6 +36,7 @@ public:
 
 
 private:
+  DrawMapRrt drawMap;
   shared_ptr<RrtNode> start;
   shared_ptr<RrtNode> goal;
   vector<shared_ptr<RrtNode>> startTree;
