@@ -1,9 +1,7 @@
-#include "AStar.h"
+#include "AStarRandom.h"
 
 
-AStar::AStar(vector<shared_ptr<AStarNode>> nodes,
-	vector<pair<shared_ptr<AStarNode>,shared_ptr<AStarNode>>> edges, 
-	vector<double> weights) : nodes(nodes), drawMap(*this) {
+AStarRandom::AStarRandom(vector<shared_ptr<StarNode>> nodes) : nodes(nodes), drawMap(*this) {
 	for(const auto& n : nodes) {
 		if(n->getName() == "Start") {
 			start = n;
@@ -12,17 +10,17 @@ AStar::AStar(vector<shared_ptr<AStarNode>> nodes,
 		}
 	}
 
-  for(int i=0; i<edges.size(); i++) {
-    auto e = edges[i];
-    auto e1 = e.first;
-    auto e2 = e.second;
-    auto w = weights[i];
-    adj[e1].push_back({e2,w});
-    adj[e2].push_back({e1,w});
+  for(auto node : nodes) {
+    for(auto neigh : node->getNeighbors()) {
+      double dist = node->distanceTo(*neigh);
+      adj[node].push_back({neigh, dist});
+      // make all edges bi-directional to start
+      adj[neigh].push_back({node, dist});
+    }
   }
 }
 
-void AStar::findPath(){
+void AStarRandom::findPath(){
 
   if(!start || !goal) {
   	cout << "No nodes named Start or Goal found, aborting" << endl;
@@ -33,16 +31,16 @@ void AStar::findPath(){
    cout << "Goal = ";
   goal->printMe();
 
-  set<shared_ptr<AStarNode>> closed;
+  set<shared_ptr<StarNode>> closed;
 
   for(auto n : nodes) {
     n->computeHeuristic(goal);
   }
   // Using lambda to compare elements.
-  auto cmp = [](shared_ptr<AStarNode> left, shared_ptr<AStarNode> right) { 
+  auto cmp = [](shared_ptr<StarNode> left, shared_ptr<StarNode> right) { 
     return left->evaluate() > right->evaluate(); }; // want the smallest values popped first
 
-  std::priority_queue<shared_ptr<AStarNode>,vector<shared_ptr<AStarNode>>,decltype(cmp)> open(cmp);
+  std::priority_queue<shared_ptr<StarNode>,vector<shared_ptr<StarNode>>,decltype(cmp)> open(cmp);
   open.push(start);
   while(!open.empty()) {
     auto nd1 = open.top();
@@ -69,7 +67,7 @@ void AStar::findPath(){
     }
   }
 
-  shared_ptr<AStarNode> curr = goal;
+  shared_ptr<StarNode> curr = goal;
   cout << "I found this path: " << endl;
 
   while(curr != nullptr) {
@@ -81,11 +79,11 @@ void AStar::findPath(){
   drawMap.drawFinalPath();
 }
 
-map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double>>> AStar::getAdjacencyMatrix() const {
+map<shared_ptr<StarNode>, vector<pair<shared_ptr<StarNode>,double>>> AStarRandom::getAdjacencyMatrix() const {
 			return adj;
 }
 
-	shared_ptr<AStarNode> AStar::getGoal() const {
+	shared_ptr<StarNode> AStarRandom::getGoal() const {
 		return goal;
 	}
 

@@ -12,6 +12,8 @@ class Node {
 public:
   double x, y;
 
+  Node() {}
+
   Node(double _x, double _y);
 
   double distanceTo(double ox, double oy) const;

@@ -9,9 +9,7 @@
 
 class AStarRandom : public PathPlanner {
 public:
-	AStarRandom(vector<shared_ptr<AStarNode>> nodes,
-		vector<pair<shared_ptr<AStarNode>,shared_ptr<AStarNode>>> edges, 
-		vector<double> weights);
+	AStarRandom(vector<shared_ptr<StarNode>> nodes);
 
 	void findPath();
 

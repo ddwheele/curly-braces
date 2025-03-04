@@ -33,7 +33,7 @@ add_executable(runAStar
 	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp
 	${CMAKE_SOURCE_DIR}/src/DrawMapAStar.cpp)
 add_executable(aStarRandom
-	${CMAKE_SOURCE_DIR}/src/aStarRandom.cpp
+	${CMAKE_SOURCE_DIR}/src/runAStarRandom.cpp
 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
 	${CMAKE_SOURCE_DIR}/src/Node.cpp
 	${CMAKE_SOURCE_DIR}/src/AStarRandom.cpp

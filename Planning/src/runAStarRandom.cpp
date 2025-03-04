@@ -6,23 +6,24 @@
 #include <opencv2/opencv.hpp>
 #include <cstdlib>
 #include <ctime>
+#include <memory>
 
-#include "AStar.h"
+#include "AStarRandom.h"
 #include "StarNode.h"
 #include "Utils.h"
 
 using namespace std;
  
-vector<shared_ptr<StarNode>> createGraph(int num) {
+vector<shared_ptr<StarNode>> createNodes(int num) {
   // create nodes
   vector<shared_ptr<StarNode>> nodes;
-  shared_ptr<StarNode> start = make_shared("Start", 1,1);
-  shared_ptr<StarNode> goal = make_shared("Goal", Utils::WIDTH-1,Utils::HEIGHT-1);
+  shared_ptr<StarNode> start = make_shared<StarNode>("Start", 1,1);
+  shared_ptr<StarNode> goal = make_shared<StarNode>("Goal", Utils::WIDTH-1,Utils::HEIGHT-1);
   nodes.push_back(start);
   nodes.push_back(goal);
 
   for(int i=0; i<num; i++) {
-    nodes.push_back(make_shared(string(1, 'A' + num)));
+    nodes.push_back(make_shared<StarNode>(string(1, 'A' + num)));
   }
 
   // every node needs some neighbors
@@ -38,16 +39,13 @@ vector<shared_ptr<StarNode>> createGraph(int num) {
       }
     }
    }
+   return nodes;
  }
  
 int main(int argc, char** argv) {
-  
-       shared_ptr<AStarNode> AStar::getGoal() const {
-               return goal;
-       }
- 
-  AStar astar = loadYamlToAStar(params_file);
-  astar.findPath();
+  vector<shared_ptr<StarNode>> nodes = createNodes(10);
+  AStarRandom aStarRandom(nodes);
+
        return 0;
 }
 

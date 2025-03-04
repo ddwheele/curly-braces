@@ -4,12 +4,13 @@
 #include <cmath>
 #include <unordered_set>
 #include "Node.h"
+#include "Utils.h"
 
 using namespace std;
 
 class StarNode : public Node  {
 public:
-  StarNode(string _name, double _xß, double _y) :  name(_name), x(_x), y(_y) {
+  StarNode(string _name, double _x, double _y) :  Node(_x, _y), name(_name) {
   };
 
   StarNode(string _name) :  name(_name) {
@@ -19,7 +20,7 @@ public:
     y = std::rand() % static_cast<int>(Utils::HEIGHT);
   };
 
-  void computeHeuristic(shared_ptr<AStarNode> goal) {
+  void computeHeuristic(shared_ptr<StarNode> goal) {
     // let's use Euclidean distance for heuristic
     double xdiff = goal->x - x;
     double ydiff = goal->y - y;
