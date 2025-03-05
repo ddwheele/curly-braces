@@ -67,6 +67,9 @@ add_executable(testPlanning
 	${CMAKE_SOURCE_DIR}/src/DrawMapRrt.cpp
 	${CMAKE_SOURCE_DIR}/src/AStar.cpp
 	${CMAKE_SOURCE_DIR}/src/RRT.cpp)
+add_executable(testUpdateableMinHeap
+	${CMAKE_SOURCE_DIR}/src/testUpdateableMinHeap.cpp
+	${CMAKE_SOURCE_DIR}/src/UpdateableMinHeap.cpp)
 
 # Link libraries
 target_link_libraries(runAStar PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
@@ -74,6 +77,7 @@ target_link_libraries(aStarRandom PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 target_link_libraries(dStarLite PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 target_link_libraries(runRRT PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 target_link_libraries(testPlanning PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
+
 
 # Include directories for OpenCV and yaml-cpp
 target_include_directories(runAStar PRIVATE ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
