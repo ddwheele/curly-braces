@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <limits>
+#include <random>
 #include <unordered_set>
 #include "Node.h"
 
@@ -10,6 +11,7 @@ using namespace std;
 
 class StarNode : public Node {
 public:
+
   StarNode(string _name, double _x, double _y);
   StarNode(string _name);
 
@@ -43,6 +45,9 @@ protected:
 
   shared_ptr<StarNode> parent = nullptr;
   unordered_set<shared_ptr<StarNode>> neighbors;
+
+  std::mt19937 rng;  // Independent random generator for each instance
+  std::uniform_int_distribution<int> dist;  // Define distribution
 
 };
 

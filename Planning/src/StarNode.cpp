@@ -2,14 +2,17 @@
 #include "StarNode.h"
 #include "Utils.h"
 
-StarNode::StarNode(string _name, double _x, double _y) :  Node(_x, _y), name(_name) {
+StarNode::StarNode(string _name, double _x, double _y) :
+  Node(_x, _y), name(_name), rng(std::random_device{}()), dist(0, Utils::WIDTH)  {
   }
 
-StarNode::StarNode(string _name) :  name(_name) {
+StarNode::StarNode(string _name) : 
+  name(_name), rng(std::random_device{}()), dist(0, Utils::WIDTH) {
     // create random coordinates
-    std::srand(std::time(0));
-    x = std::rand() % static_cast<int>(Utils::WIDTH);
-    y = std::rand() % static_cast<int>(Utils::HEIGHT);
+
+    x = dist(rng);
+    y = dist(rng);
+    cout << "Creating StarNode " << name << " at " << x <<", " << y << endl;
   }
 
   void StarNode::computeHeuristic(shared_ptr<StarNode> goal) {

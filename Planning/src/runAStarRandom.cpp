@@ -14,39 +14,50 @@
 
 using namespace std;
  
-vector<shared_ptr<StarNode>> createNodes(int num) {
+vector<shared_ptr<StarNode>> createNodes(int numNodes) {
   // create nodes
   vector<shared_ptr<StarNode>> nodes;
   shared_ptr<StarNode> start = make_shared<StarNode>("Start", 1,1);
   shared_ptr<StarNode> goal = make_shared<StarNode>("Goal", Utils::WIDTH-1,Utils::HEIGHT-1);
-  nodes.push_back(start);
-  nodes.push_back(goal);
 
-  for(int i=0; i<num; i++) {
-    nodes.push_back(make_shared<StarNode>(string(1, 'A' + num)));
+  for(int i=0; i<numNodes; i++) {
+    nodes.push_back(make_shared<StarNode>(string(1, 'A' + i)));
   }
 
   // every node needs some neighbors
-  int REQUIRED_NEIGHBORS = 3;
+  int REQUIRED_NEIGHBORS = 1;
   std::srand(std::time(0));
   for(auto nd : nodes) {
+    cout <<"Node ";
+    nd->printMe();
+    cout <<"\t has these neighbors" << endl;
     int neigh = REQUIRED_NEIGHBORS;
     while(neigh) {
-      int index = std::rand() % (num+2);
+      int index = std::rand() % (numNodes);
       bool added = nd->addNeighbor(nodes[index]);
       if(added) {
+        cout << "\t - ";
+        nodes[index]->printMe();
         neigh--;
       }
     }
    }
+
+   start->addNeighbor(nodes[0]);
+   goal->addNeighbor(nodes[numNodes-1]);
+
+  nodes.push_back(start);
+  nodes.push_back(goal);
+
+
    return nodes;
  }
  
 int main(int argc, char** argv) {
-  vector<shared_ptr<StarNode>> nodes = createNodes(10);
+  vector<shared_ptr<StarNode>> nodes = createNodes(4);
   AStarRandom aStarRandom(nodes);
-
-       return 0;
+  aStarRandom.findPath();
+  return 0;
 }
 
 
