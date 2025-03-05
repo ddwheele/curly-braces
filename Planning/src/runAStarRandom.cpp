@@ -27,31 +27,20 @@ vector<shared_ptr<StarNode>> createNodes(int numNodes) {
   // every node needs some neighbors
   int REQUIRED_NEIGHBORS = 2;
   std::srand(std::time(0));
-  for(auto nd : nodes) {
-    cout <<"Node ";
-    nd->printMe();
-    cout <<"\t has these neighbors" << endl;
-    int neigh = REQUIRED_NEIGHBORS;
-    while(neigh) {
-      int index = std::rand() % (numNodes);
-      bool added = nd->addNeighbor(nodes[index]);
-      if(added) {
-        cout << "\t - ";
-        nodes[index]->printMe();
-        neigh--;
-      }
-      added = nodes[index]->addNeighbor(nd);
-      if(added) {
-        cout << "\t - and reverse" << endl;
-      }
-    }
-   }
 
-   start->addNeighbor(nodes[0]);
-   goal->addNeighbor(nodes[numNodes-1]);
+  //   bool added = nd->addNeighbor(nodes[index]);
+  // for(auto nd : nodes) {
+  //   cout <<"Node ";
+  //   nd->printMe();
+  //   cout <<"\t has these neighbors" << endl;
+  
+  //  }
 
-  nodes.push_back(start);
-  nodes.push_back(goal);
+  //  start->addNeighbor(nodes[0]);
+  //  goal->addNeighbor(nodes[numNodes-1]);
+
+  // nodes.push_back(start);
+  // nodes.push_back(goal);
 
 
    return nodes;

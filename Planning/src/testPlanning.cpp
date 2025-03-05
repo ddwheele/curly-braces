@@ -284,6 +284,25 @@ void testObstacleIntersects() {
   cout << "  Passed testObstacleIntersects" << endl;
 }
 
+void testNodeOrderNeighbors() {
+  shared_ptr<Node> me = make_shared<Node>(50,50);
+  shared_ptr<Node> a = make_shared<Node>(12,13);
+  shared_ptr<Node> b = make_shared<Node>(25,24);
+  shared_ptr<Node> c = make_shared<Node>(51,49);
+
+  vector<shared_ptr<Node>> others;
+  others.push_back(a);
+  others.push_back(b);
+  others.push_back(c);
+  me->orderNeighbors(others);
+
+  assert(others[0] == c);
+  assert(others[1] == b);
+  assert(others[2] == a);
+
+  cout << "  Passed testNodeOrderNeighbors" << endl;
+}
+
 int main(int argc, char** argv) {
   cout << "Testing DrawMap ..." << endl;
   testDrawMapIsInBounds();
@@ -291,6 +310,7 @@ int main(int argc, char** argv) {
   cout << "Testing Node ..." << endl;
   testNodeDistanceTo();
   testNodeGrowToward();
+  testNodeOrderNeighbors();
   testDStarNodePriorityQueue();
 
   cout << "Testing Obstacle" << endl;
