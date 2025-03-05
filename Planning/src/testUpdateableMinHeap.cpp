@@ -2,10 +2,10 @@
 #include <cassert>
 #include "UpdateableMinHeap.h"
 #include "DStarNode.h"
+#include "DStarLite.h"
 
 using namespace std;
 
-// clang++ -std=c++20 testUpdateableMinHeap.cpp -o testUpdateableMinHeap
 // clang++ -std=c++20 testUpdateableMinHeap.cpp DStarNode.cpp StarNode.cpp Node.cpp -o testUpdateableMinHeap
 
 template <typename T>
@@ -99,12 +99,63 @@ void testUpdateableMinHeap() {
   cout << "  Passed testUpdateableMinHeap" << endl;
 }
 
+void testUpdateableMinHeap_DStarNodeSimple() {
+  UpdateableMinHeap<shared_ptr<DStarNode>> umhDStar;
+  shared_ptr<DStarNode> goal = make_shared<DStarNode>("Goal", 11,0);
+  shared_ptr<DStarNode> a = make_shared<DStarNode>("A", 1,0);
+  shared_ptr<DStarNode> b = make_shared<DStarNode>("B", 3,0);
+  shared_ptr<DStarNode> c = make_shared<DStarNode>("C", 11,2);
+  a->computeHeuristic(goal); // hn = 10
+  b->computeHeuristic(goal); // hn = 8
+  c->computeHeuristic(goal); // hn = 2
+
+  a->setGn(3);
+  b->setGn(2);
+  c->setGn(1);
+
+  a->computeKey(0); // 10 + 3 + 0
+  b->computeKey(0); // 8 + 2 + 0
+  c->computeKey(1); // 2 + 1 + 1
+
+  DStarNode::Key ak = a->getKey();
+  assert(ak.k1 == 13);
+  assert(ak.k2 == 3);
+
+  DStarNode::Key bk = b->getKey();
+  assert(bk.k1 == 10);
+  assert(bk.k2 == 2);
+
+  DStarNode::Key ck = c->getKey();
+  assert(ck.k1 == 4);
+  assert(ck.k2 == 1);
+
+  umhDStar.insertValue(a);
+  umhDStar.insertValue(b);
+  umhDStar.insertValue(c);
+
+  auto front = umhDStar.extractMin();
+  DStarNode::Key kfirst = front->getKey();
+  assert(kfirst.k1 == 4);
+  assert(kfirst.k2 == 1);
+
+  umhDStar.extractMin();
+
+  front = umhDStar.extractMin();
+  kfirst = front->getKey();
+  assert(kfirst.k1 == 13);
+  assert(kfirst.k2 == 3);
+  cout << "  Passed testUpdateableMinHeap_DStarNodeSimple" << endl;
+}
+
 int main(int argc, char** argv) {
   cout << "Testing UpdateableMinHeap ..." << endl;
   testUpdateableMinHeapSimple();
   testUpdateableMinHeap();
   testUpdateableMinHeapInsert();
   testUpdateableMinHeapDelete();
+
+  cout << "Testing UpdateableMinHeap with DStarNodes ..." << endl;
+  testUpdateableMinHeap_DStarNodeSimple();
 
 
   cout << "All tests passed!" << endl;

@@ -56,27 +56,10 @@ public:
   bool operator<(const DStarNode& other) const;
   bool operator>(const DStarNode& other) const;
 
-
-
 private:
   Key key;
   double rhs;
 };
-
-// // Option 1: Specialize std::hash for DStarLite::Key **outside** the class
-// namespace DStarNode {
-//     template <> 
-//     struct hash<DStarNode::Key> {
-//         size_t operator()(const DStarNode::Key& k) const {
-//             size_t h1 = std::hash<double>{}(k.k1);
-//             size_t h2 = std::hash<double>{}(k.k2);
-//             return h1 ^ (h2 << 1);
-//         }
-//     };
-// }
-
-
-
 
 
 #endif

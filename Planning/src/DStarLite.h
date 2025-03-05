@@ -4,8 +4,9 @@
 #include <queue>
 #include "DStarNode.h"
 #include "PathPlanner.h"
-#include "DrawMapDStarLite.h"
+//#include "DrawMapDStarLite.h"
 
+class DrawMapDStarLite;
 
 class DStarLite : public PathPlanner {
 public:
@@ -20,7 +21,7 @@ public:
   };
 
 private: 
-  DrawMapDStarLite drawMap;
+  std::unique_ptr<DrawMapDStarLite> drawMap;
 
   vector<shared_ptr<DStarNode>> nodes;
   shared_ptr<DStarNode> goal;
