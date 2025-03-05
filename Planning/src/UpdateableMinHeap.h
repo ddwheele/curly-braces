@@ -11,33 +11,36 @@ public:
     int defaultCapacity = 10;
     this->size = 0;
     this->capacity = defaultCapacity;
-    this->array.resize(defaultCapacity);
+    this->data.resize(defaultCapacity);
   }
 
   UpdateableMinHeap(const vector<T>& arr) {
     int cap = arr.size();
     this->size = 0;
     this->capacity = cap;
-    this->array.resize(cap);
+    this->data.resize(cap);
 
     buildHeap(arr);
   }
 
   // Inserts a new node into the min heap.
   void insertValue(T value) {
+    cout << "inserting " << *value << endl;
     if (size == capacity) {
       // Resize the heap if necessary
       capacity *= 2;
-      array.resize(capacity);
+      data.resize(capacity);
     }
     size++;
     int i = size - 1;
-    array[i] = value;
+    data[i] = value;
+
+    cout << *(data[(i - 1) / 2]) << " > " << *(data[i]) << " = " << (data[(i - 1) / 2] > data[i]) << endl;
 
     // while parent of i > child i
-    while (i != 0 && array[(i - 1) / 2] > array[i]) {
+    while (i != 0 && data[(i - 1) / 2] > data[i]) {
       // swap child with parent
-      swap(array[i], array[(i - 1) / 2]);
+      swap(data[i], data[(i - 1) / 2]);
       // consider parent of i to be child
       i = (i - 1) / 2;
     }
@@ -48,7 +51,7 @@ public:
     // Find the index of the key
     int index = -1;
     for (int i = 0; i < size; ++i) {
-      if (array[i] == node) {
+      if (data[i] == node) {
         index = i;
         break;
       }
@@ -65,7 +68,7 @@ public:
     }
 
     // Move the last element to the index of the node to be deleted
-    array[index] = array[size - 1];
+    data[index] = data[size - 1];
     size--;
 
     // Heapify down to heapify the rest of the min heap
@@ -76,7 +79,7 @@ public:
   T peek() const {
     if (size <= 0)
       throw std::range_error("UpdateableMinHeap is empty!");
-    return array[0];
+    return data[0];
   }
 
   // Removes the root node of the min heap and heapifies the remaining heap.
@@ -85,12 +88,12 @@ public:
       throw std::range_error("UpdateableMinHeap is empty!");
     if (size == 1) {
       size--;
-      return array[0];
+      return data[0];
     }
 
     // Store the minimum value, and remove it
-    T root = array[0];
-    array[0] = array[size - 1];
+    T root = data[0];
+    data[0] = data[size - 1];
     size--;
     // Heapify the root node after deletion
     heapify(0);  
@@ -107,7 +110,7 @@ public:
   }
 
 private:
-  std::vector<T> array;  
+  std::vector<T> data;  
   int size;         
   int capacity;
 
@@ -121,25 +124,25 @@ private:
     int right = 2 * i + 2;   
 
     // If left child is smaller than root
-    if (left < size && array[left] < array[smallest])
+    if (left < size && data[left] < data[smallest])
         smallest = left;
 
     // If right child is smaller than the smallest so far
-    if (right < size && array[right] < array[smallest])
+    if (right < size && data[right] < data[smallest])
         smallest = right;
 
     // If smallest is not root
     if (smallest != i) {
-        swap(array[i], array[smallest]);  
+        swap(data[i], data[smallest]);  
         heapify(smallest);                
     }
 }
 
-  // Builds a min heap from a given array.
+  // Builds a min heap from a given data.
   void buildHeap(const vector<T>& arr) {
     capacity = arr.size();
     size = capacity;
-    array = arr;
+    data = arr;
 
     // Heapify the (n-1)/2 nodes
     for (int i = (size - 1) / 2; i >= 0; i--) {

@@ -72,6 +72,11 @@ add_executable(testUpdateableMinHeap
 	${CMAKE_SOURCE_DIR}/src/StarNode.cpp
 	${CMAKE_SOURCE_DIR}/src/DStarNode.cpp
 	${CMAKE_SOURCE_DIR}/src/testUpdateableMinHeap.cpp)
+add_executable(testDStarNode
+	${CMAKE_SOURCE_DIR}/src/Node.cpp
+	${CMAKE_SOURCE_DIR}/src/StarNode.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarNode.cpp
+	${CMAKE_SOURCE_DIR}/src/testDStarNode.cpp)
 
 # Link libraries
 target_link_libraries(runAStar PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})

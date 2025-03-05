@@ -33,10 +33,3 @@ void DStarNode::setRhs(double _rhs) {
   rhs = _rhs;
 }
 
-bool DStarNode::operator<(const DStarNode& other) const {
-  return getKey() < other.getKey();
-}
-
-bool DStarNode::operator>(const DStarNode& other) const {
-  return getKey() > other.getKey();
-}

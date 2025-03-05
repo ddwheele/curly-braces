@@ -21,8 +21,12 @@ public:
       k2 = _k2;
     }
 
-    void printMe() {
+    void printMe() const {
       cout << "k1 = " << k1 << ", k2 = " << k2 << endl;
+    }
+
+    string toString() const {
+      return "k1 = " + to_string(k1) + ", k2 = " + to_string(k2);
     }
 
     inline bool operator<(const Key& other) { return k1 < other.k1 || Utils::equals(k1,other.k1) && k2 < other.k2; }
@@ -47,14 +51,26 @@ public:
 
   Key getKey() const;
 
-
   bool gnEqualsRhs() const;
 
   double getRhs() const;
   void setRhs(double _rhs);
 
-  bool operator<(const DStarNode& other) const;
-  bool operator>(const DStarNode& other) const;
+  // bool operator<(const DStarNode& other) const;
+  // bool operator>(const DStarNode& other) const;
+
+
+  friend std::ostream& operator<<(std::ostream& os, const DStarNode& dsn) {
+      return os << dsn.name<<": ("<<to_string(dsn.x)<<","<<to_string(dsn.y)<<"), key="<<dsn.key.toString() << ")";
+  }
+
+  bool operator<(const DStarNode& other) const {
+    return this->getKey() < other.getKey();
+  }
+
+  bool operator>(const DStarNode& other) const {
+    return this->getKey() > other.getKey();
+  }
 
 private:
   Key key;
