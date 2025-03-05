@@ -13,22 +13,50 @@ using namespace std;
 
 void testDStarNodePriorityQueue() {
   priority_queue<shared_ptr<DStarNode>,vector<shared_ptr<DStarNode>>, DStarLite::DStarNodePtrCompare> q;
-  DStarNode goal = make_shared<DStarNode>("Goal", 11,11);
-  DStarNode a = make_shared<DStarNode>("A", 1,1);
-  DStarNode b = make_shared<DStarNode>("B", 3,3);
-  DStarNode c = make_shared<DStarNode>("C", 10,10);
-  a->computeHeuristic(goal);
-  b->computeHeuristic(goal);
-  c->computeHeuristic(goal);
+  shared_ptr<DStarNode> goal = make_shared<DStarNode>("Goal", 11,0);
+  shared_ptr<DStarNode> a = make_shared<DStarNode>("A", 1,0);
+  shared_ptr<DStarNode> b = make_shared<DStarNode>("B", 3,0);
+  shared_ptr<DStarNode> c = make_shared<DStarNode>("C", 11,2);
+  a->computeHeuristic(goal); // hn = 10
+  b->computeHeuristic(goal); // hn = 8
+  c->computeHeuristic(goal); // hn = 2
 
   a->setGn(3);
   b->setGn(2);
   c->setGn(1);
 
+  a->computeKey(0); // 10 + 3 + 0
+  b->computeKey(0); // 8 + 2 + 0
+  c->computeKey(1); // 2 + 1 + 1
+
+  DStarNode::Key ak = a->getKey();
+  assert(ak.k1 == 13);
+  assert(ak.k2 == 3);
+
+  DStarNode::Key bk = b->getKey();
+  assert(bk.k1 == 10);
+  assert(bk.k2 == 2);
+
+  DStarNode::Key ck = c->getKey();
+  assert(ck.k1 == 4);
+  assert(ck.k2 == 1);
+
   q.push(a);
   q.push(b);
   q.push(c);
 
+  auto front = q.top();
+  q.pop();
+  DStarNode::Key kfirst = front->getKey();
+  assert(kfirst.k1 == 4);
+  assert(kfirst.k2 == 1);
+
+  q.pop();
+
+  front = q.top();
+  kfirst = front->getKey();
+  assert(kfirst.k1 == 13);
+  assert(kfirst.k2 == 3);
   cout << "  Passed testDStarNodePriorityQueue" << endl;
 }
 void testRrtFindNearest() {

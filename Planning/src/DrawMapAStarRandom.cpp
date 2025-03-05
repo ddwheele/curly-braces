@@ -49,13 +49,13 @@ void DrawMapAStarRandom::drawFinalPath() {
   cv::waitKey(0);
 }
 
-void DrawMapAStarRandom::highlightNode(const AStarNode& node) {
+void DrawMapAStarRandom::highlightNode(const StarNode& node) {
   cv::Point nodeLoc = node.getCvPoint();
 
   cv::circle(mat, nodeLoc, RADIUS_PX, GREEN, 2);
 }
 
-void DrawMapAStarRandom::drawLabeledAStarNode(const AStarNode& anode) {
+void DrawMapAStarRandom::drawLabeledAStarNode(const StarNode& anode) {
 	cv::Point nodeLoc = anode.getCvPoint();
 
 	cv::circle(mat, nodeLoc, RADIUS_PX, LT_GRAY, FILL_SHAPE);
@@ -66,7 +66,7 @@ void DrawMapAStarRandom::drawLabeledAStarNode(const AStarNode& anode) {
 		FONT_FACE, FONT_SCALE_LARGE, BLACK, FONT_THICK);
 }
 
-void DrawMapAStarRandom::drawAStarEdge(const AStarNode& n1, const AStarNode& n2, double weight) {
+void DrawMapAStarRandom::drawAStarEdge(const StarNode& n1, const StarNode& n2, double weight) {
   cv::line(mat, n1.getCvPoint(), 
               n2.getCvPoint(),
               BLACK, 1);

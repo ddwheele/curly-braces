@@ -14,16 +14,16 @@
 
 using namespace std;
  
-vector<shared_ptr<StarNode>> createNodes(int num) {
+vector<shared_ptr<DStarNode>> createNodes(int num) {
   // create nodes
-  vector<shared_ptr<StarNode>> nodes;
-  shared_ptr<StarNode> start = make_shared<StarNode>("Start", 1,1);
-  shared_ptr<StarNode> goal = make_shared<StarNode>("Goal", Utils::WIDTH-1,Utils::HEIGHT-1);
+  vector<shared_ptr<DStarNode>> nodes;
+  shared_ptr<DStarNode> start = make_shared<DStarNode>("Start", 1,1);
+  shared_ptr<DStarNode> goal = make_shared<DStarNode>("Goal", Utils::WIDTH-1,Utils::HEIGHT-1);
   nodes.push_back(start);
   nodes.push_back(goal);
 
   for(int i=0; i<num; i++) {
-    nodes.push_back(make_shared<StarNode>(string(1, 'A' + num)));
+    nodes.push_back(make_shared<DStarNode>(string(1, 'A' + num)));
   }
 
   // every node needs some neighbors
@@ -43,7 +43,7 @@ vector<shared_ptr<StarNode>> createNodes(int num) {
  }
  
 int main(int argc, char** argv) {
-  vector<shared_ptr<StarNode>> nodes = createNodes(10);
+  vector<shared_ptr<DStarNode>> nodes = createNodes(10);
   DStarLite dStarLite(nodes);
   return 0;
 }

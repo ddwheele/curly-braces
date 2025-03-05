@@ -21,9 +21,9 @@ public:
 private:
   const AStarRandom& astar;
 
-  void drawAStarEdge(const AStarNode& n1, const AStarNode& n2, double weight);
-  void drawLabeledAStarNode(const AStarNode& anode);
-  void highlightNode(const AStarNode& node);
+  void drawAStarEdge(const StarNode& n1, const StarNode& n2, double weight);
+  void drawLabeledAStarNode(const StarNode& anode);
+  void highlightNode(const StarNode& node);
 
   void calculateUnitSize();
 

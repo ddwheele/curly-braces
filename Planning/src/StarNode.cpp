@@ -1,5 +1,6 @@
 #include <limits>
 #include "StarNode.h"
+#include "Utils.h"
 
 StarNode::StarNode(string _name, double _x, double _y) :  Node(_x, _y), name(_name) {
   }
@@ -34,8 +35,6 @@ StarNode::StarNode(string _name) :  name(_name) {
   void StarNode::setGn(double _gn) {
     gn = _gn;
   }
-
-
 
   void StarNode::setParent(shared_ptr<StarNode> newParent) {
     parent = newParent;

@@ -25,7 +25,10 @@ public:
   void setParent(shared_ptr<StarNode> newParent);
   shared_ptr<StarNode> getParent() const;
 
-  static double MAX_DOUBLE = std::numeric_limits<double>::max();
+  bool addNeighbor(shared_ptr<StarNode> n);
+  unordered_set<shared_ptr<StarNode>> getNeighbors() const;
+
+  static constexpr double MAX_DOUBLE = std::numeric_limits<double>::max();
 
   void printMe() const override;
 
@@ -39,7 +42,7 @@ protected:
   double gn; // g(n) = operating cost = how many units we moved from end node
 
   shared_ptr<StarNode> parent = nullptr;
-  //unordered_set<shared_ptr<StarNode>> neighbors;
+  unordered_set<shared_ptr<StarNode>> neighbors;
 
 };
 

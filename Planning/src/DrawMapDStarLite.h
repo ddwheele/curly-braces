@@ -12,7 +12,7 @@ class DStarLite;
 
 class DrawMapDStarLite : public DrawMap {
 public:
-	DrawMapDStarLite(const AStar & _astar);
+	DrawMapDStarLite(const DStarLite& _astar);
 	
   void drawMap() override;
   void drawFinalPath() override;

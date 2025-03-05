@@ -1,12 +1,11 @@
 #include <algorithm>
 #include <format>
-#include "DrawMap.h"
-#include "AStar.h"
+#include "DrawMapDStarLite.h"
 #include "Utils.h"
 
 using namespace std;
 
-DrawMapDStarLite::DrawMapDStarLite(const DStarLite &_dStarLite) : dStarLite(_dStarLite) {}
+DrawMapDStarLite::DrawMapDStarLite(const DStarLite& _dStarLite) : dStarLite(_dStarLite) {}
 
 void DrawMapDStarLite::calculateUnitSize()
 {

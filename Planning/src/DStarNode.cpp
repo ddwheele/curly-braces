@@ -11,14 +11,14 @@ DStarNode::DStarNode(string _name) : StarNode(_name) {
   rhs = numeric_limits<double>::max();
 }
 
-Key DStarNode::getKey() const {
+DStarNode::Key DStarNode::getKey() const {
   return key;
 }
 
 void DStarNode::computeKey(double km) {
   double k1 = min(gn, rhs) + hn + km;
   double k2 = min(gn, rhs);
-  key.set(k1, k2);
+  key.update(k1, k2);
 }
 
 bool DStarNode::gnEqualsRhs() const {
@@ -29,14 +29,14 @@ double DStarNode::getRhs() const {
   return rhs;
 }
 
-void DStarNode::setRhs(double _gn) {
+void DStarNode::setRhs(double _rhs) {
   rhs = _rhs;
 }
 
-bool DStarNode::operator<(const StarNode& other) const {
+bool DStarNode::operator<(const DStarNode& other) const {
   return getKey() < other.getKey();
 }
 
-bool DStarNode::operator>(const StarNode& other) const {
+bool DStarNode::operator>(const DStarNode& other) const {
   return getKey() > other.getKey();
 }
