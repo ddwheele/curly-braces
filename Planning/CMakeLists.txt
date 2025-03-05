@@ -68,6 +68,9 @@ add_executable(testPlanning
 	${CMAKE_SOURCE_DIR}/src/AStar.cpp
 	${CMAKE_SOURCE_DIR}/src/RRT.cpp)
 add_executable(testUpdateableMinHeap
+	${CMAKE_SOURCE_DIR}/src/Node.cpp
+	${CMAKE_SOURCE_DIR}/src/StarNode.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarNode.cpp
 	${CMAKE_SOURCE_DIR}/src/testUpdateableMinHeap.cpp)
 
 # Link libraries

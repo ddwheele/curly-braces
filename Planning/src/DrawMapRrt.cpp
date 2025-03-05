@@ -41,8 +41,8 @@ void DrawMapRrt::drawFinalPath() {
     curr = curr->parent;
   }
 
-  cv::line(mat, rrt.getLinkRrtNode1()->getCvPoint(), 
-              rrt.getLinkRrtNode2()->getCvPoint(),
+  cv::line(mat, getCvPoint(*rrt.getLinkRrtNode1()), 
+              getCvPoint(*rrt.getLinkRrtNode2()),
               BLUE, 2);
 
   cv::imshow("Tree", mat);
@@ -50,7 +50,7 @@ void DrawMapRrt::drawFinalPath() {
 }
 
 void DrawMapRrt::drawRrtNode(const RrtNode& n, const cv::Scalar& color, int width) const {
-  cv::line(mat, n.getCvPoint(), 
-                n.parent->getCvPoint(),
+  cv::line(mat, getCvPoint(n), 
+                getCvPoint(*n.parent),
                 color, width);
 }

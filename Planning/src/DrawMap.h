@@ -21,6 +21,8 @@ public:
 		return false;
 	}
 
+  static cv::Point getCvPoint();
+
 protected:
   cv::Mat mat;
  
@@ -42,7 +44,6 @@ protected:
   static constexpr int WIDTH_PX = Utils::WIDTH * Utils::SCALE; // size of canvas in pixels
 
   static constexpr int SHOW_DELAY = 10; // in ms
-
 };
 
 #endif

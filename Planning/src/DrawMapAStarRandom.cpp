@@ -50,18 +50,18 @@ void DrawMapAStarRandom::drawFinalPath() {
 }
 
 void DrawMapAStarRandom::highlightNode(const StarNode& node) {
-  cv::Point nodeLoc = node.getCvPoint();
+  cv::Point nodeLoc = getCvPoint(node);
   cv::circle(mat, nodeLoc, RADIUS_PX, GREEN, 2);
   if(node.getParent()) {
       cv::line(mat, node.getCvPoint(), 
-              node.getParent()->getCvPoint(),
+              getCvPoint(*node.getParent()),
               GREEN, 2);
   }
 
 }
 
 void DrawMapAStarRandom::drawLabeledAStarNode(const StarNode& anode) {
-	cv::Point nodeLoc = anode.getCvPoint();
+	cv::Point nodeLoc = getCvPoint(anode);
 
 	cv::circle(mat, nodeLoc, RADIUS_PX, LT_GRAY, FILL_SHAPE);
 
@@ -72,14 +72,14 @@ void DrawMapAStarRandom::drawLabeledAStarNode(const StarNode& anode) {
 }
 
 void DrawMapAStarRandom::drawAStarEdge(const StarNode& n1, const StarNode& n2, double weight) {
-  cv::line(mat, n1.getCvPoint(), 
-              n2.getCvPoint(),
+  cv::line(mat, getCvPoint(n1), 
+              getCvPoint(n2),
               BLACK, 1);
 
 	drawLabeledAStarNode(n1);
   drawLabeledAStarNode(n2);
 
-  cv::Point midpoint = (n1.getCvPoint() + n2.getCvPoint()) / 2;
+  cv::Point midpoint = (getCvPoint(n1) + getCvPoint(n2)) / 2;
 
   cv::putText(mat, format("{:.1f}", weight), midpoint, 
     FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);

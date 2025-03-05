@@ -1,10 +1,12 @@
 #include <iostream>
 #include <cassert>
 #include "UpdateableMinHeap.h"
+#include "DStarNode.h"
 
 using namespace std;
 
 // clang++ -std=c++20 testUpdateableMinHeap.cpp -o testUpdateableMinHeap
+// clang++ -std=c++20 testUpdateableMinHeap.cpp DStarNode.cpp StarNode.cpp Node.cpp -o testUpdateableMinHeap
 
 template <typename T>
 vector<T> extractMinHeap(UpdateableMinHeap<T> heap) {

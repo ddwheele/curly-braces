@@ -21,7 +21,4 @@ void Node::printMe() const {
   cout << x << " " << y << endl;
 }
 
-cv::Point Node::getCvPoint() const {
-  return cv::Point(static_cast<int>(x*Utils::SCALE), static_cast<int>(y*Utils::SCALE));
-}
 
