@@ -68,8 +68,7 @@ add_executable(testPlanning
 	${CMAKE_SOURCE_DIR}/src/AStar.cpp
 	${CMAKE_SOURCE_DIR}/src/RRT.cpp)
 add_executable(testUpdateableMinHeap
-	${CMAKE_SOURCE_DIR}/src/testUpdateableMinHeap.cpp
-	${CMAKE_SOURCE_DIR}/src/UpdateableMinHeap.cpp)
+	${CMAKE_SOURCE_DIR}/src/testUpdateableMinHeap.cpp)
 
 # Link libraries
 target_link_libraries(runAStar PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})

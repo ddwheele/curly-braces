@@ -8,7 +8,7 @@ using namespace std;
 
 void testUpdateableMinHeap() {
   vector<int> someInts = {67, 85, 37, 24, 90, 15, 24, 1975, 12, 43, 44, 3, 2, 1};
-  UpdateableMinHeap umh(someInts);
+  UpdateableMinHeap<int> umh(someInts);
   umh.printMe();
 
 
