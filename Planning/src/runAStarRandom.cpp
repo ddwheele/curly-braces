@@ -40,6 +40,10 @@ vector<shared_ptr<StarNode>> createNodes(int numNodes) {
         nodes[index]->printMe();
         neigh--;
       }
+      added = nodes[index]->addNeighbor(nd);
+      if(added) {
+        cout << "\t - and reverse" << endl;
+      }
     }
    }
 
