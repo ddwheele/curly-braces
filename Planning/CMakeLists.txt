@@ -60,6 +60,8 @@ add_executable(testPlanning
 	${CMAKE_SOURCE_DIR}/src/testPlanning.cpp
 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
 	${CMAKE_SOURCE_DIR}/src/Node.cpp
+	${CMAKE_SOURCE_DIR}/src/StarNode.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarNode.cpp
 	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp
 	${CMAKE_SOURCE_DIR}/src/DrawMapAStar.cpp
 	${CMAKE_SOURCE_DIR}/src/DrawMapRrt.cpp

@@ -5,7 +5,6 @@
 #include <limits>
 #include <unordered_set>
 #include "Node.h"
-#include "Utils.h"
 
 using namespace std;
 
@@ -18,27 +17,17 @@ public:
 
   double evaluate() const;
 
-  bool gnEqualsRhs() const;
-
   string getName() const;
 
   double getGn() const;
   void setGn(double _gn);
 
-  double getRhs() const;
-  void setRhs(double _rhs);
-
   void setParent(shared_ptr<StarNode> newParent);
   shared_ptr<StarNode> getParent() const;
-
-  bool addNeighbor(shared_ptr<StarNode> n);
-  unordered_set<shared_ptr<StarNode>> getNeighbors() const;
 
   static double MAX_DOUBLE = std::numeric_limits<double>::max();
 
   void printMe() const override;
-
-  static double MAX_DOUBLE = std::numeric_limits<double>::max();
 
 protected:
   string name;

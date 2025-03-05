@@ -11,24 +11,34 @@ public:
   DStarNode(string _name, double _x, double _y);
   DStarNode(string _name);
 
+  void computeKey(double km); // takes a key modifier
+
+  Key getKey() const;
+
+  bool addNeighbor(shared_ptr<DStarNode> n);
+  unordered_set<shared_ptr<DStarNode>> getNeighbors() const;
+
   bool gnEqualsRhs() const;
 
   double getRhs() const;
   void setRhs(double _rhs);
 
-  bool addNeighbor(shared_ptr<StarNode> n);
-  unordered_set<shared_ptr<StarNode>> getNeighbors() const;
+  bool operator<(const DStarNode& other) const;
+  bool operator>(const DStarNode& other) const;
 
 private:
-  double rhs;
-
-  unordered_set<shared_ptr<StarNode>> neighbors;
-
   struct Key {
     double k1;
     double k2;
 
+    Key() : k1(numeric_limits<double>::max()), k2(numeric_limits<double>::max()) {}
+
     Key(double _k1, double _k2) : k1(_k1), k2(_k2) { }
+
+    set(double _k1, double _k2) {
+      k1 = _k1;
+      k2 = _k2;
+    }
 
     inline bool operator<(const Key& l, const Key& r) { return l.k1 < l.k2 || Utils::equal(l.k1,r.k1) && l.k2 < r.k2 }
     inline bool operator>(const Key& l, const Key& r) { return l.k1 > l.k2 || Utils::equal(l.k1,r.k1) && l.k2 > r.k2 }
@@ -44,6 +54,11 @@ private:
     //     }
     // };
   };
+
+  Key key;
+  double rhs;
+
+  unordered_set<shared_ptr<DStarNode>> neighbors;
 };
 
 // Option 1: Specialize std::hash for DStarLite::Key **outside** the class

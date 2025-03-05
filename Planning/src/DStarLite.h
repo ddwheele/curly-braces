@@ -2,24 +2,32 @@
 #define D_STAR_LITE
 
 #include <queue>
-
+#include <DStarNode>
 
 
 class DStarLite : public PathPlanner {
 public:
-  DStarLite(vector<shared_ptr<StarNode>> node);
+  DStarLite(vector<shared_ptr<DStarNode>> node);
   void findPath() override;
 
 private: 
   DrawMapDStarLite drawMap;
 
-  vector<shared_ptr<StarNode>> nodes;
-  shared_ptr<StarNode> goal;
-  shared_ptr<StarNode> start;
+  vector<shared_ptr<DStarNode>> nodes;
+  shared_ptr<DStarNode> goal;
+  shared_ptr<DStarNode> start;
   float key_modifier;
 
-  priority_queue<shared_ptr<StarNode>> openQ;
-  unordered_map<shared_ptr<StarNode>, Key> lookups;
+  // Custom comparator for shared_ptr<DStarNode> (min-heap)
+  struct DStarNodePtrCompare {
+      bool operator()(const std::shared_ptr<DStarNode>& lhs, const std::shared_ptr<DStarNode>& rhs) const {
+          return *lhs < *rhs;  // Delegate to DStarNode's operator<
+      }
+  };
+
+  // TODO write test to confirm that this does the right thing (returns D*Node with smallest key)
+  priority_queue<shared_ptr<DStarNode>,vector<shared_ptr<DStarNode>>, DStarNodePtrCompare> openQ;
+  unordered_map<shared_ptr<DStarNode>, Key> lookups;
 
 };
 

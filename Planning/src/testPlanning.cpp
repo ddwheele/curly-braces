@@ -6,9 +6,31 @@
 #include "Utils.h"
 #include "RRT.h"
 #include "DrawMap.h"
+#include "DStarNode.h"
+#include "DStarLite.h"
 
 using namespace std;
 
+void testDStarNodePriorityQueue() {
+  priority_queue<shared_ptr<DStarNode>,vector<shared_ptr<DStarNode>>, DStarLite::DStarNodePtrCompare> q;
+  DStarNode goal = make_shared<DStarNode>("Goal", 11,11);
+  DStarNode a = make_shared<DStarNode>("A", 1,1);
+  DStarNode b = make_shared<DStarNode>("B", 3,3);
+  DStarNode c = make_shared<DStarNode>("C", 10,10);
+  a->computeHeuristic(goal);
+  b->computeHeuristic(goal);
+  c->computeHeuristic(goal);
+
+  a->setGn(3);
+  b->setGn(2);
+  c->setGn(1);
+
+  q.push(a);
+  q.push(b);
+  q.push(c);
+
+  cout << "  Passed testDStarNodePriorityQueue" << endl;
+}
 void testRrtFindNearest() {
   vector<shared_ptr<RrtNode>> vec;
 
@@ -241,6 +263,7 @@ int main(int argc, char** argv) {
   cout << "Testing Node ..." << endl;
   testNodeDistanceTo();
   testNodeGrowToward();
+  testDStarNodePriorityQueue();
 
   cout << "Testing Obstacle" << endl;
   testObstaclePointIsInside();

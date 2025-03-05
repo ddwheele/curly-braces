@@ -2,19 +2,14 @@
 #include "StarNode.h"
 
 StarNode::StarNode(string _name, double _x, double _y) :  Node(_x, _y), name(_name) {
-    gn = MAX_DOUBLE;
-    rhs = MAX_DOUBLE;
-  };
+  }
 
 StarNode::StarNode(string _name) :  name(_name) {
     // create random coordinates
     std::srand(std::time(0));
     x = std::rand() % static_cast<int>(Utils::WIDTH);
     y = std::rand() % static_cast<int>(Utils::HEIGHT);
-
-    gn = MAX_DOUBLE;
-    rhs = MAX_DOUBLE;
-  };
+  }
 
   void StarNode::computeHeuristic(shared_ptr<StarNode> goal) {
     // let's use Euclidean distance for heuristic
@@ -32,10 +27,6 @@ StarNode::StarNode(string _name) :  name(_name) {
     return name;
   }
 
-  bool StarNode::gnEqualsRhs() const {
-    return Utils::equals(gn, rhs);
-  }
-
   double StarNode::getGn() const {
     return gn;
   }
@@ -44,13 +35,7 @@ StarNode::StarNode(string _name) :  name(_name) {
     gn = _gn;
   }
 
-  double StarNode::getRhs() const {
-    return rhs;
-  }
 
-  void StarNode::setRhs(double _gn) {
-    rhs = _rhs;
-  }
 
   void StarNode::setParent(shared_ptr<StarNode> newParent) {
     parent = newParent;
