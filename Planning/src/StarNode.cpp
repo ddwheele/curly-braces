@@ -3,11 +3,11 @@
 #include "Utils.h"
 
 StarNode::StarNode(string _name, double _x, double _y) :
-  Node(_x, _y), name(_name), rng(std::random_device{}()), dist(0, Utils::WIDTH)  {
+  Node(_x, _y), name(_name), rng(std::random_device{}()), dist(1, Utils::WIDTH-1)  {
   }
 
 StarNode::StarNode(string _name) : 
-  name(_name), rng(std::random_device{}()), dist(0, Utils::WIDTH) {
+  name(_name), rng(std::random_device{}()), dist(1, Utils::WIDTH-1) {
     // create random coordinates
 
     x = dist(rng);

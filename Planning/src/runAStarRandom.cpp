@@ -25,7 +25,7 @@ vector<shared_ptr<StarNode>> createNodes(int numNodes) {
   }
 
   // every node needs some neighbors
-  int REQUIRED_NEIGHBORS = 1;
+  int REQUIRED_NEIGHBORS = 2;
   std::srand(std::time(0));
   for(auto nd : nodes) {
     cout <<"Node ";
@@ -54,7 +54,7 @@ vector<shared_ptr<StarNode>> createNodes(int numNodes) {
  }
  
 int main(int argc, char** argv) {
-  vector<shared_ptr<StarNode>> nodes = createNodes(4);
+  vector<shared_ptr<StarNode>> nodes = createNodes(6);
   AStarRandom aStarRandom(nodes);
   aStarRandom.findPath();
   return 0;

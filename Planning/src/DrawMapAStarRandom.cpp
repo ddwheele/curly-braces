@@ -51,8 +51,13 @@ void DrawMapAStarRandom::drawFinalPath() {
 
 void DrawMapAStarRandom::highlightNode(const StarNode& node) {
   cv::Point nodeLoc = node.getCvPoint();
-
   cv::circle(mat, nodeLoc, RADIUS_PX, GREEN, 2);
+  if(node.getParent()) {
+      cv::line(mat, node.getCvPoint(), 
+              node.getParent()->getCvPoint(),
+              GREEN, 2);
+  }
+
 }
 
 void DrawMapAStarRandom::drawLabeledAStarNode(const StarNode& anode) {
