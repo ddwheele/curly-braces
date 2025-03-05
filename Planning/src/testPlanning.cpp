@@ -6,6 +6,7 @@
 #include "Utils.h"
 #include "RRT.h"
 #include "DrawMap.h"
+#include "StarNode.h"
 #include "DStarNode.h"
 #include "DStarLite.h"
 
@@ -284,13 +285,13 @@ void testObstacleIntersects() {
   cout << "  Passed testObstacleIntersects" << endl;
 }
 
-void testNodeOrderNeighbors() {
-  shared_ptr<Node> me = make_shared<Node>(50,50);
-  shared_ptr<Node> a = make_shared<Node>(12,13);
-  shared_ptr<Node> b = make_shared<Node>(25,24);
-  shared_ptr<Node> c = make_shared<Node>(51,49);
+void testStarNodeOrderNeighbors() {
+  shared_ptr<StarNode> me = make_shared<StarNode>("me",50,50);
+  shared_ptr<StarNode> a = make_shared<StarNode>("A",12,13);
+  shared_ptr<StarNode> b = make_shared<StarNode>("B",25,24);
+  shared_ptr<StarNode> c = make_shared<StarNode>("C",51,49);
 
-  vector<shared_ptr<Node>> others;
+  vector<shared_ptr<StarNode>> others;
   others.push_back(a);
   others.push_back(b);
   others.push_back(c);
@@ -300,7 +301,7 @@ void testNodeOrderNeighbors() {
   assert(others[1] == b);
   assert(others[2] == a);
 
-  cout << "  Passed testNodeOrderNeighbors" << endl;
+  cout << "  Passed testStarNodeOrderNeighbors" << endl;
 }
 
 int main(int argc, char** argv) {
@@ -310,7 +311,7 @@ int main(int argc, char** argv) {
   cout << "Testing Node ..." << endl;
   testNodeDistanceTo();
   testNodeGrowToward();
-  testNodeOrderNeighbors();
+  testStarNodeOrderNeighbors();
   testDStarNodePriorityQueue();
 
   cout << "Testing Obstacle" << endl;

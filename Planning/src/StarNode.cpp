@@ -3,11 +3,11 @@
 #include "Utils.h"
 
 StarNode::StarNode(string _name, double _x, double _y) :
-  Node(_x, _y), name(_name), rng(std::random_device{}()), dist(1, Utils::WIDTH-1)  {
+  Node(_x, _y), name(_name), rng(std::random_device{}()), dist(margin, Utils::WIDTH-margin)  {
   }
 
 StarNode::StarNode(string _name) : 
-  name(_name), rng(std::random_device{}()), dist(1, Utils::WIDTH-1) {
+  name(_name), rng(std::random_device{}()), dist(margin, Utils::WIDTH-margin) {
     // create random coordinates
 
     x = dist(rng);
@@ -25,6 +25,15 @@ StarNode::StarNode(string _name) :
   double StarNode::evaluate() const  {
     // f(n) = g(n) + h(n)
     return gn + hn;
+  }
+
+  bool StarNode::compareDistance(const StarNode& a, const StarNode& b) const {
+    return distanceTo(a) < distanceTo(b);
+  }
+
+  void StarNode::orderNeighbors(vector<shared_ptr<StarNode>>& others) const {
+    std::sort(others.begin(), others.end(), [this](const shared_ptr<StarNode>& a, const shared_ptr<StarNode>& b) {
+          return compareDistance(*a, *b);});
   }
 
   string StarNode::getName() const {

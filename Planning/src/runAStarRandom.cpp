@@ -24,26 +24,49 @@ vector<shared_ptr<StarNode>> createNodes(int numNodes) {
     nodes.push_back(make_shared<StarNode>(string(1, 'A' + i)));
   }
 
-  // every node needs some neighbors
+  // every node connects to its 2 nearest neighbors
   int REQUIRED_NEIGHBORS = 2;
-  std::srand(std::time(0));
+  for(auto nd : nodes) {
+    cout <<"Node ";
+    nd->printMe();
+    cout <<"\t has these neighbors" << endl;
+    nd->orderNeighbors(nodes);
+    for(int i=0; i<REQUIRED_NEIGHBORS; i++) {
+      // index 0 will be itself
+      cout << "\t - ";
+      nodes[i+1]->printMe();
+      nd->addNeighbor(nodes[i+1]);
+      nodes[i+1]->addNeighbor(nd);
+    }
+  }
 
-  //   bool added = nd->addNeighbor(nodes[index]);
-  // for(auto nd : nodes) {
-  //   cout <<"Node ";
-  //   nd->printMe();
-  //   cout <<"\t has these neighbors" << endl;
-  
-  //  }
+  start->printMe();
+  cout <<"\t has these neighbors" << endl;
+  start->orderNeighbors(nodes);
+  for(int i=0; i<REQUIRED_NEIGHBORS; i++) {
+      // index 0 will be itself
+      cout << "\t - ";
+      nodes[i+1]->printMe();
+      start->addNeighbor(nodes[i+1]);
+      nodes[i+1]->addNeighbor(start);
+    }
 
-  //  start->addNeighbor(nodes[0]);
-  //  goal->addNeighbor(nodes[numNodes-1]);
+  goal->orderNeighbors(nodes);
+  goal->printMe();
+  cout <<"\t has these neighbors" << endl;
+  goal->orderNeighbors(nodes);
+  for(int i=0; i<REQUIRED_NEIGHBORS; i++) {
+      // index 0 will be itself
+      cout << "\t - ";
+      nodes[i+1]->printMe();
+      goal->addNeighbor(nodes[i+1]);
+      nodes[i+1]->addNeighbor(goal);
+    }
 
-  // nodes.push_back(start);
-  // nodes.push_back(goal);
+  nodes.push_back(start);
+  nodes.push_back(goal);
 
-
-   return nodes;
+  return nodes;
  }
  
 int main(int argc, char** argv) {

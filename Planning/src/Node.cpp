@@ -17,15 +17,6 @@ double Node::distanceTo(const Node& other) const {
   return distanceTo(other.x, other.y);
 }
 
-bool Node::compareDistance(const Node& a, const Node& b) const {
-  return distanceTo(a) < distanceTo(b);
-}
-
-void Node::orderNeighbors(vector<shared_ptr<Node>>& others) const {
-  std::sort(others.begin(), others.end(), [this](const shared_ptr<Node>& a, const shared_ptr<Node>& b) {
-        return compareDistance(*a, *b);});
-}
-
 void Node::printMe() const {
   cout << x << " " << y << endl;
 }

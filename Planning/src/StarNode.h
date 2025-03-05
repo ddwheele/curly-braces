@@ -34,6 +34,11 @@ public:
 
   void printMe() const override;
 
+  // returns the given nodes sorted from closest to farthest from this node
+  void orderNeighbors(vector<shared_ptr<StarNode>>& others) const;
+
+  bool compareDistance(const StarNode& a, const StarNode& b) const;
+
 protected:
   string name;
   double hn; // h(n) = heuristic. Admissible -> never overestimate the actual path cost
@@ -48,6 +53,8 @@ protected:
 
   std::mt19937 rng;  // Independent random generator for each instance
   std::uniform_int_distribution<int> dist;  // Define distribution
+
+  static constexpr int margin = 5;
 
 };
 
