@@ -47,7 +47,8 @@ public:
   DStarNode(string _name, double _x, double _y);
   DStarNode(string _name);
 
-  void computeKey(double km); // takes a key modifier
+  // make sure hn calculated frst!
+  Key computeKey(double km); // takes a key modifier
 
   Key getKey() const;
 
@@ -64,11 +65,10 @@ public:
       return os << dsn.name<<": ("<<to_string(dsn.x)<<","<<to_string(dsn.y)<<"), key="<<dsn.key.toString() << ")";
   }
 
-
-
 private:
   Key key;
   double rhs;
+  const int maxIterations = 1000;
 };
 
 

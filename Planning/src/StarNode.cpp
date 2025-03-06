@@ -15,7 +15,7 @@ StarNode::StarNode(string _name) :
     cout << "Creating StarNode " << name << " at " << x <<", " << y << endl;
   }
 
-  void StarNode::computeHeuristic(shared_ptr<StarNode> goal) {
+  double StarNode::computeHeuristic(shared_ptr<StarNode> goal) {
     // let's use Euclidean distance for heuristic
     double xdiff = goal->x - x;
     double ydiff = goal->y - y;

@@ -13,6 +13,11 @@ public:
   DStarLite(vector<shared_ptr<DStarNode>> node);
   void findPath() override;
 
+  void initialize();
+  void updateVertex(const std::shared_ptr<DStarNode>&);
+  void computeShortestPath();
+
+
   // don't think we need this anymore
   // Custom comparator for shared_ptr<DStarNode> (min-heap)
   struct DStarNodePtrCompare {
@@ -29,6 +34,7 @@ private:
   shared_ptr<DStarNode> start;
   float key_modifier;
 
+// the locally inconsisten vertices
   UpdateableMinHeap<shared_ptr<DStarNode>> openSet;
 
 };

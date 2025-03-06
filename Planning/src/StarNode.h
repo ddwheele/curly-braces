@@ -15,8 +15,9 @@ public:
   StarNode(string _name, double _x, double _y);
   StarNode(string _name);
 
-  void computeHeuristic(shared_ptr<StarNode> goal);
+  double computeHeuristic(shared_ptr<StarNode> goal);
 
+  // return fn for A*
   double evaluate() const;
 
   string getName() const;
