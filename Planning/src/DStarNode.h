@@ -56,21 +56,15 @@ public:
   double getRhs() const;
   void setRhs(double _rhs);
 
-  // bool operator<(const DStarNode& other) const;
-  // bool operator>(const DStarNode& other) const;
+  bool operator<(const DStarNode& other) const;
+  bool operator>(const DStarNode& other) const;
 
 
   friend std::ostream& operator<<(std::ostream& os, const DStarNode& dsn) {
       return os << dsn.name<<": ("<<to_string(dsn.x)<<","<<to_string(dsn.y)<<"), key="<<dsn.key.toString() << ")";
   }
 
-  bool operator<(const DStarNode& other) const {
-    return this->getKey() < other.getKey();
-  }
 
-  bool operator>(const DStarNode& other) const {
-    return this->getKey() > other.getKey();
-  }
 
 private:
   Key key;

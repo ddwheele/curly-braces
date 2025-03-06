@@ -1,5 +1,7 @@
 #include "DStarNode.h"
 #include <limits>
+#include <memory>
+
 
 DStarNode::DStarNode(string _name, double _x, double _y) : StarNode(_name, _x, _y) {
   gn = numeric_limits<double>::max();
@@ -33,3 +35,10 @@ void DStarNode::setRhs(double _rhs) {
   rhs = _rhs;
 }
 
+  bool DStarNode::operator<(const DStarNode& other) const {
+    return this->getKey() < other.getKey();
+  }
+
+  bool DStarNode::operator>(const DStarNode& other) const {
+    return this->getKey() > other.getKey();
+  }

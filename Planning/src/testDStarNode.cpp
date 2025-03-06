@@ -8,7 +8,6 @@ using namespace std;
 // clang++ -std=c++20 testDStarNode.cpp DStarNode.cpp StarNode.cpp Node.cpp -o testDStarNode
 
 void testDStarNodePtr() {
-  priority_queue<shared_ptr<DStarNode>,vector<shared_ptr<DStarNode>>, DStarLite::DStarNodePtrCompare> q;
   shared_ptr<DStarNode> goal = make_shared<DStarNode>("Goal", 11,0);
   shared_ptr<DStarNode> a = make_shared<DStarNode>("A", 1,0);
   shared_ptr<DStarNode> b = make_shared<DStarNode>("B", 3,0);
@@ -30,14 +29,9 @@ void testDStarNodePtr() {
   assert(bk.k2 == 2);
 
   assert(ak > bk);
-  cout << "ak > bk = " << (ak > bk) << endl;
-  cout << "bk > ak = " << (bk > ak) << endl;
 
-  cout << "b < a = " << (b < a) << endl;
-  cout << "a > b = " << (a > b) << endl;
-
-  assert(b < a);
-  assert(a > b);
+  assert(*b < *a);
+  assert(*a > *b);
 
   cout << "  Passed testDStarNodePtr" << endl;
 }
@@ -65,13 +59,10 @@ void testDStarNode() {
 
   assert(ak > bk);
 
-  cout << "b < a = " << (b < a) << endl;
-  cout << "a > b = " << (a > b) << endl;
-
   assert(b < a);
   assert(a > b);
 
-  cout << "  Passed testDStarNodePtr" << endl;
+  cout << "  Passed testDStarNode" << endl;
 }
 
 void testDStarNodeKey() {
@@ -107,7 +98,7 @@ void testDStarNodeKey() {
 int main(int argc, char** argv) {
   cout << "Testing DStarNode ..." << endl;
   testDStarNodeKey();
-  //testDStarNodePtr();
+  testDStarNodePtr();
   testDStarNode();
 
   cout << "All tests passed!" << endl;

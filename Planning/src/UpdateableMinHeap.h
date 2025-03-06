@@ -1,9 +1,14 @@
 #ifndef UPDATEABLE_MIN_HEAP
 #define UPDATEABLE_MIN_HEAP
 
+#include <iostream>
+
 using namespace std;
 
-// A min-heap is a complete binary tree in which the value of each node is less than the value of its left child and right child.
+// ONLY WORKS FOR POINTER TYPES
+
+// A min-heap is a complete binary tree in which the value of each node is less than 
+// the value of its left child and right child.
 template <typename T>
 class UpdateableMinHeap {
 public:
@@ -25,7 +30,6 @@ public:
 
   // Inserts a new node into the min heap.
   void insertValue(T value) {
-    cout << "inserting " << *value << endl;
     if (size == capacity) {
       // Resize the heap if necessary
       capacity *= 2;
@@ -35,10 +39,8 @@ public:
     int i = size - 1;
     data[i] = value;
 
-    cout << *(data[(i - 1) / 2]) << " > " << *(data[i]) << " = " << (data[(i - 1) / 2] > data[i]) << endl;
-
     // while parent of i > child i
-    while (i != 0 && data[(i - 1) / 2] > data[i]) {
+    while (i != 0 && (*data[(i - 1) / 2] > *data[i])) {
       // swap child with parent
       swap(data[i], data[(i - 1) / 2]);
       // consider parent of i to be child
@@ -124,11 +126,11 @@ private:
     int right = 2 * i + 2;   
 
     // If left child is smaller than root
-    if (left < size && data[left] < data[smallest])
+    if (left < size && (*data[left] < *data[smallest]))
         smallest = left;
 
     // If right child is smaller than the smallest so far
-    if (right < size && data[right] < data[smallest])
+    if (right < size && (*data[right] < *data[smallest]))
         smallest = right;
 
     // If smallest is not root
