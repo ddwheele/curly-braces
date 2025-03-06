@@ -17,14 +17,6 @@ vector<T> extractMinHeap(UpdateableMinHeap<T> heap) {
   return vec;
 }
 
-// template <typename T>
-// void printPrimitiveVector(vector<T> vec) {
-//   for(int i=0; i<vec.size(); i++) {
-//     cout << vec[i] << " ";
-//   }
-//   cout << endl;
-// }
-
 template <typename T>
 bool destructiveIsSorted(UpdateableMinHeap<T> heap) {
   T prev = heap.extractMin();
@@ -51,10 +43,10 @@ void testUpdateableMinHeapDelete() {
   int a = 44, b = 332, c = 2, d = 1;
   vector<int*> ints = {&a, &b, &c, &d};
   UpdateableMinHeap<int*> umhInt(ints);
-
   assert(umhInt.getSize() == 4);
   umhInt.deleteValue(&b);
   assert(umhInt.getSize() == 3);
+  assert(!umhInt.contains(&b));
   assert(destructiveIsSorted(umhInt));
   cout << "  Passed testUpdateableMinHeapDelete" << endl;
 }
@@ -68,7 +60,6 @@ void testUpdateableMinHeapInsert() {
   assert(umhInt.getSize() == 5);
   assert(destructiveIsSorted(umhInt));
 }
-
 
 void testUpdateableMinHeap_DStarNode() {
   UpdateableMinHeap<shared_ptr<DStarNode>> umhDStar;
@@ -92,8 +83,18 @@ void testUpdateableMinHeap_DStarNode() {
   umhDStar.insertValue(b);
   umhDStar.insertValue(c);
 
+  assert(umhDStar.getSize() == 3);
+  assert(umhDStar.contains(a));
+  assert(umhDStar.contains(b));
+  assert(umhDStar.contains(c));
+
   shared_ptr<DStarNode> first = umhDStar.extractMin();
   assert(first == c);
+
+  assert(umhDStar.getSize() == 2);
+  assert(umhDStar.contains(a));
+  assert(umhDStar.contains(b));
+  assert(!umhDStar.contains(c));
   shared_ptr<DStarNode> second = umhDStar.extractMin();
   assert(second == b);
   shared_ptr<DStarNode> third = umhDStar.extractMin();
@@ -136,8 +137,6 @@ void testUpdateableMinHeap_DStarNodeSimple() {
 int main(int argc, char** argv) {
   cout << "Testing UpdateableMinHeap ..." << endl;
   testUpdateableMinHeapSimple();
-  // testUpdateableMinHeap();
-  // testUpdateableMinHeapInsert();
    testUpdateableMinHeapDelete();
 
   cout << "Testing UpdateableMinHeap with DStarNodes ..." << endl;

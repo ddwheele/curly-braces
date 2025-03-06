@@ -28,8 +28,24 @@ public:
     buildHeap(arr);
   }
 
+  void clear() {
+    int defaultCapacity = 10;
+    this->size = 0;
+    this->capacity = defaultCapacity;
+    this->data.resize(defaultCapacity);
+  }
+
+  bool contains(const T& value) {
+    for(int i=0; i<size; i++) {
+      if(data[i] == value) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   // Inserts a new node into the min heap.
-  void insertValue(T value) {
+  void insertValue(const T& value) {
     if (size == capacity) {
       // Resize the heap if necessary
       capacity *= 2;
@@ -49,7 +65,7 @@ public:
   }
 
   // Deletes a specific node from the min heap and ensures that the min heap property is maintained after deletion.
-  void deleteValue(T node) {
+  void deleteValue(const T& node) {
     // Find the index of the key
     int index = -1;
     for (int i = 0; i < size; ++i) {
@@ -109,6 +125,13 @@ public:
   // recreates the min heap with these values
   void resetValues(const vector<T>& arr) {
     buildHeap(arr);
+  }
+
+  void printMe() {
+    cout << "UMinHeap = ";
+    for (int i=0;i<size; i++) {
+       cout <<"\t" <<*data[i] <<endl;
+    }
   }
 
 private:

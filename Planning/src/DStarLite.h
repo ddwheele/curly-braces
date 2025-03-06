@@ -13,6 +13,7 @@ public:
   DStarLite(vector<shared_ptr<DStarNode>> node);
   void findPath() override;
 
+  // don't think we need this anymore
   // Custom comparator for shared_ptr<DStarNode> (min-heap)
   struct DStarNodePtrCompare {
       bool operator()(const std::shared_ptr<DStarNode>& lhs, const std::shared_ptr<DStarNode>& rhs) const {
@@ -28,9 +29,7 @@ private:
   shared_ptr<DStarNode> start;
   float key_modifier;
 
-  // TODO write test to confirm that this does the right thing (returns D*Node with smallest key)
-  priority_queue<shared_ptr<DStarNode>,vector<shared_ptr<DStarNode>>, DStarNodePtrCompare> openQ;
- // unordered_map<shared_ptr<DStarNode>, Key> lookups;
+  UpdateableMinHeap<shared_ptr<DStarNode>> openSet;
 
 };
 
