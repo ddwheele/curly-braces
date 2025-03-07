@@ -21,7 +21,9 @@ void DStarLite::placeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
 	if(!obstacle) {
 		return;
 	}
-	cout << "OBSTACLE AT NODE " << obstacle->getName() << endl;
+	if(PRINT_DEBUG) {
+		cout << "OBSTACLE AT NODE " << obstacle->getName() << endl;
+	}
 	for(auto& [ney, cst] : cost[obstacle]) {
 		cost[obstacle][ney] += weight;
 		cost[ney][obstacle] += weight;
@@ -34,7 +36,9 @@ void DStarLite::removeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
 	if(!obstacle) {
 		return;
 	}
-	cout << "REMOVED OBSTACLE AT NODE " << obstacle->getName() << endl;
+	if(PRINT_DEBUG) {
+		cout << "REMOVED OBSTACLE AT NODE " << obstacle->getName() << endl;
+	}
 	for(auto& [ney, cst] : cost[obstacle]) {
 		cost[obstacle][ney] -= weight;
 		cost[ney][obstacle] -= weight;
@@ -157,7 +161,6 @@ void DStarLite::findPath()  {
 	computeShortestPath();
 	int obstacleTime = 0;
 	while(start != goal) {
-		cout << "Starting while loop, my start node is " << start->getName() << endl;
 		if(Utils::equals(start->getGn(), numeric_limits<double>::max())) {
 			cout << "No path found" << endl;
 			return;
@@ -165,30 +168,20 @@ void DStarLite::findPath()  {
 		double best = numeric_limits<double>::max();
 		// find the neighbor with lowest g + cost to start
 		shared_ptr<DStarNode> nextNode;
-		cout << "Looking for best neighbor of " << start->getName() << endl;
 		for(auto& [ney, cst] : cost[start]) {
-			if(ney == nullptr) {
-				cout << "NULL NEIGHBOR" << endl;
-			}
 			double est = ney->getGn() + cst;
 			if(est < best) {
 				best = est;
 				nextNode = ney;
-				if(nextNode == nullptr) {
-					cout << "my next node is null" << endl;
-				} else {
-					cout << "\t" << nextNode->getName() << " looks good" << endl;
-				}
 			}
 		}
-		
+
 		// move to nextNode
 		cout << "\n%%%%%%%%%%%% ADVANCE TO NODE " << nextNode->getName() << " %%%%%%%%%%%%\n" << endl;
 		start = nextNode;
 
 		// did anything change?
 		if(timedObstacles[obstacleTime]) {
-			cout << "updating obstacles" << endl;
 			// increment km by h(start, lastStart)
 			key_modifier += start->distanceTo(*lastStart);
 			lastStart = start;
@@ -200,13 +193,11 @@ void DStarLite::findPath()  {
 			}
 			obstacleTime++;
 			// (vertices were updated inside the Obstacle functions)
-			cout << "--- recomputing shortest path" << endl;
 			computeShortestPath();
-			cout << "--- done recomputing shortest path" << endl;
 		}
 	}
+  cout << "\n%%%%%%%%%%%%%%%% AT GOAL " << start->getName() << " %%%%%%%%%%%%%%%%\n" << endl;
 }
-
 
 void DStarLite::printState() const {
 	cout << "====================  D*Lite  ====================" << endl;
@@ -214,18 +205,4 @@ void DStarLite::printState() const {
 		cout << *n << endl;
 	}
 	cout << "==================================================" << endl;
-}
-
-// if a Node has changed
-void DStarLite::recalculateNode(shared_ptr<DStarNode>& changed) {
-	// key_modifier += changed->computeHeuristic(start);
-
-	// for(auto ney : changed->getDStarNeighbors()) {
-	// 	if(ney != start) {
-	// 		ney->setRhs(std::min(ney->getRhs(), changed->distanceTo(*ney)+ changed->getGn()));
-	// 	}
-	// 	updateVertex(ney);
-	// }
-	// updateVertex(changed);
-	// computeShortestPath();
 }
