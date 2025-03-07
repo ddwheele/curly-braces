@@ -80,7 +80,7 @@ void DStarLite::computeShortestPath() {
 	cout << "Shortest path computed in " << (maxSteps - stepsLeft) << " steps." << endl;
 }
 
-//must have start and goal nodes defined
+// must have start and goal nodes defined
 // all nodes must have calculated heuristic
 // order. Note that, in an actual
 // implementation, Initialize() only needs to initialize a vertex
@@ -100,14 +100,50 @@ void DStarLite::initialize() {
 }
 
 void DStarLite::findPath()  {
-	cout << "findPath called" << endl;
+	shared_ptr<DStarNode> lastStart = start;
+	initialize();
+	computeShortestPath();
+	while(start != goal) {
+		if(Utils::equals(start->getGn(), numeric_limits<double>::max()) {
+			cout << "No path found" << endl;
+		}
+		double best = numeric_limits<double>::max();
+		// find the neighbor with lowest g + cost to start
+		shared_ptr<DStarNode> nextNode;
+		for(auto& [ney, cst] : cost[start]) {
+			double est = ney->getGn() + cst;
+			if(est < best) {
+				best = est;
+				nextNode = ney;
+			}
+			// move to nextNode
+			cout << "%%%%%%%%%%%% ADVANCE TO NODE " << nextNode->getName() << "%%%%%%%%%%%%" << endl;
+
+			// did anything change?
+
+			// if anything changed
+			// increment km by h(start, lastStart)
+			key_modifier += start->distanceTo(*lastStart);
+			lastStart = start;
+			// for all edge changes
+			// update edge cost in cost
+			// update vertex
+			//compute shortest path
+		}
+		
+
+	}
+
+
+
 }
 
 void DStarLite::printState() const {
-	cout << "=====  D*Lite  =====" << endl;
+	cout << "====================  D*Lite  ====================" << endl;
 	for(auto n : nodes) {
 		cout << *n << endl;
 	}
+	cout << "==================================================" << endl;
 }
 
 // if a Node has changed
