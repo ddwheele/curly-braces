@@ -18,9 +18,7 @@ DStarNode::Key DStarNode::getKey() const {
 }
 
 DStarNode::Key DStarNode::computeKey(double km) {
-  double k1 = min(gn, rhs) + hn + km;
-  double k2 = min(gn, rhs);
-  key.update(k1, k2);
+  key.update(gn, rhs, hn, km);
   return key;
 }
 

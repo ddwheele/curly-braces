@@ -17,7 +17,7 @@ using namespace std;
  
 void addEdge(vector<vector<shared_ptr<DStarNode>>>& edges, vector<double>& weights, shared_ptr<DStarNode>& a, shared_ptr<DStarNode>& b, double w) {
   edges.push_back({a,b});
-  weights.push_back(10);
+  weights.push_back(w);
   a->addDStarNeighbor(b);
   b->addDStarNeighbor(a);
 }
@@ -45,14 +45,21 @@ DStarLite createDStarLite() {
   addEdge(edges, weights, b, c, 10);
   addEdge(edges, weights, c, g, 10);
   addEdge(edges, weights, b, d, 10);
-  addEdge(edges, weights, d, g, 10);
+  addEdge(edges, weights, d, g, 100);
 
   return DStarLite(nodes, edges, weights, a, g);
  }
  
 int main(int argc, char** argv) {
   DStarLite dsl = createDStarLite();
+  cout << "Initializing: " << endl;
+  dsl.initialize();
   dsl.printState();
+
+  cout << "Computing shortest path"<< endl;
+  dsl.computeShortestPath();
+  dsl.printState();
+
   return 0;
 }
 

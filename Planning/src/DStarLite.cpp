@@ -1,7 +1,7 @@
 #include <iostream>
+#include <algorithm>
 #include <limits>
 #include "DStarLite.h"
-
 
 DStarLite::DStarLite(const vector<shared_ptr<DStarNode>>& _nodes,
 											const vector<vector<shared_ptr<DStarNode>>>& edges, 
@@ -12,38 +12,31 @@ DStarLite::DStarLite(const vector<shared_ptr<DStarNode>>& _nodes,
 		throw std::invalid_argument("weights and edges must be equal length");
 	}
 	for(int i=0; i<edges.size(); i++) {
+		cout << edges[i][0]->getName() << " to " << edges[i][1]->getName() << " = " << weights[i] << endl;
 		cost[edges[i][0]][edges[i][1]] = weights[i];
 		cost[edges[i][1]][edges[i][0]] = weights[i];
 	}
-	printState();
-}
-
-// if a Node has changed
-void DStarLite::recalculateNode(shared_ptr<DStarNode>& changed) {
-	// key_modifier += changed->computeHeuristic(start);
-
-	// for(auto ney : changed->getDStarNeighbors()) {
-	// 	if(ney != start) {
-	// 		ney->setRhs(std::min(ney->getRhs(), changed->distanceTo(*ney)+ changed->getGn()));
-	// 	}
-	// 	updateVertex(ney);
-	// }
-	// updateVertex(changed);
-	// computeShortestPath();
 }
 
 void DStarLite::updateVertex(const std::shared_ptr<DStarNode>& node) {
-	if(!node->gnEqualsRhs() && openSet.contains(node)) {
-		openSet.deleteNode(node);
-		node->computeKey(key_modifier);
-		openSet.insertNode(node);
-	} 
-	else if(!node->gnEqualsRhs() && !openSet.contains(node)) {
-		node->computeKey(key_modifier);
-		openSet.insertNode(node);
+	cout << "Updating " << *node << endl;
+	if(node != goal) {
+		// set rhs to minimum of cost through neighbors
+		double best = numeric_limits<double>::max();
+		for(auto& [ney, cst] : cost[node]) {
+			cout<<"\tneighbor = " << ney->getName() << ", cost = " << cst << endl;
+			best = std::min(best, cst + ney->getGn());
+		}
+		cout << "\tsetting to RHS to " << best  << endl;
+		node->setRhs(best);
 	}
-	else if(node->gnEqualsRhs() && openSet.contains(node)) {
+	if(openSet.contains(node)) {
 		openSet.deleteNode(node);
+	}
+	if(!node->gnEqualsRhs()) {
+		cout << "\tInconsistent, putting on open set" << endl;
+		node->computeKey(key_modifier);
+		openSet.insertNode(node);
 	}
 }
 
@@ -56,57 +49,34 @@ void DStarLite::computeShortestPath() {
 			break;
 		}
 		auto node = openSet.extractMin();
+		cout << "Examining " << *node << endl;
 		DStarNode::Key oldKey = node->getKey();
-		DStarNode::Key newKey = node->computeKey(key_modifier);
-
-		if(oldKey < newKey) {
+		if(node->computeKey(key_modifier) > oldKey ) {
+			cout << "\t-key got bigger, put back in openSet" << endl;
 			openSet.insertNode(node);
 		} else if(node->getGn() > node->getRhs()) {
+			cout << "\t-G > RHS, relaxing G and calling the neighbors" << endl;
 			// relax g
 			node->setGn(node->getRhs());
 
 			// inform predecessors they may have better value now
-			for(auto ney : node->getPredecessors()) {
-				if(ney != goal) {
-					ney->setRhs(std::min(ney->getRhs(), cost[node][ney] + node->getGn()));
-				}
+			for(auto& [ney, _] : cost[node]) {
 				updateVertex(ney);
 			}
 		} else {
+			cout << "\t-G <= RHS, blowing up G and calling the neighbors" << endl;
 			double oldGn = node->getGn();
 			// give up and reset g to inf
 			node->setGn(numeric_limits<double>::max());
 
 			// go through predecessors
-			for(auto ney : node->getPredecessors()) {
-				double costThroughNeighbor = cost[node][ney] + oldGn;
-				if(Utils::equals(ney->getRhs(), costThroughNeighbor)) {
-					if(ney != goal) {
-						ney->setRhs(numeric_limits<double>::max()); 
-						// invalidates prev. calculations
-					}
-
-					for(auto neyney : ney->getDStarNeighbors()) {
-						ney->setRhs(std::min(ney->getRhs(), cost[ney][neyney] + neyney->getGn()));
-					}
-				}
+			for(auto& [ney, _] : cost[node]) {
 				updateVertex(ney);
-			}
-			// AND FOR node ITSELF - but is that not sort of recursive??
-			if(Utils::equals(node->getRhs(), oldGn)) {
-				if(node != goal) {
-					node->setRhs(numeric_limits<double>::max()); 
-					// invalidates prev. calculations
-				}
-
-				for(auto neyney : node->getDStarNeighbors()) {
-					node->setRhs(std::min(node->getRhs(), cost[node][neyney] + neyney->getGn()));
-				}
 			}
 			updateVertex(node);
 		}
   }
-	start->setGn(start->getRhs());
+//	start->setGn(start->getRhs());
 	cout << "Shortest path computed in " << (maxSteps - stepsLeft) << " steps." << endl;
 }
 
@@ -138,4 +108,18 @@ void DStarLite::printState() const {
 	for(auto n : nodes) {
 		cout << *n << endl;
 	}
+}
+
+// if a Node has changed
+void DStarLite::recalculateNode(shared_ptr<DStarNode>& changed) {
+	// key_modifier += changed->computeHeuristic(start);
+
+	// for(auto ney : changed->getDStarNeighbors()) {
+	// 	if(ney != start) {
+	// 		ney->setRhs(std::min(ney->getRhs(), changed->distanceTo(*ney)+ changed->getGn()));
+	// 	}
+	// 	updateVertex(ney);
+	// }
+	// updateVertex(changed);
+	// computeShortestPath();
 }

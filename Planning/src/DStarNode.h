@@ -1,9 +1,11 @@
 #ifndef D_STAR_NODE_H
 #define D_STAR_NODE_H
 
+#include <iomanip>
+#include <format>
 #include "StarNode.h"
 #include "Utils.h"
-#include <iomanip>
+
 
 using namespace std;
 
@@ -12,14 +14,24 @@ public:
   struct Key {
     double k1;
     double k2;
+    // storing the following just to print for debugging
+    double gn;
+    double rhs;
+    double hn;
+    double km;
 
     Key() : k1(numeric_limits<double>::max()), k2(numeric_limits<double>::max()) {}
 
     Key(double _k1, double _k2) : k1(_k1), k2(_k2) { }
 
-    void update(double _k1, double _k2) {
-      k1 = _k1;
-      k2 = _k2;
+    void update(double _gn, double _rhs, double _hn, double _km) {
+      gn = _gn;
+      rhs = _rhs;
+      hn = _hn;
+      km = _km;
+
+      k1 = min(gn, rhs) + hn + km;
+      k2 = min(gn, rhs);
     }
 
     void printMe() const {
@@ -27,7 +39,8 @@ public:
     }
 
     string toString() const {
-      return "k1 = " + Utils::infString(k1) + ", k2 = " + Utils::infString(k2);
+      return "k1 = min(" + Utils::infString(gn) + "," + Utils::infString(rhs) + ") + " + std::format("{:.2f}", hn) + " + " + std::format("{:.2f}", km) + " = " + Utils::infString(k1)
+        + "; k2 = min(" + Utils::infString(gn) + "," + Utils::infString(rhs) + ") = " + Utils::infString(k2);
     }
 
     inline bool operator<(const Key& other) { return k1 < other.k1 || Utils::equals(k1,other.k1) && k2 < other.k2; }
@@ -71,7 +84,7 @@ public:
       return os << std::fixed << std::setprecision(2) << dsn.name
       << ": (" << dsn.x << "," << dsn.y
       << "), gn = " << Utils::infString(dsn.gn) << ", rhs = " << Utils::infString(dsn.rhs)
-      << ", key=" << dsn.key.toString() << ")";
+      << ", key={" << dsn.key.toString() << "}";
   }
 
 private:
