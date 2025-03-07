@@ -88,7 +88,7 @@ void testDStarNodeKey() {
   assert(key0_0 == changes);
   assert(changes < key10_8);
 
-  changes.update(15,5);
+  changes.update(5,12,13,2);
   assert(key0_0 != changes);
   assert(changes > key10_8);
 

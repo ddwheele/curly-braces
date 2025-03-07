@@ -53,7 +53,7 @@ void DrawMapAStarRandom::highlightNode(const StarNode& node) {
   cv::Point nodeLoc = getCvPoint(node);
   cv::circle(mat, nodeLoc, RADIUS_PX, GREEN, 2);
   if(node.getParent()) {
-      cv::line(mat, node.getCvPoint(), 
+      cv::line(mat, getCvPoint(node), 
               getCvPoint(*node.getParent()),
               GREEN, 2);
   }

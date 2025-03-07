@@ -4,6 +4,8 @@
 #include <limits>
 #include <format>
 
+using namespace std;
+
 struct Utils {
 
   static constexpr int NUM_STEPS = 10000; // how long to search for a path

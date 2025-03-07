@@ -19,7 +19,7 @@ public:
 		return false;
 	}
 
-  static cv::Point getCvPoint();
+  static cv::Point getCvPoint(const Node& node);
 
 protected:
   cv::Mat mat;
