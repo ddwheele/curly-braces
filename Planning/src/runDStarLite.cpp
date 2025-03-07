@@ -47,19 +47,17 @@ DStarLite createDStarLite() {
   addEdge(edges, weights, b, d, 10);
   addEdge(edges, weights, d, g, 100);
 
-  return DStarLite(nodes, edges, weights, a, g);
+  vector<shared_ptr<DStarNode>> obs = {c, b, a};
+
+  DStarLite dsl(nodes, edges, weights, a, g);
+  dsl.setTimedObstacles(obs);
+
+  return dsl;
  }
  
 int main(int argc, char** argv) {
   DStarLite dsl = createDStarLite();
-  cout << "Initializing: " << endl;
-  dsl.initialize();
-  dsl.printState();
-
-  cout << "Computing shortest path"<< endl;
-  dsl.computeShortestPath();
-  dsl.printState();
-
+  dsl.findPath();
   return 0;
 }
 

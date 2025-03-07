@@ -12,10 +12,27 @@ DStarLite::DStarLite(const vector<shared_ptr<DStarNode>>& _nodes,
 		throw std::invalid_argument("weights and edges must be equal length");
 	}
 	for(int i=0; i<edges.size(); i++) {
-		cout << edges[i][0]->getName() << " to " << edges[i][1]->getName() << " = " << weights[i] << endl;
 		cost[edges[i][0]][edges[i][1]] = weights[i];
 		cost[edges[i][1]][edges[i][0]] = weights[i];
 	}
+}
+
+void DStarLite::placeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
+	for(auto& [ney, cst] : cost[obstacle]) {
+		cost[obstacle][ney] += weight;
+		cost[ney][obstacle] += weight;
+		updateVertex(ney);
+	}
+	updateVertex(obstacle);
+}
+
+void DStarLite::removeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
+	for(auto& [ney, cst] : cost[obstacle]) {
+		cost[obstacle][ney] -= weight;
+		cost[ney][obstacle] -= weight;
+		updateVertex(ney);
+	}
+	updateVertex(obstacle);
 }
 
 void DStarLite::updateVertex(const std::shared_ptr<DStarNode>& node) {
@@ -43,7 +60,7 @@ void DStarLite::updateVertex(const std::shared_ptr<DStarNode>& node) {
 void DStarLite::computeShortestPath() {
 	int stepsLeft = maxSteps;
  	while(openSet.getSize() > 0 && 
- 	((openSet.peek()->getKey() < start->computeKey(key_modifier)) || (start->getRhs() > start->getGn()) )) {
+ 	((openSet.peek()->getKey() < start->computeKey(key_modifier)) || !Utils::equals(start->getRhs(), start->getGn()) )) {
 		if(stepsLeft-- <=0 ) {
 			cout << "Did not find a path in " << maxSteps<< " iterations. Aborting." << endl;
 			break;
@@ -78,6 +95,11 @@ void DStarLite::computeShortestPath() {
   }
 //	start->setGn(start->getRhs());
 	cout << "Shortest path computed in " << (maxSteps - stepsLeft) << " steps." << endl;
+	printState();
+}
+
+void DStarLite::setTimedObstacles(vector<shared_ptr<DStarNode>>& _timedObstacles) {
+	timedObstacles = _timedObstacles;
 }
 
 // must have start and goal nodes defined
@@ -100,12 +122,16 @@ void DStarLite::initialize() {
 }
 
 void DStarLite::findPath()  {
+	// handles single moving obstacle, specified in timedObstacles
+  cout << "%%%%%%%%%%%% STARTING AT NODE " << start->getName() << " %%%%%%%%%%%%" << endl;
 	shared_ptr<DStarNode> lastStart = start;
 	initialize();
 	computeShortestPath();
+	int obstacleTime = 0;
 	while(start != goal) {
-		if(Utils::equals(start->getGn(), numeric_limits<double>::max()) {
+		if(Utils::equals(start->getGn(), numeric_limits<double>::max())) {
 			cout << "No path found" << endl;
+			return;
 		}
 		double best = numeric_limits<double>::max();
 		// find the neighbor with lowest g + cost to start
@@ -117,25 +143,27 @@ void DStarLite::findPath()  {
 				nextNode = ney;
 			}
 			// move to nextNode
-			cout << "%%%%%%%%%%%% ADVANCE TO NODE " << nextNode->getName() << "%%%%%%%%%%%%" << endl;
+			cout << "%%%%%%%%%%%% ADVANCE TO NODE " << nextNode->getName() << " %%%%%%%%%%%%" << endl;
+			start = nextNode;
 
 			// did anything change?
+			if(timedObstacles[obstacleTime]) {
+				// increment km by h(start, lastStart)
+				key_modifier += start->distanceTo(*lastStart);
+				lastStart = start;
+				// for all edge changes
+				// update edge cost in cost
+				placeObstacle(timedObstacles[obstacleTime]);
+				if(obstacleTime >0) {
+					removeObstacle(timedObstacles[obstacleTime-1]);
+				}
+				// (vertices were updated inside the Obstacle functions)
+				computeShortestPath();
+			}
 
-			// if anything changed
-			// increment km by h(start, lastStart)
-			key_modifier += start->distanceTo(*lastStart);
-			lastStart = start;
-			// for all edge changes
-			// update edge cost in cost
-			// update vertex
-			//compute shortest path
+			
 		}
-		
-
 	}
-
-
-
 }
 
 void DStarLite::printState() const {

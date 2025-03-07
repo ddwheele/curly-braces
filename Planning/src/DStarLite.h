@@ -24,6 +24,13 @@ public:
   void computeShortestPath();
   void recalculateNode(shared_ptr<DStarNode>& changed);
 
+  // add weight to all edges to obstacle
+  void placeObstacle(shared_ptr<DStarNode>& obstacle, int weight = 10000);
+  // remove weight from all edges to obstacle
+  void removeObstacle(shared_ptr<DStarNode>& noObstacle, int weight = 10000);
+
+  void setTimedObstacles(vector<shared_ptr<DStarNode>>& timedObstacles);
+
   void printState() const;
   // don't think we need this anymore
   // Custom comparator for shared_ptr<DStarNode> (min-heap)
@@ -47,6 +54,9 @@ private:
   UpdateableMinHeap<shared_ptr<DStarNode>> openSet;
 
   const int maxSteps = 1000;
+
+  // which node the obstacle is on a time i+1;
+  vector<shared_ptr<DStarNode>> timedObstacles;
 
 };
 

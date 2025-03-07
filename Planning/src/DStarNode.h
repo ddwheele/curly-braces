@@ -81,10 +81,15 @@ public:
   const vector<shared_ptr<DStarNode>>& getSuccessors() const;
 
   friend std::ostream& operator<<(std::ostream& os, const DStarNode& dsn) {
+    if(dsn.onOpenSet) {
       return os << std::fixed << std::setprecision(2) << dsn.name
       << ": (" << dsn.x << "," << dsn.y
       << "), gn = " << Utils::infString(dsn.gn) << ", rhs = " << Utils::infString(dsn.rhs)
-      << ", key={" << dsn.key.toString() << "}";
+      << ", key= {" << dsn.key.toString() << "}";
+    }
+    return os << std::fixed << std::setprecision(2) << dsn.name
+      << ": (" << dsn.x << "," << dsn.y
+      << "), gn = " << Utils::infString(dsn.gn) << ", rhs = " << Utils::infString(dsn.rhs);
   }
 
 private:
@@ -92,9 +97,11 @@ private:
   double rhs;
   const int maxIterations = 1000;
 
+  // this is only to help with debugging output
+  bool onOpenSet = false;
+
   // XXX truely cringe-worthy not to be able to use neighbors
   const vector<shared_ptr<DStarNode>> dStarNeighbors;
 };
-
 
 #endif
