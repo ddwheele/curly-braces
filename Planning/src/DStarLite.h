@@ -57,6 +57,7 @@ private:
 
   // which node the obstacle is on a time i+1;
   vector<shared_ptr<DStarNode>> timedObstacles;
+  bool PRINT_DEBUG = false;
 
 };
 
