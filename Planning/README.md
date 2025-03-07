@@ -1,7 +1,11 @@
-A project that contains implementations of various planning algorithms.
-RRT - Rapidly-Expanding Random Trees (bi-directional)
-A*
-D*-lite - coming soon
+A project that contains implementations of various planning algorithms. Everything is in 2D. 
+* A* 
+	* runAStar reads in a graph from a yaml file and runs A* on it
+	* runAStarRandom generates random nodes in between a start and goal node, and runs A*
+* RRT - Rapidly-Expanding Random Tree
+	* runRRT reads in obstacles and a start and goal point from a yaml file and runs bi-directional RRT on it
+* D* Lite 
+	* runDStarLite runs D* Lite on a hard-coded graph of 5 nodes, with a moving obstacle also hard-coded in
 
 To build:
 

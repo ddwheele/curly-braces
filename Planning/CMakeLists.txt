@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 find_package(OpenCV REQUIRED PATHS /usr/local/Cellar/opencv/4.11.0_1/lib)
-find_package(yaml-cpp REQUIRED PATHS /usr/local/Cellar/yaml-cpp/0.8.0/lib/cmake/yaml-cpp)
+find_package(yaml-cpp REQUIRED PATHS /usr/local/Cellar/yaml-cpp/0.8.0/lib/cmake/yaml-cpp)`````````````````````````
 
 # Manually find the yaml-cpp library
 find_library(YAML_CPP_LIBRARY NAMES yaml-cpp PATHS /usr/local/Cellar/yaml-cpp/0.8.0/lib)
