@@ -4,8 +4,8 @@
 #include <memory>
 #include <opencv2/opencv.hpp>
 #include "IDrawMap.h"
-#include "Obstacle.h"
 #include "Utils.h"
+#include "Node.h"
 
 class PathPlanner;
 
@@ -24,7 +24,6 @@ public:
 protected:
   cv::Mat mat;
  
-  void drawObstacle(const Obstacle& o) const;
   void drawColoredNode(const Node& n, 
  		const cv::Scalar& color) const;
 

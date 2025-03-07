@@ -1,14 +1,14 @@
 #include <iostream>
 #include <cassert>
 #include "Node.h"
-#include "RrtNode.h"
+#include "RRT/RrtNode.h"
 #include "Obstacle.h"
 #include "Utils.h"
-#include "RRT.h"
+#include "RRT/RRT.h"
 #include "DrawMap.h"
 #include "StarNode.h"
-#include "DStarNode.h"
-#include "DStarLite.h"
+#include "DStarLite/DStarNode.h"
+#include "DStarLite/DStarLite.h"
 
 using namespace std;
 

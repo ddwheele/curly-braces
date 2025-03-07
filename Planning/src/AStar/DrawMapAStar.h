@@ -4,7 +4,6 @@
 #include <memory>
 #include <opencv2/opencv.hpp>
 
-#include "Obstacle.h"
 #include "AStarNode.h"
 #include "DrawMap.h"
 

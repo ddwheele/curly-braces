@@ -21,6 +21,7 @@ private:
   void drawRrtNode(const RrtNode& n,
   	const cv::Scalar& color, int width=1) const;
 
+  void drawObstacle(const Obstacle& o) const;
 };
 
 #endif

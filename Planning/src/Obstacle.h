@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <iostream>
 #include <opencv2/opencv.hpp>
-#include "RrtNode.h"
+#include "RRT/RrtNode.h"
 
 using namespace std;
 

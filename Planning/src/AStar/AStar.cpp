@@ -1,9 +1,11 @@
 #include "AStar.h"
+#include "DrawMapAStar.h"
 
 
 AStar::AStar(vector<shared_ptr<AStarNode>> nodes,
 	vector<pair<shared_ptr<AStarNode>,shared_ptr<AStarNode>>> edges, 
-	vector<double> weights) : nodes(nodes), drawMap(*this) {
+	vector<double> weights) : nodes(nodes) {//, drawMap(*this) {
+  drawMap = make_unique<DrawMapAStar>(*this);
 	for(const auto& n : nodes) {
 		if(n->getName() == "Start") {
 			start = n;
@@ -77,8 +79,8 @@ void AStar::findPath(){
     curr = curr->getParent();
   }
   cout << endl;
-  drawMap.drawMap();
-  drawMap.drawFinalPath();
+  drawMap->drawMap();
+  drawMap->drawFinalPath();
 }
 
 map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double>>> AStar::getAdjacencyMatrix() const {

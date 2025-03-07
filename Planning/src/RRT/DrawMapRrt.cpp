@@ -54,3 +54,7 @@ void DrawMapRrt::drawRrtNode(const RrtNode& n, const cv::Scalar& color, int widt
                 getCvPoint(*n.parent),
                 color, width);
 }
+
+void DrawMapRrt::drawObstacle(const Obstacle& o) const {
+  cv::rectangle(mat, o.getMinCvPoint(), o.getMaxCvPoint(), GRAY, -1);
+}

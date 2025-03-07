@@ -5,7 +5,11 @@
 #include <memory>
 #include "PathPlanner.h"
 #include "AStarNode.h"
-#include "DrawMapAStar.h"
+#include <map>
+//#include "DrawMapAStar.h"
+#include "IDrawMap.h"
+
+using namespace std;
 
 class AStar : public PathPlanner {
 public:
@@ -20,7 +24,7 @@ public:
 	shared_ptr<AStarNode> getGoal() const;
 
 private:
-	DrawMapAStar drawMap;
+	unique_ptr<IDrawMap> drawMap;
 
   vector<shared_ptr<AStarNode> > nodes;
 

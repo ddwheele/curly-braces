@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <format>
 #include "DrawMap.h"
+#include "DrawMapAStar.h"
 #include "AStar.h"
 #include "Utils.h"
 

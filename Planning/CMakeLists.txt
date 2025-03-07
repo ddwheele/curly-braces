@@ -26,70 +26,69 @@ endif()
 link_directories(${YAML_CPP_LIBRARY_DIR})
 
 add_executable(runAStar
-	${CMAKE_SOURCE_DIR}/src/runAStar.cpp
+	${CMAKE_SOURCE_DIR}/src/AStar/runAStar.cpp
+	${CMAKE_SOURCE_DIR}/src/AStar/AStar.cpp
+	${CMAKE_SOURCE_DIR}/src/AStar/DrawMapAStar.cpp
 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
 	${CMAKE_SOURCE_DIR}/src/Node.cpp
-	${CMAKE_SOURCE_DIR}/src/AStar.cpp
-	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp
-	${CMAKE_SOURCE_DIR}/src/DrawMapAStar.cpp)
+	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp)
 add_executable(aStarRandom
-	${CMAKE_SOURCE_DIR}/src/runAStarRandom.cpp
+	${CMAKE_SOURCE_DIR}/src/AStar/runAStarRandom.cpp
+	${CMAKE_SOURCE_DIR}/src/AStar/AStarRandom.cpp
+	${CMAKE_SOURCE_DIR}/src/AStar/DrawMapAStarRandom.cpp
 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
 	${CMAKE_SOURCE_DIR}/src/Node.cpp
 	${CMAKE_SOURCE_DIR}/src/StarNode.cpp
-	${CMAKE_SOURCE_DIR}/src/AStarRandom.cpp
-	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp
-	${CMAKE_SOURCE_DIR}/src/DrawMapAStarRandom.cpp)
+	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp)
 add_executable(dStarLite
-	${CMAKE_SOURCE_DIR}/src/runDStarLite.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarLite/runDStarLite.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarLite/DStarNode.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarLite/DStarLite.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarLite/DrawMapDStarLite.cpp
 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
 	${CMAKE_SOURCE_DIR}/src/Node.cpp
 	${CMAKE_SOURCE_DIR}/src/StarNode.cpp
-	${CMAKE_SOURCE_DIR}/src/DStarNode.cpp
-	${CMAKE_SOURCE_DIR}/src/DStarLite.cpp
-	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp
-	${CMAKE_SOURCE_DIR}/src/DrawMapDStarLite.cpp)
+	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp)
 add_executable(runRRT
-	${CMAKE_SOURCE_DIR}/src/runRRT.cpp
+	${CMAKE_SOURCE_DIR}/src/RRT/runRRT.cpp
+	${CMAKE_SOURCE_DIR}/src/RRT/DrawMapRrt.cpp
+	${CMAKE_SOURCE_DIR}/src/RRT/RRT.cpp
 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
 	${CMAKE_SOURCE_DIR}/src/Node.cpp
-	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp
-	${CMAKE_SOURCE_DIR}/src/DrawMapRrt.cpp
-	${CMAKE_SOURCE_DIR}/src/RRT.cpp)
-add_executable(testPlanning
-	${CMAKE_SOURCE_DIR}/src/testPlanning.cpp
-	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
-	${CMAKE_SOURCE_DIR}/src/Node.cpp
-	${CMAKE_SOURCE_DIR}/src/StarNode.cpp
-	${CMAKE_SOURCE_DIR}/src/DStarNode.cpp
-	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp
-	${CMAKE_SOURCE_DIR}/src/DrawMapAStar.cpp
-	${CMAKE_SOURCE_DIR}/src/DrawMapRrt.cpp
-	${CMAKE_SOURCE_DIR}/src/AStar.cpp
-	${CMAKE_SOURCE_DIR}/src/RRT.cpp)
-add_executable(testUpdateableMinHeap
-	${CMAKE_SOURCE_DIR}/src/Node.cpp
-	${CMAKE_SOURCE_DIR}/src/StarNode.cpp
-	${CMAKE_SOURCE_DIR}/src/DStarNode.cpp
-	${CMAKE_SOURCE_DIR}/src/testUpdateableMinHeap.cpp)
+	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp)
 add_executable(testDStarNode
 	${CMAKE_SOURCE_DIR}/src/Node.cpp
 	${CMAKE_SOURCE_DIR}/src/StarNode.cpp
-	${CMAKE_SOURCE_DIR}/src/DStarNode.cpp
-	${CMAKE_SOURCE_DIR}/src/testDStarNode.cpp)
+	${CMAKE_SOURCE_DIR}/src/DStarLite/DStarNode.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarLite/testDStarNode.cpp)
+add_executable(testUpdateableMinHeap
+	${CMAKE_SOURCE_DIR}/src/Node.cpp
+	${CMAKE_SOURCE_DIR}/src/StarNode.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarLite/DStarNode.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarLite/testUpdateableMinHeap.cpp)
+# TODO: fix this
+#add_executable(testPlanning
+#	${CMAKE_SOURCE_DIR}/src/testPlanning.cpp
+#	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
+#	${CMAKE_SOURCE_DIR}/src/Node.cpp
+#	${CMAKE_SOURCE_DIR}/src/StarNode.cpp
+#	${CMAKE_SOURCE_DIR}/src/DStarLite/DStarNode.cpp
+#	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp
+#	${CMAKE_SOURCE_DIR}/src/AStar/AStar.cpp
+#	${CMAKE_SOURCE_DIR}/src/RRT/RRT.cpp)
 
 # Link libraries
 target_link_libraries(runAStar PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 target_link_libraries(aStarRandom PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 target_link_libraries(dStarLite PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 target_link_libraries(runRRT PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
-target_link_libraries(testPlanning PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
+#target_link_libraries(testPlanning PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 
 
 # Include directories for OpenCV and yaml-cpp
-target_include_directories(runAStar PRIVATE ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
-target_include_directories(aStarRandom PRIVATE ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
-target_include_directories(dStarLite PRIVATE ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
-target_include_directories(runRRT PRIVATE ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
-target_include_directories(testPlanning PRIVATE ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
+target_include_directories(runAStar PRIVATE AStar/ ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
+target_include_directories(aStarRandom PRIVATE AStar/ ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
+target_include_directories(dStarLite PRIVATE DStarLite/ ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
+target_include_directories(runRRT PRIVATE RRT/ ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
+#target_include_directories(testPlanning PRIVATE /AStar /RRT /DStarLite ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
 
