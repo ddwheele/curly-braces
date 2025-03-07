@@ -15,37 +15,44 @@ using namespace std;
 
 // clang++ -std=c++20 runDStarLite.cpp DStarNode.cpp DStarLite.cpp StarNode.cpp Node.cpp -o runDStarLite
  
-vector<shared_ptr<DStarNode>> createNodes(int num) {
+void addEdge(vector<vector<shared_ptr<DStarNode>>>& edges, vector<double>& weights, shared_ptr<DStarNode>& a, shared_ptr<DStarNode>& b, double w) {
+  edges.push_back({a,b});
+  weights.push_back(10);
+  a->addDStarNeighbor(b);
+  b->addDStarNeighbor(a);
+}
+
+DStarLite createDStarLite() {
   // create nodes
   vector<shared_ptr<DStarNode>> nodes;
-  shared_ptr<DStarNode> start = make_shared<DStarNode>("Start", 1,1);
-  shared_ptr<DStarNode> goal = make_shared<DStarNode>("Goal", Utils::WIDTH-1,Utils::HEIGHT-1);
-  nodes.push_back(start);
-  nodes.push_back(goal);
+  shared_ptr<DStarNode> a = make_shared<DStarNode>("A", 1, 10);
+  shared_ptr<DStarNode> b = make_shared<DStarNode>("B", 7, 10);
+  shared_ptr<DStarNode> c = make_shared<DStarNode>("C", 12, 7);
+  shared_ptr<DStarNode> d = make_shared<DStarNode>("D", 12, 12);
+  shared_ptr<DStarNode> g = make_shared<DStarNode>("G", 18, 10);
 
-  for(int i=0; i<num; i++) {
-    nodes.push_back(make_shared<DStarNode>(string(1, 'A' + num)));
-  }
+  nodes.push_back(a);
+  nodes.push_back(b);
+  nodes.push_back(c);
+  nodes.push_back(d);
+  nodes.push_back(g);
+ 
+  // create edges
+  vector<vector<shared_ptr<DStarNode>>> edges;
+  vector<double> weights;
+  
+  addEdge(edges, weights, a, b, 10);
+  addEdge(edges, weights, b, c, 10);
+  addEdge(edges, weights, c, g, 10);
+  addEdge(edges, weights, b, d, 10);
+  addEdge(edges, weights, d, g, 10);
 
-  // every node needs some neighbors
-  int REQUIRED_NEIGHBORS = 3;
-  std::srand(std::time(0));
-  for(auto nd : nodes) {
-    int neigh = REQUIRED_NEIGHBORS;
-    while(neigh) {
-      int index = std::rand() % (num+2);
-      bool added = nd->addNeighbor(nodes[index]);
-      if(added) {
-        neigh--;
-      }
-    }
-   }
-   return nodes;
+  return DStarLite(nodes, edges, weights, a, g);
  }
  
 int main(int argc, char** argv) {
-  vector<shared_ptr<DStarNode>> nodes = createNodes(10);
-  DStarLite dStarLite(nodes);
+  DStarLite dsl = createDStarLite();
+  dsl.printState();
   return 0;
 }
 

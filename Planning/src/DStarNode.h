@@ -3,6 +3,7 @@
 
 #include "StarNode.h"
 #include "Utils.h"
+#include <iomanip>
 
 using namespace std;
 
@@ -22,11 +23,11 @@ public:
     }
 
     void printMe() const {
-      cout << "k1 = " << k1 << ", k2 = " << k2 << endl;
+      cout << "k1 = " << Utils::infString(k1) << ", k2 = " << Utils::infString(k2) << endl;
     }
 
     string toString() const {
-      return "k1 = " + to_string(k1) + ", k2 = " + to_string(k2);
+      return "k1 = " + Utils::infString(k1) + ", k2 = " + Utils::infString(k2);
     }
 
     inline bool operator<(const Key& other) { return k1 < other.k1 || Utils::equals(k1,other.k1) && k2 < other.k2; }
@@ -66,9 +67,11 @@ public:
   const vector<shared_ptr<DStarNode>>& getPredecessors() const;
   const vector<shared_ptr<DStarNode>>& getSuccessors() const;
 
-
   friend std::ostream& operator<<(std::ostream& os, const DStarNode& dsn) {
-      return os << dsn.name<<": ("<<to_string(dsn.x)<<","<<to_string(dsn.y)<<"), key="<<dsn.key.toString() << ")";
+      return os << std::fixed << std::setprecision(2) << dsn.name
+      << ": (" << dsn.x << "," << dsn.y
+      << "), gn = " << Utils::infString(dsn.gn) << ", rhs = " << Utils::infString(dsn.rhs)
+      << ", key=" << dsn.key.toString() << ")";
   }
 
 private:

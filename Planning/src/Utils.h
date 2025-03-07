@@ -1,6 +1,9 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <limits>
+#include <format>
+
 struct Utils {
 
   static constexpr int NUM_STEPS = 10000; // how long to search for a path
@@ -17,6 +20,13 @@ struct Utils {
 	    return true;
 	  }
 	  return false;
+	}
+
+	static string infString(double d) {
+		if(equals(d, numeric_limits<double>::max())) {
+			return "inf";
+		}
+		return std::format("{:.2f}", d);
 	}
 
 };

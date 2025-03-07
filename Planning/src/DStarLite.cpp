@@ -3,8 +3,19 @@
 #include "DStarLite.h"
 
 
-DStarLite::DStarLite(const vector<shared_ptr<DStarNode>>& node)  {
-//: drawMap(*this)
+DStarLite::DStarLite(const vector<shared_ptr<DStarNode>>& _nodes,
+											const vector<vector<shared_ptr<DStarNode>>>& edges, 
+											const vector<double>& weights,
+											const shared_ptr<DStarNode>& _start,
+											const shared_ptr<DStarNode>& _goal) : nodes(_nodes), start(_start), goal(_goal) {
+	if(edges.size() != weights.size()) {
+		throw std::invalid_argument("weights and edges must be equal length");
+	}
+	for(int i=0; i<edges.size(); i++) {
+		cost[edges[i][0]][edges[i][1]] = weights[i];
+		cost[edges[i][1]][edges[i][0]] = weights[i];
+	}
+	printState();
 }
 
 // if a Node has changed
@@ -57,7 +68,7 @@ void DStarLite::computeShortestPath() {
 			// inform predecessors they may have better value now
 			for(auto ney : node->getPredecessors()) {
 				if(ney != goal) {
-					ney->setRhs(std::min(ney->getRhs(), node->distanceTo(*ney)+ node->getGn()));
+					ney->setRhs(std::min(ney->getRhs(), cost[node][ney] + node->getGn()));
 				}
 				updateVertex(ney);
 			}
@@ -68,8 +79,7 @@ void DStarLite::computeShortestPath() {
 
 			// go through predecessors
 			for(auto ney : node->getPredecessors()) {
-				// CHANGE distanceTo TO COME FROM ADJ TABLE IN DSTARLITE
-				double costThroughNeighbor = node->distanceTo(*ney) + oldGn;
+				double costThroughNeighbor = cost[node][ney] + oldGn;
 				if(Utils::equals(ney->getRhs(), costThroughNeighbor)) {
 					if(ney != goal) {
 						ney->setRhs(numeric_limits<double>::max()); 
@@ -77,7 +87,7 @@ void DStarLite::computeShortestPath() {
 					}
 
 					for(auto neyney : ney->getDStarNeighbors()) {
-						ney->setRhs(std::min(ney->getRhs(), ney->distanceTo(*neyney) + neyney->getGn()));
+						ney->setRhs(std::min(ney->getRhs(), cost[ney][neyney] + neyney->getGn()));
 					}
 				}
 				updateVertex(ney);
@@ -89,8 +99,8 @@ void DStarLite::computeShortestPath() {
 					// invalidates prev. calculations
 				}
 
-					for(auto neyney : node->getDStarNeighbors()) {
-					node->setRhs(std::min(node->getRhs(), node->distanceTo(*neyney) + neyney->getGn()));
+				for(auto neyney : node->getDStarNeighbors()) {
+					node->setRhs(std::min(node->getRhs(), cost[node][neyney] + neyney->getGn()));
 				}
 			}
 			updateVertex(node);
@@ -99,8 +109,6 @@ void DStarLite::computeShortestPath() {
 	start->setGn(start->getRhs());
 	cout << "Shortest path computed in " << (maxSteps - stepsLeft) << " steps." << endl;
 }
-
-
 
 //must have start and goal nodes defined
 // all nodes must have calculated heuristic
@@ -123,4 +131,11 @@ void DStarLite::initialize() {
 
 void DStarLite::findPath()  {
 	cout << "findPath called" << endl;
+}
+
+void DStarLite::printState() const {
+	cout << "=====  D*Lite  =====" << endl;
+	for(auto n : nodes) {
+		cout << *n << endl;
+	}
 }
