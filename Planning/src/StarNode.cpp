@@ -20,6 +20,7 @@ StarNode::StarNode(string _name) :
     double xdiff = goal->x - x;
     double ydiff = goal->y - y;
     hn = sqrt(xdiff*xdiff + ydiff*ydiff);
+    return hn;
   }
 
   double StarNode::evaluate() const  {

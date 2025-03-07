@@ -17,7 +17,7 @@ DStarNode::Key DStarNode::getKey() const {
   return key;
 }
 
-Key DStarNode::computeKey(double km) {
+DStarNode::Key DStarNode::computeKey(double km) {
   double k1 = min(gn, rhs) + hn + km;
   double k2 = min(gn, rhs);
   key.update(k1, k2);
@@ -42,4 +42,13 @@ bool DStarNode::operator<(const DStarNode& other) const {
 
 bool DStarNode::operator>(const DStarNode& other) const {
   return this->getKey() > other.getKey();
+}
+
+bool DStarNode::addDStarNeighbor(shared_ptr<DStarNode> n) {
+  auto res = neighbors.insert(n);
+  return res.second; // returns true if insert was successful
+}
+
+const vector<shared_ptr<DStarNode>>& DStarNode::getDStarNeighbors() const {
+  return dStarNeighbors;
 }

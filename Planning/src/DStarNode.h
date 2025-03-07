@@ -60,6 +60,10 @@ public:
   bool operator<(const DStarNode& other) const;
   bool operator>(const DStarNode& other) const;
 
+  // XXX defeats the whole purpose of inheritance - there's really no better way to do this????
+  bool addDStarNeighbor(shared_ptr<DStarNode> n);
+  const vector<shared_ptr<DStarNode>>& getDStarNeighbors() const;
+
 
   friend std::ostream& operator<<(std::ostream& os, const DStarNode& dsn) {
       return os << dsn.name<<": ("<<to_string(dsn.x)<<","<<to_string(dsn.y)<<"), key="<<dsn.key.toString() << ")";
@@ -69,6 +73,9 @@ private:
   Key key;
   double rhs;
   const int maxIterations = 1000;
+
+  // XXX truely cringe-worthy not to be able to use neighbors
+  const vector<shared_ptr<DStarNode>> dStarNeighbors;
 };
 
 

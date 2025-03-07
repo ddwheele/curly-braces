@@ -3,16 +3,14 @@
 
 #include <memory>
 #include <opencv2/opencv.hpp>
+#include "IDrawMap.h"
 #include "Obstacle.h"
 #include "Utils.h"
 
 class PathPlanner;
 
-class DrawMap {
+class DrawMap : public IDrawMap {
 public:
-	virtual void drawMap() = 0;
-	virtual void drawFinalPath() = 0;
-	virtual ~DrawMap() = default;
 
   static bool isInBounds(const double x, const double y) {
 		if(x >=0 && x <= Utils::WIDTH && y>=0 && y <= Utils::HEIGHT) {

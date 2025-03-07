@@ -2,8 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <ranges>
-#include <yaml-cpp/yaml.h>
-#include <opencv2/opencv.hpp>
+
 #include <cstdlib>
 #include <ctime>
 #include <memory>
@@ -13,6 +12,8 @@
 #include "Utils.h"
 
 using namespace std;
+
+// clang++ -std=c++20 runDStarLite.cpp DStarNode.cpp DStarLite.cpp StarNode.cpp Node.cpp -o runDStarLite
  
 vector<shared_ptr<DStarNode>> createNodes(int num) {
   // create nodes
