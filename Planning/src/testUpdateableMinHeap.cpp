@@ -44,7 +44,7 @@ void testUpdateableMinHeapDelete() {
   vector<int*> ints = {&a, &b, &c, &d};
   UpdateableMinHeap<int*> umhInt(ints);
   assert(umhInt.getSize() == 4);
-  umhInt.deleteValue(&b);
+  umhInt.deleteNode(&b);
   assert(umhInt.getSize() == 3);
   assert(!umhInt.contains(&b));
   assert(destructiveIsSorted(umhInt));
@@ -56,7 +56,7 @@ void testUpdateableMinHeapInsert() {
   vector<int*> ints = {&a, &b, &c, &d};
   UpdateableMinHeap<int*> umhInt(ints);
   assert(umhInt.getSize() == 4);
-  umhInt.insertValue(&e);
+  umhInt.insertNode(&e);
   assert(umhInt.getSize() == 5);
   assert(destructiveIsSorted(umhInt));
 }
@@ -79,9 +79,9 @@ void testUpdateableMinHeap_DStarNode() {
   b->computeKey(0); 
   c->computeKey(0); 
 
-  umhDStar.insertValue(a);
-  umhDStar.insertValue(b);
-  umhDStar.insertValue(c);
+  umhDStar.insertNode(a);
+  umhDStar.insertNode(b);
+  umhDStar.insertNode(c);
 
   assert(umhDStar.getSize() == 3);
   assert(umhDStar.contains(a));
@@ -124,8 +124,8 @@ void testUpdateableMinHeap_DStarNodeSimple() {
   assert(bk.k1 == 10);
   assert(bk.k2 == 2);
 
-  umhDStar.insertValue(a);
-  umhDStar.insertValue(b);
+  umhDStar.insertNode(a);
+  umhDStar.insertNode(b);
 
   auto min = umhDStar.extractMin();
   DStarNode::Key kfirst = min->getKey();

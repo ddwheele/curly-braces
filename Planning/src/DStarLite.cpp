@@ -9,22 +9,37 @@ DStarLite::DStarLite(const vector<shared_ptr<DStarNode>>& node)  {
 
 // if a Node has changed
 void DStarLite::recalculateNode(shared_ptr<DStarNode>& changed) {
-	key_modifier += changed->computeHeuristic(start);
+	// key_modifier += changed->computeHeuristic(start);
 
-	for(auto ney : changed->getDStarNeighbors()) {
-		if(ney != start) {
-			ney->setRhs(std::min(ney->getRhs(), changed->distanceTo(*ney)+ changed->getGn()));
-		}
-		updateVertex(ney);
+	// for(auto ney : changed->getDStarNeighbors()) {
+	// 	if(ney != start) {
+	// 		ney->setRhs(std::min(ney->getRhs(), changed->distanceTo(*ney)+ changed->getGn()));
+	// 	}
+	// 	updateVertex(ney);
+	// }
+	// updateVertex(changed);
+	// computeShortestPath();
+}
+
+void DStarLite::updateVertex(const std::shared_ptr<DStarNode>& node) {
+	if(!node->gnEqualsRhs() && openSet.contains(node)) {
+		openSet.deleteNode(node);
+		node->computeKey(key_modifier);
+		openSet.insertNode(node);
+	} 
+	else if(!node->gnEqualsRhs() && !openSet.contains(node)) {
+		node->computeKey(key_modifier);
+		openSet.insertNode(node);
 	}
-	updateVertex(changed);
-	computeShortestPath();
+	else if(node->gnEqualsRhs() && openSet.contains(node)) {
+		openSet.deleteNode(node);
+	}
 }
 
 void DStarLite::computeShortestPath() {
 	int stepsLeft = maxSteps;
  	while(openSet.getSize() > 0 && 
- 	((openSet.peek()->getKey() < start->getKey()) || (start->getRhs() > start->getGn()) )) {
+ 	((openSet.peek()->getKey() < start->computeKey(key_modifier)) || (start->getRhs() > start->getGn()) )) {
 		if(stepsLeft-- <=0 ) {
 			cout << "Did not find a path in " << maxSteps<< " iterations. Aborting." << endl;
 			break;
@@ -32,11 +47,15 @@ void DStarLite::computeShortestPath() {
 		auto node = openSet.extractMin();
 		DStarNode::Key oldKey = node->getKey();
 		DStarNode::Key newKey = node->computeKey(key_modifier);
+
 		if(oldKey < newKey) {
-			openSet.insertValue(node);
+			openSet.insertNode(node);
 		} else if(node->getGn() > node->getRhs()) {
+			// relax g
 			node->setGn(node->getRhs());
-			for(auto ney : node->getDStarNeighbors()) {
+
+			// inform predecessors they may have better value now
+			for(auto ney : node->getPredecessors()) {
 				if(ney != goal) {
 					ney->setRhs(std::min(ney->getRhs(), node->distanceTo(*ney)+ node->getGn()));
 				}
@@ -44,10 +63,12 @@ void DStarLite::computeShortestPath() {
 			}
 		} else {
 			double oldGn = node->getGn();
+			// give up and reset g to inf
 			node->setGn(numeric_limits<double>::max());
 
-			// go through neighbors
-			for(auto ney : node->getDStarNeighbors()) {
+			// go through predecessors
+			for(auto ney : node->getPredecessors()) {
+				// CHANGE distanceTo TO COME FROM ADJ TABLE IN DSTARLITE
 				double costThroughNeighbor = node->distanceTo(*ney) + oldGn;
 				if(Utils::equals(ney->getRhs(), costThroughNeighbor)) {
 					if(ney != goal) {
@@ -79,20 +100,7 @@ void DStarLite::computeShortestPath() {
 	cout << "Shortest path computed in " << (maxSteps - stepsLeft) << " steps." << endl;
 }
 
-void DStarLite::updateVertex(const std::shared_ptr<DStarNode>& node) {
-	if(!node->gnEqualsRhs() && !openSet.contains(node)) {
-		node->computeKey(key_modifier);
-		openSet.insertValue(node);
-	}
-	else if(node->gnEqualsRhs() && openSet.contains(node)) {
-		openSet.deleteValue(node);
-	}
-	else if(openSet.contains(node)) {
-		openSet.deleteValue(node);
-		node->computeKey(key_modifier);
-		openSet.insertValue(node);
-	}
-}
+
 
 //must have start and goal nodes defined
 // all nodes must have calculated heuristic
@@ -110,7 +118,7 @@ void DStarLite::initialize() {
 	goal->setRhs(0);
 	goal->computeHeuristic(start);
 	goal->computeKey(key_modifier);
-	openSet.insertValue(goal);
+	openSet.insertNode(goal);
 }
 
 void DStarLite::findPath()  {

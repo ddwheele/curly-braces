@@ -63,6 +63,8 @@ public:
   // XXX defeats the whole purpose of inheritance - there's really no better way to do this????
   bool addDStarNeighbor(shared_ptr<DStarNode> n);
   const vector<shared_ptr<DStarNode>>& getDStarNeighbors() const;
+  const vector<shared_ptr<DStarNode>>& getPredecessors() const;
+  const vector<shared_ptr<DStarNode>>& getSuccessors() const;
 
 
   friend std::ostream& operator<<(std::ostream& os, const DStarNode& dsn) {

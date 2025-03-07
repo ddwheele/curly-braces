@@ -45,7 +45,7 @@ public:
   }
 
   // Inserts a new node into the min heap.
-  void insertValue(const T& value) {
+  void insertNode(const T& value) {
     if (size == capacity) {
       // Resize the heap if necessary
       capacity *= 2;
@@ -65,7 +65,7 @@ public:
   }
 
   // Deletes a specific node from the min heap and ensures that the min heap property is maintained after deletion.
-  void deleteValue(const T& node) {
+  void deleteNode(const T& node) {
     // Find the index of the key
     int index = -1;
     for (int i = 0; i < size; ++i) {

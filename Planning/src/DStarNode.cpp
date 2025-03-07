@@ -49,6 +49,16 @@ bool DStarNode::addDStarNeighbor(shared_ptr<DStarNode> n) {
   return res.second; // returns true if insert was successful
 }
 
+// TODO implement for directed nodes
+const vector<shared_ptr<DStarNode>>& DStarNode::getPredecessors() const {
+  return dStarNeighbors;
+}
+
+// TODO implement for directed nodes
+const vector<shared_ptr<DStarNode>>& DStarNode::getSuccessors() const {
+  return dStarNeighbors;
+}
+
 const vector<shared_ptr<DStarNode>>& DStarNode::getDStarNeighbors() const {
   return dStarNeighbors;
 }
