@@ -18,7 +18,6 @@ void DrawMapDStarLite::drawMap()
 
   for( auto& [src, dst_map] : dStarLite.getCostMap()) {
     for(const auto& [dst, wt] : dst_map) {
-
       drawEdge(*src, *dst, wt);
     }
   }

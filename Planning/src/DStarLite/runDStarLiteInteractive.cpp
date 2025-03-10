@@ -56,6 +56,10 @@ DStarLite createDStarLite() {
   for(int i=0; i<ROW_LEN; i++) {
     addEdge(edges, weights, start, nodes[i][0], 10);
     addEdge(edges, weights, nodes[i][ROW_LEN-1], goal, 10);
+
+    for(int j=1; j<ROW_LEN; j++) {
+      addEdge(edges, weights, nodes[i][j-1], nodes[i][j-1], 10);
+    }
   }
 
   vector<shared_ptr<DStarNode>> longRow;
