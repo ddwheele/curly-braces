@@ -1,3 +1,4 @@
+# Planning
 A project that contains implementations of various planning algorithms in 2D. 
 
 Requires OpenCV to display images, and YAML to read in config files.
