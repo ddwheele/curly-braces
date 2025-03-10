@@ -12,21 +12,19 @@ void DrawMapDStarLite::drawMap()
  cout << "Drawing the Map" << endl;
   mat = cv::Mat(UNIT_X_SIZE * Utils::SCALE, UNIT_Y_SIZE * Utils::SCALE, CV_8UC3, WHITE);
 
-  for( auto node : dStarLite.getNodes()) {
-    drawNode(*node);
-  }
-
   for( auto& [src, dst_map] : dStarLite.getCostMap()) {
     for(const auto& [dst, wt] : dst_map) {
       drawEdge(*src, *dst, wt);
     }
   }
 
+  for( auto node : dStarLite.getNodes()) {
+    drawNode(*node);
+  }
+
   cv::imshow("D* Lite Map", mat);
   cv::waitKey(0);
 }
-
-
 
 void DrawMapDStarLite::drawNode(const DStarNode& dnode) {
   cv::Point nodeLoc = getCvPoint(dnode);

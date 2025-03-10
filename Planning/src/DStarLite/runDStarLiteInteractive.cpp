@@ -53,12 +53,20 @@ DStarLite createDStarLite() {
   vector<vector<shared_ptr<DStarNode>>> edges;
   vector<double> weights;
   
-  for(int i=0; i<ROW_LEN; i++) {
-    addEdge(edges, weights, start, nodes[i][0], 10);
-    addEdge(edges, weights, nodes[i][ROW_LEN-1], goal, 10);
+  for(int row=0; row<ROW_LEN; row++) {
+    addEdge(edges, weights, start, nodes[row][0], 10);
+    addEdge(edges, weights, nodes[row][ROW_LEN-1], goal, 10);
 
-    for(int j=1; j<ROW_LEN; j++) {
-      addEdge(edges, weights, nodes[i][j-1], nodes[i][j-1], 10);
+    for(int col=1; col<ROW_LEN; col++) {
+      addEdge(edges, weights, nodes[row][col-1], nodes[row][col], 10);
+      if(row-1 >=0) {
+        for(int neigh=1; neigh<ROW_LEN; neigh++) {
+          addEdge(edges, weights, nodes[row-1][col-1], nodes[row][col], 10);
+          addEdge(edges, weights, nodes[row][col-1], nodes[row-1][col], 10);
+        }
+
+      }
+
     }
   }
 
@@ -72,6 +80,7 @@ DStarLite createDStarLite() {
   longRow.push_back(start);
   longRow.push_back(goal);
   cout << "longRow.size() = " << longRow.size() << endl;
+  cout << "edges = " << edges.size() << endl;
 
   DStarLite dsl(longRow, edges, weights, start, goal);
 
