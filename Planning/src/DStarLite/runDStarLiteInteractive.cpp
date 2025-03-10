@@ -54,19 +54,17 @@ DStarLite createDStarLite() {
   vector<double> weights;
   
   for(int row=0; row<ROW_LEN; row++) {
-    addEdge(edges, weights, start, nodes[row][0], 10);
-    addEdge(edges, weights, nodes[row][ROW_LEN-1], goal, 10);
+    addEdge(edges, weights, start, nodes[row][0], start->distanceTo(*nodes[row][0]));
+    addEdge(edges, weights, nodes[row][ROW_LEN-1], goal, goal->distanceTo(*nodes[row][ROW_LEN-1]));
 
     for(int col=1; col<ROW_LEN; col++) {
-      addEdge(edges, weights, nodes[row][col-1], nodes[row][col], 10);
+      addEdge(edges, weights, nodes[row][col-1], nodes[row][col], nodes[row][col-1]->distanceTo(*nodes[row][col]));
       if(row-1 >=0) {
         for(int neigh=1; neigh<ROW_LEN; neigh++) {
-          addEdge(edges, weights, nodes[row-1][col-1], nodes[row][col], 10);
-          addEdge(edges, weights, nodes[row][col-1], nodes[row-1][col], 10);
+          addEdge(edges, weights, nodes[row-1][col-1], nodes[row][col], nodes[row-1][col-1]->distanceTo(*nodes[row][col]));
+          addEdge(edges, weights, nodes[row][col-1], nodes[row-1][col], nodes[row][col-1]->distanceTo(*nodes[row-1][col]));
         }
-
       }
-
     }
   }
 
@@ -91,8 +89,10 @@ int main(int argc, char** argv) {
   cout << " Start" << endl;
   DStarLite dsl = createDStarLite();
   cout << "Finished Creating DStar Lite" << endl;
-  //dsl.findPath();
   dsl.drawMap();
+  cout << "Finding path" << endl;
+  dsl.findPath();
+  
   return 0;
 }
 

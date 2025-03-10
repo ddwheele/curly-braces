@@ -190,7 +190,8 @@ void DStarLite::findPath()  {
 		start = nextNode;
 
 		// did anything change?
-		if(timedObstacles[obstacleTime]) {
+
+		if(!timedObstacles.empty() && timedObstacles[obstacleTime]) {
 			// increment km by h(start, lastStart)
 			key_modifier += start->distanceTo(*lastStart);
 			lastStart = start;
