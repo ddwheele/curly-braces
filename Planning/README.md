@@ -1,20 +1,21 @@
-A project that contains implementations of various planning algorithms. Everything is in 2D. 
+A project that contains implementations of various planning algorithms in 2D. Type any key to close the image window and end the program.
 * A* 
-	* runAStar reads in a graph from a yaml file and runs A* on it
+	* runAStar reads in a graph from a yaml file and runs A* on it. Example output:
 	
-	<img src="./AStar.png">
+	<img src="./AStar.png" width="300">
 	
-	* runAStarRandom generates random nodes in between a start and goal node, and runs A*
+	* runAStarRandom generates random nodes in between a start and goal node, and runs A*. Example output:
 	
-	<img src="./AStarRandom.png">
+	<img src="./AStarRandom.png" width="300">
 
 * RRT - Rapidly-Expanding Random Tree
-	* runRRT reads in obstacles and a start and goal point from a yaml file and runs bi-directional RRT on it
+	* runRRT reads in obstacles and a start and goal point from a yaml file and runs bi-directional RRT on it. Example output:
 
-	<img src="./RRT.png">
+	<img src="./RRT.png" width="300">
 
 * D* Lite 
 	* runDStarLite runs D* Lite on a hard-coded graph of 5 nodes, with a moving obstacle also hard-coded in
+	* Text output only so far
 
 To build:
 
@@ -25,11 +26,13 @@ cmake ..
 make
 ```
 
-Then run one of the following programs:
+Then run one of the following programs from the build folder:
 
 ```
-./runRRT <params.yaml>
-./testRRT # unit tests
+./aStarRandom 
+./dStarLite # (gives text output only)
+./runAStar ../astar_params.yaml
+./runRRT ../rrt_params.yaml
 
 ```
 
