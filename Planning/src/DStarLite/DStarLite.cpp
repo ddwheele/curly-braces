@@ -2,18 +2,26 @@
 #include <algorithm>
 #include <limits>
 #include "DStarLite.h"
+#include "DrawMapDStarLite.h"
 
 DStarLite::DStarLite(const vector<shared_ptr<DStarNode>>& _nodes,
 											const vector<vector<shared_ptr<DStarNode>>>& edges, 
 											const vector<double>& weights,
 											const shared_ptr<DStarNode>& _start,
-											const shared_ptr<DStarNode>& _goal) : nodes(_nodes), start(_start), goal(_goal) {
-	if(edges.size() != weights.size()) {
-		throw std::invalid_argument("weights and edges must be equal length");
-	}
-	for(int i=0; i<edges.size(); i++) {
-		cost[edges[i][0]][edges[i][1]] = weights[i];
-		cost[edges[i][1]][edges[i][0]] = weights[i];
+											const shared_ptr<DStarNode>& _goal) : nodes(_nodes), start(_start), goal(_goal),
+											 dStarDrawMap(make_unique<DrawMapDStarLite>(*this)) {
+  
+	if(!edges.empty()) {
+		cout << "There are edges, I want to ingest them" << endl;
+		if(edges.size() != weights.size()) {
+			throw std::invalid_argument("weights and edges must be equal length");
+		}
+		for(int i=0; i<edges.size(); i++) {
+			cost[edges[i][0]][edges[i][1]] = weights[i];
+			cost[edges[i][1]][edges[i][0]] = weights[i];
+		}
+	} else {
+		cout << "there are no edges" << endl;
 	}
 }
 
@@ -197,6 +205,16 @@ void DStarLite::findPath()  {
 		}
 	}
   cout << "\n%%%%%%%%%%%%%%%% AT GOAL " << start->getName() << " %%%%%%%%%%%%%%%%\n" << endl;
+}
+
+const vector<shared_ptr<DStarNode>>& DStarLite::getNodes() const {
+	return nodes;
+}
+
+void DStarLite::drawMap() const {
+	cout << "about to draw map" << endl;
+	cout << "dsdm is null" << (dStarDrawMap == nullptr) << endl;
+	dStarDrawMap->drawMap();
 }
 
 void DStarLite::printState() const {

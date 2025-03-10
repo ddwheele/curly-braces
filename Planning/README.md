@@ -20,6 +20,7 @@ Requires OpenCV to display images, and YAML to read in config files.
 
 * D* Lite 
 	* `dStarLite` runs D* Lite on a hard-coded graph of 5 nodes, with a moving obstacle also hard-coded in
+	* Original D* Lite paper https://idm-lab.org/bib/abstracts/papers/aaai02b.pdf
 	* Text output only so far
 
 To build:

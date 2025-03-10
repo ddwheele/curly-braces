@@ -61,6 +61,9 @@ public:
   DStarNode(string _name, double _x, double _y);
   DStarNode(string _name);
 
+  DStarNode(char _name, double _x, double _y);
+  DStarNode(char _name);
+
   // make sure hn calculated frst!
   Key computeKey(double km); // takes a key modifier
 
@@ -96,6 +99,8 @@ private:
   Key key;
   double rhs;
   const int maxIterations = 1000;
+
+  void initGnRhs();
 
   // this is only to help with debugging output
   bool onOpenSet = false;

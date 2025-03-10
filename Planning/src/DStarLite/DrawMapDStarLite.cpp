@@ -7,34 +7,28 @@ using namespace std;
 
 DrawMapDStarLite::DrawMapDStarLite(const DStarLite& _dStarLite) : dStarLite(_dStarLite) {}
 
-void DrawMapDStarLite::calculateUnitSize()
-{
-  // if (UNIT_X_SIZE > 0 && UNIT_Y_SIZE > 0)
-  // {
-  //   return;
-  // }
-  // double maxX = 0, maxY = 0;
-  // for (auto &[node1, _] : astar.getAdjacencyMatrix())
-  // {
-  //   maxX = std::max(maxX, node1->x);
-  //   maxY = std::max(maxY, node1->y);
-  // }
-  // UNIT_X_SIZE = maxX + 1;
-  // UNIT_Y_SIZE = maxY + 1;
-}
-
 void DrawMapDStarLite::drawMap()
 {
-  calculateUnitSize();
+ cout << "Drawing the Map" << endl;
   mat = cv::Mat(UNIT_X_SIZE * Utils::SCALE, UNIT_Y_SIZE * Utils::SCALE, CV_8UC3, WHITE);
 
-  // for (auto &[node1, vec] : astar.getAdjacencyMatrix())
-  // {
-  //   for (const auto &pr : vec)
-  //   {
-  //     drawAStarEdge(*node1, *pr.first, pr.second);
-  //   }
-  // }
+  for( auto node : dStarLite.getNodes()) {
+    drawNode(*node);
+  }
+
+  cv::imshow("D* Lite Map", mat);
+  cv::waitKey(0);
+}
+
+void DrawMapDStarLite::drawNode(const DStarNode& dnode) {
+  cv::Point nodeLoc = getCvPoint(dnode);
+
+  cv::circle(mat, nodeLoc, RADIUS_PX, LT_GRAY, FILL_SHAPE);
+
+  std::string text = dnode.getName();
+  
+  cv::putText(mat, text, nodeLoc + NODE_LABEL_OFFSET, 
+    FONT_FACE, FONT_SCALE_LARGE, BLACK, FONT_THICK);
 }
 
 void DrawMapDStarLite::drawFinalPath()

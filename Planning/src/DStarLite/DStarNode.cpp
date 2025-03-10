@@ -4,11 +4,22 @@
 
 
 DStarNode::DStarNode(string _name, double _x, double _y) : StarNode(_name, _x, _y) {
-  gn = numeric_limits<double>::max();
-  rhs = numeric_limits<double>::max();
+  initGnRhs();
 }
 
 DStarNode::DStarNode(string _name) : StarNode(_name) {
+  initGnRhs();
+}
+
+DStarNode::DStarNode(char _name, double _x, double _y) : StarNode(string(1,_name), _x, _y) {
+  initGnRhs();
+}
+
+DStarNode::DStarNode(char _name) : StarNode(string(1,_name)) {
+  initGnRhs();
+}
+
+void DStarNode::initGnRhs() {
   gn = numeric_limits<double>::max();
   rhs = numeric_limits<double>::max();
 }

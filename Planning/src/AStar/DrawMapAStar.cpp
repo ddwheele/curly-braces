@@ -31,7 +31,6 @@ void DrawMapAStar::drawMap() {
     	drawAStarEdge(*node1, *pr.first, pr.second);
     }
   }
-
 }
 
 void DrawMapAStar::drawFinalPath() {

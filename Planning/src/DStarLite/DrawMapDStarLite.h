@@ -4,7 +4,9 @@
 #include <memory>
 #include <opencv2/opencv.hpp>
 
+#include "DStarLite.h" 
 #include "Obstacle.h"
+#include "DStarNode.h"
 #include "StarNode.h"
 #include "DrawMap.h"
 
@@ -12,7 +14,7 @@ class DStarLite;
 
 class DrawMapDStarLite : public DrawMap {
 public:
-	DrawMapDStarLite(const DStarLite& _astar);
+	DrawMapDStarLite(const DStarLite& _dstar);
 	
   void drawMap() override;
   void drawFinalPath() override;
@@ -20,7 +22,7 @@ public:
 private:
   const DStarLite& dStarLite;
 
-  void calculateUnitSize();
+  void drawNode(const DStarNode& dnode) ;
 
   static constexpr int FONT_FACE = cv::FONT_HERSHEY_SIMPLEX;
   static constexpr int FILL_SHAPE = -1;
@@ -33,8 +35,8 @@ private:
     cv::Point(-RADIUS_PX*LABEL_OFFSET_RATIO,RADIUS_PX*LABEL_OFFSET_RATIO);
 
   // calculated ideal size of map, such that it shows all nodes
-  double UNIT_X_SIZE = -1;
-  double UNIT_Y_SIZE = -1;
+  double UNIT_X_SIZE = 20;
+  double UNIT_Y_SIZE = 20;
 };
 
 #endif

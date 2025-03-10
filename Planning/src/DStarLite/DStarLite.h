@@ -4,7 +4,6 @@
 #include <queue>
 #include "DStarNode.h"
 #include "PathPlanner.h"
-//#include "DrawMapDStarLite.h"
 #include "IDrawMap.h"
 #include "UpdateableMinHeap.h"
 
@@ -31,17 +30,22 @@ public:
 
   void setTimedObstacles(vector<shared_ptr<DStarNode>>& timedObstacles);
 
+  const vector<shared_ptr<DStarNode>>& getNodes() const;
+
+  void drawMap() const;
+
   void printState() const;
-  // don't think we need this anymore
-  // Custom comparator for shared_ptr<DStarNode> (min-heap)
-  struct DStarNodePtrCompare {
-      bool operator()(const std::shared_ptr<DStarNode>& lhs, const std::shared_ptr<DStarNode>& rhs) const {
-          return *lhs > *rhs;  // Delegate to DStarNode's operator<
-      }
-  };
+
+  // // don't think we need this anymore
+  // // Custom comparator for shared_ptr<DStarNode> (min-heap)
+  // struct DStarNodePtrCompare {
+  //     bool operator()(const std::shared_ptr<DStarNode>& lhs, const std::shared_ptr<DStarNode>& rhs) const {
+  //         return *lhs > *rhs;  // Delegate to DStarNode's operator<
+  //     }
+  // };
 
 private: 
-  unique_ptr<IDrawMap> drawMap;
+  unique_ptr<IDrawMap> dStarDrawMap;
 
   vector<shared_ptr<DStarNode>> nodes;
   shared_ptr<DStarNode> goal;
@@ -60,7 +64,5 @@ private:
   bool PRINT_DEBUG = false;
 
 };
-
-
 
 #endif
