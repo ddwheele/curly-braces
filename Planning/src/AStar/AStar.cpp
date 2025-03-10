@@ -84,7 +84,7 @@ void AStar::findPath(){
 }
 
 map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double>>> AStar::getAdjacencyMatrix() const {
-			return adj;
+		return adj;
 }
 
 shared_ptr<AStarNode> AStar::getGoal() const {

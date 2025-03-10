@@ -22,7 +22,8 @@ public:
 private:
   const DStarLite& dStarLite;
 
-  void drawNode(const DStarNode& dnode) ;
+  void drawNode(const DStarNode& dnode);
+  void drawEdge(const DStarNode& n1, const DStarNode& n2, double weight);
 
   static constexpr int FONT_FACE = cv::FONT_HERSHEY_SIMPLEX;
   static constexpr int FILL_SHAPE = -1;
@@ -34,7 +35,7 @@ private:
   static inline cv::Point NODE_LABEL_OFFSET = 
     cv::Point(-RADIUS_PX*LABEL_OFFSET_RATIO,RADIUS_PX*LABEL_OFFSET_RATIO);
 
-  // calculated ideal size of map, such that it shows all nodes
+  // size of map, in "world units"
   double UNIT_X_SIZE = 20;
   double UNIT_Y_SIZE = 20;
 };

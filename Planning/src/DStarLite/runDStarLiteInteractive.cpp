@@ -31,15 +31,15 @@ void addEdge(vector<vector<shared_ptr<DStarNode>>>& edges, vector<double>& weigh
 
 DStarLite createDStarLite() {
   // create nodes
-  int SIZE = 5;
+  int ROW_LEN = 5;
   double U = 2.5;
   double offset = 5;
   cout << "Creating nodes " << endl;
   vector<vector<shared_ptr<DStarNode>>> nodes;
-  for(int r=0; r<SIZE; r++) {
+  for(int r=0; r<ROW_LEN; r++) {
     vector<shared_ptr<DStarNode>> row;
-    for(int c=0; c<SIZE; c++) {
-      row.push_back( make_shared<DStarNode>('A'+c+(r*SIZE), c*U+offset, r*U+ offset) );
+    for(int c=0; c<ROW_LEN; c++) {
+      row.push_back( make_shared<DStarNode>('A'+c+(r*ROW_LEN), c*U+offset, r*U+ offset) );
     }
     nodes.push_back(row);
   }
@@ -50,17 +50,16 @@ DStarLite createDStarLite() {
   shared_ptr<DStarNode> goal = make_shared<DStarNode>("Goal", 18, 10);
  
   // // create edges
-   vector<vector<shared_ptr<DStarNode>>> edges;
-   vector<double> weights;
+  vector<vector<shared_ptr<DStarNode>>> edges;
+  vector<double> weights;
   
-  // addEdge(edges, weights, a, b, 10);
-  // addEdge(edges, weights, b, c, 10);
-  // addEdge(edges, weights, c, g, 10);
-  // addEdge(edges, weights, b, d, 10);
-  // addEdge(edges, weights, d, g, 100);
+  for(int i=0; i<ROW_LEN; i++) {
+    addEdge(edges, weights, start, nodes[i][0], 10);
+    addEdge(edges, weights, nodes[i][ROW_LEN-1], goal, 10);
+  }
 
   vector<shared_ptr<DStarNode>> longRow;
-  longRow.reserve(SIZE*SIZE);
+  longRow.reserve(ROW_LEN*ROW_LEN);
 
   cout << "created longRow" << endl;
   for(auto rw : nodes) {
@@ -74,8 +73,6 @@ DStarLite createDStarLite() {
 
   return dsl;
  }
-
-
 
 int main(int argc, char** argv) {
   cout << " Start" << endl;

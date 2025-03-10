@@ -211,6 +211,11 @@ const vector<shared_ptr<DStarNode>>& DStarLite::getNodes() const {
 	return nodes;
 }
 
+ const unordered_map<shared_ptr<DStarNode>, unordered_map<shared_ptr<DStarNode>,double>>& DStarLite::getCostMap() const {
+ 	return cost;
+ }
+
+
 void DStarLite::drawMap() const {
 	cout << "about to draw map" << endl;
 	cout << "dsdm is null" << (dStarDrawMap == nullptr) << endl;

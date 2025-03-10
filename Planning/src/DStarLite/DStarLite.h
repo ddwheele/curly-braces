@@ -32,6 +32,8 @@ public:
 
   const vector<shared_ptr<DStarNode>>& getNodes() const;
 
+  const unordered_map<shared_ptr<DStarNode>, unordered_map<shared_ptr<DStarNode>,double>>& getCostMap() const;
+
   void drawMap() const;
 
   void printState() const;

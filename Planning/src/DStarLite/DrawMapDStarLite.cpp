@@ -16,9 +16,18 @@ void DrawMapDStarLite::drawMap()
     drawNode(*node);
   }
 
+  for( auto& [src, dst_map] : dStarLite.getCostMap()) {
+    for(const auto& [dst, wt] : dst_map) {
+
+      drawEdge(*src, *dst, wt);
+    }
+  }
+
   cv::imshow("D* Lite Map", mat);
   cv::waitKey(0);
 }
+
+
 
 void DrawMapDStarLite::drawNode(const DStarNode& dnode) {
   cv::Point nodeLoc = getCvPoint(dnode);
@@ -30,6 +39,22 @@ void DrawMapDStarLite::drawNode(const DStarNode& dnode) {
   cv::putText(mat, text, nodeLoc + NODE_LABEL_OFFSET, 
     FONT_FACE, FONT_SCALE_LARGE, BLACK, FONT_THICK);
 }
+
+void DrawMapDStarLite::drawEdge(const DStarNode& n1, const DStarNode& n2, double weight) {
+  cv::line(mat, getCvPoint(n1), 
+              getCvPoint(n2),
+              BLACK, 1);
+
+  // drawLabeledAStarNode(n1);
+  // drawLabeledAStarNode(n2);
+
+  // cv::Point midpoint = (getCvPoint(n1) + getCvPoint(n2)) / 2;
+
+  // cv::putText(mat, format("{:.1f}", weight), midpoint, 
+  //   FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
+}
+
+
 
 void DrawMapDStarLite::drawFinalPath()
 {
