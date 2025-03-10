@@ -18,9 +18,15 @@ void DrawMapDStarLite::drawMap()
     }
   }
 
-  for( auto node : dStarLite.getNodes()) {
+  for(auto node : dStarLite.getNodes()) {
     drawNode(*node);
   }
+
+  for(auto node : dStarLite.getCurrentObstacles()) {
+    obstacleNode(*node);
+  }
+
+  highlightNode(*dStarLite.getStartNode());
 
   cv::imshow("D* Lite Map", mat);
   cv::waitKey(0);
@@ -58,9 +64,16 @@ void DrawMapDStarLite::drawFinalPath()
 
 }
 
-// void DrawMapDStarLite::highlightNode(const AStarNode &node)
-// {
-//   // cv::Point nodeLoc = node.getCvPoint();
+void DrawMapDStarLite::obstacleNode(const DStarNode &node)
+{
+  cv::Point nodeLoc = getCvPoint(node);
 
-//   // cv::circle(mat, nodeLoc, RADIUS_PX, GREEN, 2);
-// }
+  cv::circle(mat, nodeLoc, RADIUS_PX, BLACK, 5);
+}
+
+void DrawMapDStarLite::highlightNode(const DStarNode &node)
+{
+  cv::Point nodeLoc = getCvPoint(node);
+
+  cv::circle(mat, nodeLoc, RADIUS_PX, GREEN, 2);
+}

@@ -24,6 +24,8 @@ private:
 
   void drawNode(const DStarNode& dnode);
   void drawEdge(const DStarNode& n1, const DStarNode& n2, double weight);
+  void highlightNode(const DStarNode &node);
+  void obstacleNode(const DStarNode &node);
 
   static constexpr int FONT_FACE = cv::FONT_HERSHEY_SIMPLEX;
   static constexpr int FILL_SHAPE = -1;

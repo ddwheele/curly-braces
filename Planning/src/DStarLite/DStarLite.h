@@ -18,13 +18,12 @@ public:
 			const shared_ptr<DStarNode>& _goal);
   void findPath() override;
 
-  void initialize();
-  void updateVertex(const std::shared_ptr<DStarNode>&node);
-  void computeShortestPath();
-  void recalculateNode(shared_ptr<DStarNode>& changed);
+  void findPathInteractive();
+
 
   // add weight to all edges to obstacle
   void placeObstacle(shared_ptr<DStarNode>& obstacle, int weight = 10000);
+
   // remove weight from all edges to obstacle
   void removeObstacle(shared_ptr<DStarNode>& noObstacle, int weight = 10000);
 
@@ -34,17 +33,12 @@ public:
 
   const unordered_map<shared_ptr<DStarNode>, unordered_map<shared_ptr<DStarNode>,double>>& getCostMap() const;
 
+  const unordered_set<shared_ptr<DStarNode>>& getCurrentObstacles() const;
+
+  const shared_ptr<DStarNode>& getStartNode() const;
+
   void drawMap() const;
-
   void printState() const;
-
-  // // don't think we need this anymore
-  // // Custom comparator for shared_ptr<DStarNode> (min-heap)
-  // struct DStarNodePtrCompare {
-  //     bool operator()(const std::shared_ptr<DStarNode>& lhs, const std::shared_ptr<DStarNode>& rhs) const {
-  //         return *lhs > *rhs;  // Delegate to DStarNode's operator<
-  //     }
-  // };
 
 private: 
   unique_ptr<IDrawMap> dStarDrawMap;
@@ -63,7 +57,21 @@ private:
 
   // which node the obstacle is on a time i+1;
   vector<shared_ptr<DStarNode>> timedObstacles;
+
+  unordered_set<shared_ptr<DStarNode>> currentObstacles;
+
   bool PRINT_DEBUG = false;
+
+  // turn a node into an obstacle
+  void placeNamedObstacle(const string& obsName, int weight = 10000);
+
+  // make a node not an obstacle anymore
+  void removeNamedObstacle(const string& obsName, int weight = 10000);
+
+  void initialize();
+  void updateVertex(const std::shared_ptr<DStarNode>&node);
+  void computeShortestPath();
+  void recalculateNode(shared_ptr<DStarNode>& changed);
 
 };
 

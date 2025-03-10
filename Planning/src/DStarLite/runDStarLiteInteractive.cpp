@@ -91,7 +91,7 @@ int main(int argc, char** argv) {
   cout << "Finished Creating DStar Lite" << endl;
   dsl.drawMap();
   cout << "Finding path" << endl;
-  dsl.findPath();
+  dsl.findPathInteractive();
   
   return 0;
 }

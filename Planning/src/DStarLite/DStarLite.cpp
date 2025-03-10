@@ -26,6 +26,26 @@ DStarLite::DStarLite(const vector<shared_ptr<DStarNode>>& _nodes,
 	}
 }
 
+// turn a node into an obstacle
+void DStarLite::placeNamedObstacle(const string& obsName, int weight) {
+	for(auto nd : nodes) {
+		if(nd->getName() == obsName) {
+			placeObstacle(nd);
+			currentObstacles.insert(nd);
+		}
+	}
+}
+
+// make a node not an obstacle anymore
+void DStarLite::removeNamedObstacle(const string& obsName, int weight) {
+	for(auto nd : nodes) {
+		if(nd->getName() == obsName) {
+			removeObstacle(nd);
+			currentObstacles.erase(nd);
+		}
+	}
+}
+
 void DStarLite::placeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
 	if(!obstacle) {
 		return;
@@ -162,6 +182,72 @@ void DStarLite::initialize() {
 	openSet.insertNode(goal);
 }
 
+void DStarLite::findPathInteractive()  {
+	// handles single moving obstacle, specified in timedObstacles
+  cout << "\n%%%%%%%%%%%% STARTING AT NODE " << start->getName() << " %%%%%%%%%%%%\n" << endl;
+	shared_ptr<DStarNode> lastStart = start;
+	initialize();
+	computeShortestPath();
+	int obstacleTime = 0;
+	while(start != goal) {
+		if(Utils::equals(start->getGn(), numeric_limits<double>::max())) {
+			cout << "No path found" << endl;
+			return;
+		}
+		double best = numeric_limits<double>::max();
+		// find the neighbor with lowest g + cost to start
+		shared_ptr<DStarNode> nextNode;
+		for(auto& [ney, cst] : cost[start]) {
+			double est = ney->getGn() + cst;
+			if(est < best) {
+				best = est;
+				nextNode = ney;
+			}
+		}
+
+		// move to nextNode
+		cout << "\n%%%%%%%%%%%% ADVANCE TO NODE " << nextNode->getName() << " %%%%%%%%%%%%\n" << endl;
+		start = nextNode;
+
+		drawMap();
+
+		// Ask user for obstacle updates
+		std::string obstaclesToRemove;
+		std::string obstaclesToPlace;
+    
+    std::cout << "Enter obstacles to remove, or empty string: ";
+    std::getline(std::cin, obstaclesToRemove);  // Reads the entire line into the string variable
+
+    std::cout << "Enter obstacles to place, or empty string: ";
+    std::getline(std::cin, obstaclesToPlace);  // Reads the entire line into the string variable
+
+    for(char toRemove: obstaclesToRemove) {
+    	removeNamedObstacle(string(1,toRemove));
+    
+    }
+
+    for(char toPlace: obstaclesToPlace) {
+    	placeNamedObstacle(string(1,toPlace));
+    }
+
+		if(!timedObstacles.empty() && timedObstacles[obstacleTime]) {
+			// increment km by h(start, lastStart)
+			key_modifier += start->distanceTo(*lastStart);
+			lastStart = start;
+			// for all edge changes
+			// update edge cost in cost
+			placeObstacle(timedObstacles[obstacleTime]);
+			if(obstacleTime >0) {
+				removeObstacle(timedObstacles[obstacleTime-1]);
+			}
+			obstacleTime++;
+			// (vertices were updated inside the Obstacle functions)
+			computeShortestPath();
+		}
+	}
+  cout << "\n%%%%%%%%%%%%%%%% AT GOAL " << start->getName() << " %%%%%%%%%%%%%%%%\n" << endl;
+}
+
 void DStarLite::findPath()  {
 	// handles single moving obstacle, specified in timedObstacles
   cout << "\n%%%%%%%%%%%% STARTING AT NODE " << start->getName() << " %%%%%%%%%%%%\n" << endl;
@@ -213,10 +299,17 @@ const vector<shared_ptr<DStarNode>>& DStarLite::getNodes() const {
 	return nodes;
 }
 
- const unordered_map<shared_ptr<DStarNode>, unordered_map<shared_ptr<DStarNode>,double>>& DStarLite::getCostMap() const {
- 	return cost;
- }
+const unordered_map<shared_ptr<DStarNode>, unordered_map<shared_ptr<DStarNode>,double>>& DStarLite::getCostMap() const {
+	return cost;
+}
 
+const shared_ptr<DStarNode>& DStarLite::getStartNode() const {
+	return start;
+}
+
+const unordered_set<shared_ptr<DStarNode>>& DStarLite::getCurrentObstacles() const {
+	return currentObstacles;
+}
 
 void DStarLite::drawMap() const {
 	dStarDrawMap->drawMap();
