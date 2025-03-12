@@ -7,7 +7,7 @@
 using namespace std;
 
 
-RRT::RRT(shared_ptr<RrtNode> _start, shared_ptr<RrtNode> _goal, vector<Obstacle> _obstacles, double _stepSize) 
+RRT::RRT(shared_ptr<RrtNode> _start, shared_ptr<RrtNode> _goal, const vector<Obstacle>& _obstacles, double _stepSize) 
  : start(std::move(_start)), goal(std::move(_goal)), stepSize(_stepSize), obstacles(_obstacles), drawMap(*this) {
   startTree.push_back(start);
   goalTree.push_back(goal);
@@ -102,7 +102,7 @@ void RRT::printMe() const {
   }
 }
 
-vector<Obstacle> RRT::getObstacles() const {
+const vector<Obstacle>& RRT::getObstacles() const {
   return obstacles;
 } 
 
@@ -114,19 +114,19 @@ const RrtNode& RRT::getGoal() const {
   return *goal;
 }
 
-shared_ptr<RrtNode> RRT::getLinkRrtNode1() const {
+const shared_ptr<RrtNode>& RRT::getLinkRrtNode1() const {
   return linkRrtNode1;
 }
 
-shared_ptr<RrtNode> RRT::getLinkRrtNode2() const {
+const shared_ptr<RrtNode>& RRT::getLinkRrtNode2() const {
   return linkRrtNode2;
 }
 
-vector<shared_ptr<RrtNode>> RRT::getStartTree() const {
+const vector<shared_ptr<RrtNode>>& RRT::getStartTree() const {
   return startTree;
 }
 
-vector<shared_ptr<RrtNode>> RRT::getGoalTree() const {
+const vector<shared_ptr<RrtNode>>& RRT::getGoalTree() const {
   return goalTree;
 }
 

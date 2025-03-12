@@ -37,7 +37,7 @@ StarNode::StarNode(string _name) :
           return compareDistance(*a, *b);});
   }
 
-  string StarNode::getName() const {
+  const string& StarNode::getName() const {
     return name;
   }
 

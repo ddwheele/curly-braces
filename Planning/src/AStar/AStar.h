@@ -13,15 +13,15 @@ using namespace std;
 
 class AStar : public PathPlanner {
 public:
-	AStar(vector<shared_ptr<AStarNode>> nodes,
-		vector<pair<shared_ptr<AStarNode>,shared_ptr<AStarNode>>> edges, 
-		vector<double> weights);
+	AStar(const vector<shared_ptr<AStarNode>>& nodes,
+		const vector<pair<shared_ptr<AStarNode>,shared_ptr<AStarNode>>>& edges, 
+		const vector<double>& weights);
 
 	void findPath() override;
 
-	map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double>>> getAdjacencyMatrix() const;
+	const map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double>>>& getAdjacencyMatrix() const;
 
-	shared_ptr<AStarNode> getGoal() const;
+	const shared_ptr<AStarNode>& getGoal() const;
 
 private:
 	unique_ptr<IDrawMap> drawMap;

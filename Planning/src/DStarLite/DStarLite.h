@@ -3,8 +3,8 @@
 
 #include <queue>
 #include "DStarNode.h"
-#include "PathPlanner.h"
-#include "IDrawMap.h"
+#include "../PathPlanner.h"
+#include "../IDrawMap.h"
 #include "UpdateableMinHeap.h"
 
 class DrawMapDStarLite;

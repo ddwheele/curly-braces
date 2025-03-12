@@ -13,14 +13,14 @@ public:
 
 	void findPath() override;
 
-	map<shared_ptr<StarNode>, vector<pair<shared_ptr<StarNode>,double>>> getAdjacencyMatrix() const;
+	const map<shared_ptr<StarNode>, vector<pair<shared_ptr<StarNode>,double>>>& getAdjacencyMatrix() const;
 
-	shared_ptr<StarNode> getGoal() const;
+	const shared_ptr<StarNode>& getGoal() const;
 
 private:
 	DrawMapAStarRandom drawMap;
 
-  vector<shared_ptr<StarNode> > nodes;
+  vector<shared_ptr<StarNode>> nodes;
 
   // Adjacency matrix
   map<shared_ptr<StarNode>, vector<pair<shared_ptr<StarNode>,double>>> adj;

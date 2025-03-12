@@ -19,7 +19,7 @@ public:
    * 
    * returns ptr to Node that is STEP_SIZE toward rx, ry, with papa as parent
    */
-  static shared_ptr<RrtNode> growToward(shared_ptr<RrtNode> papa, double rx, double ry, double stepSize) {
+  static shared_ptr<RrtNode> growToward(const shared_ptr<RrtNode>& papa, double rx, double ry, double stepSize) {
   	double xdist = rx - papa->x;
     double ydist = ry - papa->y;
 

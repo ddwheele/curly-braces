@@ -3,8 +3,8 @@
 
 #include <iomanip>
 #include <format>
-#include "StarNode.h"
-#include "Utils.h"
+#include "../StarNode.h"
+#include "../Utils.h"
 
 
 using namespace std;

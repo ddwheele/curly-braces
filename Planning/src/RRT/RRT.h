@@ -15,7 +15,7 @@ class RRT : public PathPlanner {
 public:
   RRT(shared_ptr<RrtNode> _start,
     shared_ptr<RrtNode> _goal, 
-    const vector<Obstacle> _obstacles,
+    const vector<Obstacle>& _obstacles,
     double _stepSize=0.2);
 
   void findPath() override;
@@ -23,16 +23,16 @@ public:
   shared_ptr<RrtNode> findNearest(const vector<shared_ptr<RrtNode>>& tree,
    double x, double y) const;
 
-  vector<Obstacle> getObstacles() const;
+  const vector<Obstacle>& getObstacles() const;
   const RrtNode& getStart() const;
   const RrtNode& getGoal() const;
 
-  vector<shared_ptr<RrtNode>> getStartTree() const;
-  vector<shared_ptr<RrtNode>> getGoalTree() const;
+  const vector<shared_ptr<RrtNode>>& getStartTree() const;
+  const vector<shared_ptr<RrtNode>>& getGoalTree() const;
 
   // shared ptr because DrawMap needs to iterate through children
-   shared_ptr<RrtNode> getLinkRrtNode1() const;
-   shared_ptr<RrtNode> getLinkRrtNode2() const;
+  const shared_ptr<RrtNode>& getLinkRrtNode1() const;
+  const shared_ptr<RrtNode>& getLinkRrtNode2() const;
 
 
 private:

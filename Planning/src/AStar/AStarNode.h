@@ -22,7 +22,7 @@ public:
     return gn + hn;
   }
 
-  string getName() const {
+  const string& getName() const {
     return name;
   }
 
@@ -38,7 +38,7 @@ public:
     parent = newParent;
   }
 
-  shared_ptr<AStarNode> getParent() {
+  const shared_ptr<AStarNode>& getParent() {
     return parent;
   }
 

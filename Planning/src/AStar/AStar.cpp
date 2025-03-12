@@ -2,9 +2,9 @@
 #include "DrawMapAStar.h"
 
 
-AStar::AStar(vector<shared_ptr<AStarNode>> nodes,
-	vector<pair<shared_ptr<AStarNode>,shared_ptr<AStarNode>>> edges, 
-	vector<double> weights) : nodes(nodes), drawMap(make_unique<DrawMapAStar>(*this)) {
+AStar::AStar(const vector<shared_ptr<AStarNode>>& nodes,
+	const vector<pair<shared_ptr<AStarNode>,shared_ptr<AStarNode>>>& edges, 
+	const vector<double>& weights) : nodes(nodes), drawMap(make_unique<DrawMapAStar>(*this)) {
   
 	for(const auto& n : nodes) {
 		if(n->getName() == "Start") {
@@ -83,11 +83,11 @@ void AStar::findPath(){
   drawMap->drawFinalPath();
 }
 
-map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double>>> AStar::getAdjacencyMatrix() const {
+const map<shared_ptr<AStarNode>, vector<pair<shared_ptr<AStarNode>,double>>>& AStar::getAdjacencyMatrix() const {
 		return adj;
 }
 
-shared_ptr<AStarNode> AStar::getGoal() const {
+const shared_ptr<AStarNode>& AStar::getGoal() const {
 	return goal;
 }
 

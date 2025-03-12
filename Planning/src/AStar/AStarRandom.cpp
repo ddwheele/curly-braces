@@ -79,11 +79,11 @@ void AStarRandom::findPath(){
   drawMap.drawFinalPath();
 }
 
-map<shared_ptr<StarNode>, vector<pair<shared_ptr<StarNode>,double>>> AStarRandom::getAdjacencyMatrix() const {
+const map<shared_ptr<StarNode>, vector<pair<shared_ptr<StarNode>,double>>>& AStarRandom::getAdjacencyMatrix() const {
 			return adj;
 }
 
-	shared_ptr<StarNode> AStarRandom::getGoal() const {
-		return goal;
-	}
+const shared_ptr<StarNode>& AStarRandom::getGoal() const {
+  return goal;
+}
 

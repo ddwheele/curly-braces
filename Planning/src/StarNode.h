@@ -20,7 +20,7 @@ public:
   // return fn for A*
   double evaluate() const;
 
-  string getName() const;
+  const string& getName() const;
 
   double getGn() const;
   void setGn(double _gn);
