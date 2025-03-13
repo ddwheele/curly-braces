@@ -17,19 +17,19 @@ void DrawMapDStarLite::drawMap()
       drawEdge(*src, *dst, wt);
     }
   }
-
+cout << "A" << endl;
   for(auto node : dStarLite.getNodes()) {
     drawNode(*node);
   }
-
+cout << "B" << endl;
   for(auto node : dStarLite.getCurrentObstacles()) {
     obstacleNode(*node);
   }
-
+cout << "C" << endl;
   highlightNode(*dStarLite.getStartNode());
-
+cout << "D" << endl;
   cv::imshow("D* Lite Map", mat);
-  cv::waitKey(0);
+  cv::waitKey(5);
 }
 
 void DrawMapDStarLite::drawNode(const DStarNode& dnode) {

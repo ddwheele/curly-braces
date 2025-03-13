@@ -60,7 +60,7 @@ private:
 
   unordered_set<shared_ptr<DStarNode>> currentObstacles;
 
-  bool PRINT_DEBUG = false;
+  bool PRINT_DEBUG = true;
 
   // turn a node into an obstacle
   void placeNamedObstacle(const string& obsName, int weight = 10000);

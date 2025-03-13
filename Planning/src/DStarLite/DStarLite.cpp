@@ -12,12 +12,10 @@ DStarLite::DStarLite(const vector<shared_ptr<DStarNode>>& _nodes,
 											 dStarDrawMap(make_unique<DrawMapDStarLite>(*this)) {
   
 	if(!edges.empty()) {
-		//cout << "There are edges, I want to ingest them" << endl;
 		if(edges.size() != weights.size()) {
 			throw std::invalid_argument("weights and edges must be equal length");
 		}
 		for(int i=0; i<edges.size(); i++) {
-			//cout << "Connecting " << edges[i][0]->getName() << " to " << edges[i][1]->getName() << endl;
 			cost[edges[i][0]][edges[i][1]] = weights[i];
 			cost[edges[i][1]][edges[i][0]] = weights[i];
 		}
