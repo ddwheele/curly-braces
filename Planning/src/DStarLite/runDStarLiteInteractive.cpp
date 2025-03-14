@@ -158,8 +158,6 @@ DStarLite createDStarLite(const unordered_set<char>& wanted, char goalchar) {
     }
   }
   longRow.push_back(start);
-  //longRow.push_back(goal);
-  cout << "longRow.size() = " << longRow.size() << endl;
   cout << "edges = " << edges.size() << endl;
 
   DStarLite dsl(longRow, edges, weights, start, goal);
@@ -173,10 +171,8 @@ int main(int argc, char** argv) {
   //dsl0.drawMap();
   unordered_set<char> nodes = {'K', 'L', 'G', 'M'};
   DStarLite dsl = createDStarLite(nodes, 'M');
-  cout << "from runDStarLiteInteractive, going to draw the map" << endl;
   dsl.drawMap();
-  cout << "back in runDStarLiteInteractive" << endl;
-  // dsl.findPathInteractive();
+  dsl.findPathInteractive();
 
   // std::cout << "Hit enter to end program";
   // string x;

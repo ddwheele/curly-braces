@@ -8,7 +8,8 @@ DStarLite::DStarLite(const vector<shared_ptr<DStarNode>>& _nodes,
 											const vector<vector<shared_ptr<DStarNode>>>& edges, 
 											const vector<double>& weights,
 											const shared_ptr<DStarNode>& _start,
-											const shared_ptr<DStarNode>& _goal) : nodes(_nodes), start(_start), goal(_goal),
+											const shared_ptr<DStarNode>& _goal) 
+											: nodes(_nodes), start(_start), goal(_goal),
 											 dStarDrawMap(make_unique<DrawMapDStarLite>(*this)) {
   
 	if(!edges.empty()) {
@@ -163,10 +164,6 @@ void DStarLite::setTimedObstacles(vector<shared_ptr<DStarNode>>& _timedObstacles
 
 // must have start and goal nodes defined
 // all nodes must have calculated heuristic
-// order. Note that, in an actual
-// implementation, Initialize() only needs to initialize a vertex
-// when it encounters it during the search and thus does not
-// need to initialize all v
 void DStarLite::initialize() {
 	openSet.clear();
 	key_modifier = 0;
@@ -293,6 +290,7 @@ void DStarLite::findPath()  {
   cout << "\n%%%%%%%%%%%%%%%% AT GOAL " << start->getName() << " %%%%%%%%%%%%%%%%\n" << endl;
 }
 
+
 const vector<shared_ptr<DStarNode>>& DStarLite::getNodes() const {
 	return nodes;
 }
@@ -307,6 +305,14 @@ const shared_ptr<DStarNode>& DStarLite::getStartNode() const {
 
 const unordered_set<shared_ptr<DStarNode>>& DStarLite::getCurrentObstacles() const {
 	return currentObstacles;
+}
+
+const vector<shared_ptr<DStarNode>> DStarLite::getNodeNeighbors(const shared_ptr<DStarNode>&node ) const {
+	vector<shared_ptr<DStarNode>> ret;
+	for(auto& [neigh, _] : cost) {
+		ret.push_back(neigh);
+	}
+	return ret;
 }
 
 void DStarLite::drawMap() const {

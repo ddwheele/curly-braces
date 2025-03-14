@@ -20,7 +20,6 @@ public:
 
   void findPathInteractive();
 
-
   // add weight to all edges to obstacle
   void placeObstacle(shared_ptr<DStarNode>& obstacle, int weight = 10000);
 
@@ -35,6 +34,8 @@ public:
 
   const unordered_set<shared_ptr<DStarNode>>& getCurrentObstacles() const;
 
+  const vector<shared_ptr<DStarNode>> getNodeNeighbors(const shared_ptr<DStarNode>& node) const;
+
   const shared_ptr<DStarNode>& getStartNode() const;
 
   void drawMap() const;
@@ -48,6 +49,7 @@ private:
   shared_ptr<DStarNode> start;
   float key_modifier;
 
+  // the set of edges, with their weights
   unordered_map<shared_ptr<DStarNode>, unordered_map<shared_ptr<DStarNode>,double>> cost;
 
   // the locally inconsistent vertices
@@ -58,6 +60,7 @@ private:
   // which node the obstacle is on a time i+1;
   vector<shared_ptr<DStarNode>> timedObstacles;
 
+  // nodes currently denoted as obstacles
   unordered_set<shared_ptr<DStarNode>> currentObstacles;
 
   bool PRINT_DEBUG = true;
@@ -69,9 +72,9 @@ private:
   void removeNamedObstacle(const string& obsName, int weight = 10000);
 
   void initialize();
-  void updateVertex(const std::shared_ptr<DStarNode>&node);
+  void updateVertex(const shared_ptr<DStarNode>&node);
   void computeShortestPath();
-  void recalculateNode(shared_ptr<DStarNode>& changed);
+  void recalculateNode(const shared_ptr<DStarNode>& changed);
 
 };
 

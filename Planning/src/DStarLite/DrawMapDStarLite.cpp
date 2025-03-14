@@ -18,30 +18,28 @@ void DrawMapDStarLite::drawMap()
       drawEdge(*src, *dst, wt);
     }
   }
-    cout << "A" << endl;
-  for(auto node : dStarLite.getNodes()) {
-    cout << node->getName() << endl;
-    drawNode(*node);
-    cv::imshow("D* Lite Map", mat);
-    cv::waitKey(0);
-    cout << "a.5" <<endl;
-  }
-
-  //cout << "B" << endl;
-  //cout << "Fetching obstacles " << endl;
+  
   cout << dStarLite.getCurrentObstacles().empty() << endl;
   for(auto node : dStarLite.getCurrentObstacles()) {
     obstacleNode(*node);
+    auto neigh = dStarLite.getNodeNeighbors(node);
+    for(auto& n : neigh) {
+      darkenEdge(*node, *n);
+    }
   }
-  cout << "C" << endl;
-   highlightNode(*dStarLite.getStartNode());
-  cout << "D" << endl;
-    cv::imshow("D* Lite Map", mat);
-    cv::waitKey(0);
+
+  for(auto node : dStarLite.getNodes()) {
+    cout << node->getName() << endl;
+    drawNode(*node);
+  }
+
+  highlightNode(*dStarLite.getStartNode());
+
+  cv::imshow("D* Lite Map", mat);
+  cv::waitKey(5);
 }
 
 void DrawMapDStarLite::drawNode(const DStarNode& dnode) {
-  cout << "Drawing Node " << dnode.getName() <<endl;
   cv::Point nodeLoc = getCvPoint(dnode);
 
   cv::circle(mat, nodeLoc, RADIUS_PX, LT_GRAY, FILL_SHAPE);
@@ -50,13 +48,18 @@ void DrawMapDStarLite::drawNode(const DStarNode& dnode) {
   
   cv::putText(mat, text, nodeLoc + NODE_LABEL_OFFSET, 
     FONT_FACE, FONT_SCALE_LARGE, BLACK, FONT_THICK);
-    cout<<"Node drawing complete" << endl;
+}
+
+void DrawMapDStarLite::darkenEdge(const DStarNode& n1, const DStarNode& n2) {
+  cv::line(mat, getCvPoint(n1), 
+              getCvPoint(n2),
+              BLACK, FONT_THICK);
 }
 
 void DrawMapDStarLite::drawEdge(const DStarNode& n1, const DStarNode& n2, double weight) {
   cv::line(mat, getCvPoint(n1), 
               getCvPoint(n2),
-              BLACK, 1);
+              BLACK, FONT_THIN);
 
 
   // drawLabeledAStarNode(n1);
