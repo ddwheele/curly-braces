@@ -310,7 +310,9 @@ const unordered_set<shared_ptr<DStarNode>>& DStarLite::getCurrentObstacles() con
 }
 
 void DStarLite::drawMap() const {
+	cout << "about to draw map" << endl;
 	dStarDrawMap->drawMap();
+	cout << "back from drawing map" << endl;
 }
 
 void DStarLite::printState() const {

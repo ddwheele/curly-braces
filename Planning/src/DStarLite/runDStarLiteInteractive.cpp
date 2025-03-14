@@ -92,6 +92,7 @@ DStarLite createDStarLite(const unordered_set<char>& wanted, char goalchar) {
   int ROW_LEN = 5;
   double U = 2.5;
   double offset = 5;
+  bool createdGoalNode = false;
   cout << "Creating nodes " << endl;
   vector<vector<optional<shared_ptr<DStarNode>>>> nodes;
   for(int r=0; r<ROW_LEN; r++) {
@@ -102,6 +103,7 @@ DStarLite createDStarLite(const unordered_set<char>& wanted, char goalchar) {
         row.push_back( make_shared<DStarNode>(label, c*U+offset, r*U+ offset) );
         if(label==goalchar) {
           goal = row.back().value();
+          createdGoalNode = true;
         }
       } else {
         row.push_back({});
@@ -111,6 +113,7 @@ DStarLite createDStarLite(const unordered_set<char>& wanted, char goalchar) {
   }
 
   cout << "nodes = "<< nodes.size() << ", " << nodes[0].size() << endl;
+  cout << "createdGoalNode = " << createdGoalNode << endl;
 
   shared_ptr<DStarNode> start = make_shared<DStarNode>("Start", 2, 10);
 //  shared_ptr<DStarNode> goal = make_shared<DStarNode>("Goal", 18, 10);
@@ -155,7 +158,7 @@ DStarLite createDStarLite(const unordered_set<char>& wanted, char goalchar) {
     }
   }
   longRow.push_back(start);
-  longRow.push_back(goal);
+  //longRow.push_back(goal);
   cout << "longRow.size() = " << longRow.size() << endl;
   cout << "edges = " << edges.size() << endl;
 
@@ -169,14 +172,15 @@ int main(int argc, char** argv) {
   //DStarLite dsl0 = createDStarLiteAll();
   //dsl0.drawMap();
   unordered_set<char> nodes = {'K', 'L', 'G', 'M'};
-  DStarLite dsl = createDStarLite(nodes, false);
+  DStarLite dsl = createDStarLite(nodes, 'M');
+  cout << "from runDStarLiteInteractive, going to draw the map" << endl;
   dsl.drawMap();
-  cout << "Finding path" << endl;
+  cout << "back in runDStarLiteInteractive" << endl;
   // dsl.findPathInteractive();
 
-  std::cout << "Hit enter to end program";
-  string x;
-  std::getline(std::cin, x);  // Reads the entire line into the string variable
+  // std::cout << "Hit enter to end program";
+  // string x;
+  // std::getline(std::cin, x);  // Reads the entire line into the string variable
 
   return 0;
 }
