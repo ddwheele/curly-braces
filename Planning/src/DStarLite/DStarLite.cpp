@@ -316,9 +316,11 @@ const vector<shared_ptr<DStarNode>> DStarLite::getNodeNeighbors(const shared_ptr
 }
 
 void DStarLite::drawMap() const {
-	cout << "about to draw map" << endl;
 	dStarDrawMap->drawMap();
-	cout << "back from drawing map" << endl;
+}
+
+void DStarLite::drawMapAndWait() const {
+	dStarDrawMap->drawMapAndWait();
 }
 
 void DStarLite::printState() const {

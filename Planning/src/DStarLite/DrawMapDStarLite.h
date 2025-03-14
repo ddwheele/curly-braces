@@ -17,6 +17,7 @@ public:
 	DrawMapDStarLite(const DStarLite& _dstar);
 	
   void drawMap() override;
+  void drawMapAndWait(); 
   void drawFinalPath() override;
 
 private:
@@ -26,8 +27,6 @@ private:
   void drawEdge(const DStarNode& n1, const DStarNode& n2, double weight);
   void highlightNode(const DStarNode &node);
   void obstacleNode(const DStarNode &node);
-
-  void darkenEdge(const DStarNode& n1, const DStarNode& n2);
 
   static constexpr int FONT_FACE = cv::FONT_HERSHEY_SIMPLEX;
   static constexpr int FILL_SHAPE = -1;

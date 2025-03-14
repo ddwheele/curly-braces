@@ -18,18 +18,13 @@ void DrawMapDStarLite::drawMap()
       drawEdge(*src, *dst, wt);
     }
   }
-  
+
   cout << dStarLite.getCurrentObstacles().empty() << endl;
-  for(auto node : dStarLite.getCurrentObstacles()) {
+  for(auto node : dStarLite.getCurrentObstacles()) {    
     obstacleNode(*node);
-    auto neigh = dStarLite.getNodeNeighbors(node);
-    for(auto& n : neigh) {
-      darkenEdge(*node, *n);
-    }
   }
 
   for(auto node : dStarLite.getNodes()) {
-    cout << node->getName() << endl;
     drawNode(*node);
   }
 
@@ -37,6 +32,11 @@ void DrawMapDStarLite::drawMap()
 
   cv::imshow("D* Lite Map", mat);
   cv::waitKey(5);
+}
+
+void DrawMapDStarLite::drawMapAndWait() {
+  drawMap();
+  cv::waitKey(0);
 }
 
 void DrawMapDStarLite::drawNode(const DStarNode& dnode) {
@@ -50,28 +50,21 @@ void DrawMapDStarLite::drawNode(const DStarNode& dnode) {
     FONT_FACE, FONT_SCALE_LARGE, BLACK, FONT_THICK);
 }
 
-void DrawMapDStarLite::darkenEdge(const DStarNode& n1, const DStarNode& n2) {
-  cv::line(mat, getCvPoint(n1), 
-              getCvPoint(n2),
-              BLACK, FONT_THICK);
-}
-
 void DrawMapDStarLite::drawEdge(const DStarNode& n1, const DStarNode& n2, double weight) {
+  int line_wt = FONT_THIN;
+  if(weight > 500) {
+    line_wt = FONT_THICK;
+  }
+
   cv::line(mat, getCvPoint(n1), 
               getCvPoint(n2),
-              BLACK, FONT_THIN);
-
-
-  // drawLabeledAStarNode(n1);
-  // drawLabeledAStarNode(n2);
+              BLACK, line_wt);
 
   // cv::Point midpoint = (getCvPoint(n1) + getCvPoint(n2)) / 2;
 
   // cv::putText(mat, format("{:.1f}", weight), midpoint, 
   //   FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
 }
-
-
 
 void DrawMapDStarLite::drawFinalPath()
 {

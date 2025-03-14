@@ -39,6 +39,7 @@ public:
   const shared_ptr<DStarNode>& getStartNode() const;
 
   void drawMap() const;
+  void drawMapAndWait() const;
   void printState() const;
 
 private: 
