@@ -8,7 +8,7 @@ public:
 	virtual void drawMap() = 0;
 	virtual void drawFinalPath() = 0;
 	virtual ~IDrawMap() = default;
-	void drawMapAndWait() {}
+	virtual void drawMapAndWait() {}
 };
 
 

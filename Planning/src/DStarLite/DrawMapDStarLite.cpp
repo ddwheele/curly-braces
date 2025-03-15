@@ -11,19 +11,15 @@ void DrawMapDStarLite::drawMap()
 {
  cout << "Drawing the Map" << endl;
   mat = cv::Mat(UNIT_X_SIZE * Utils::SCALE, UNIT_Y_SIZE * Utils::SCALE, CV_8UC3, WHITE);
-  cout << "Canvas size = " << UNIT_X_SIZE * Utils::SCALE <<" by " << UNIT_Y_SIZE * Utils::SCALE << endl;
 
   for( auto& [src, dst_map] : dStarLite.getCostMap()) {
     for(const auto& [dst, wt] : dst_map) {
       drawEdge(*src, *dst, wt);
     }
   }
-
-  cout << dStarLite.getCurrentObstacles().empty() << endl;
   for(auto node : dStarLite.getCurrentObstacles()) {    
     obstacleNode(*node);
   }
-
   for(auto node : dStarLite.getNodes()) {
     drawNode(*node);
   }
@@ -31,7 +27,7 @@ void DrawMapDStarLite::drawMap()
   highlightNode(*dStarLite.getStartNode());
 
   cv::imshow("D* Lite Map", mat);
-  cv::waitKey(5);
+  cv::waitKey(0);
 }
 
 void DrawMapDStarLite::drawMapAndWait() {
@@ -44,10 +40,19 @@ void DrawMapDStarLite::drawNode(const DStarNode& dnode) {
 
   cv::circle(mat, nodeLoc, RADIUS_PX, LT_GRAY, FILL_SHAPE);
 
-  std::string text = dnode.getName();
+  std::string nameText = dnode.getName();
   
-  cv::putText(mat, text, nodeLoc + NODE_LABEL_OFFSET, 
+  cv::putText(mat, nameText, nodeLoc + NODE_LABEL_OFFSET, 
     FONT_FACE, FONT_SCALE_LARGE, BLACK, FONT_THICK);
+
+  std::string gText = Utils::infString(dnode.getGn());
+  std::string rText = Utils::infString(dnode.getRhs());
+
+    cv::putText(mat, "g=" + gText, nodeLoc + G_LABEL_OFFSET, 
+    FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
+
+      cv::putText(mat, "r=" + rText, nodeLoc + R_LABEL_OFFSET, 
+    FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
 }
 
 void DrawMapDStarLite::drawEdge(const DStarNode& n1, const DStarNode& n2, double weight) {
@@ -60,10 +65,10 @@ void DrawMapDStarLite::drawEdge(const DStarNode& n1, const DStarNode& n2, double
               getCvPoint(n2),
               BLACK, line_wt);
 
-  // cv::Point midpoint = (getCvPoint(n1) + getCvPoint(n2)) / 2;
+  cv::Point midpoint = (getCvPoint(n1) + getCvPoint(n2)) / 2;
 
-  // cv::putText(mat, format("{:.1f}", weight), midpoint, 
-  //   FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
+  cv::putText(mat, format("{:.1f}", weight), midpoint, 
+     FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
 }
 
 void DrawMapDStarLite::drawFinalPath()

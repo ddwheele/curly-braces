@@ -17,7 +17,7 @@ public:
 	DrawMapDStarLite(const DStarLite& _dstar);
 	
   void drawMap() override;
-  void drawMapAndWait(); 
+  void drawMapAndWait() override; 
   void drawFinalPath() override;
 
 private:
@@ -37,6 +37,12 @@ private:
   static constexpr double LABEL_OFFSET_RATIO = 0.6;
   static inline cv::Point NODE_LABEL_OFFSET = 
     cv::Point(-RADIUS_PX*LABEL_OFFSET_RATIO,RADIUS_PX*LABEL_OFFSET_RATIO);
+
+  static inline cv::Point G_LABEL_OFFSET = 
+    cv::Point(-RADIUS_PX*LABEL_OFFSET_RATIO,3*RADIUS_PX*LABEL_OFFSET_RATIO);
+
+  static inline cv::Point R_LABEL_OFFSET = 
+    cv::Point(-RADIUS_PX*LABEL_OFFSET_RATIO,5*RADIUS_PX*LABEL_OFFSET_RATIO);
 
   // size of map, in "world units"
   double UNIT_X_SIZE = 20;

@@ -10,7 +10,7 @@ struct Utils {
 
   static constexpr int NUM_STEPS = 10000; // how long to search for a path
 
-  static constexpr int SCALE = 50; // conversion from units to pixels for drawing
+  static constexpr int SCALE = 70; // conversion from units to pixels for drawing
 
   static constexpr double HEIGHT = 20.0; // size of canvas in units (RRT)
   static constexpr double WIDTH = 20.0; // size of canvas in units (RRT)
@@ -28,7 +28,7 @@ struct Utils {
 		if(equals(d, numeric_limits<double>::max())) {
 			return "inf";
 		}
-		return std::format("{:.2f}", d);
+		return std::format("{:.1f}", d);
 	}
 
 };

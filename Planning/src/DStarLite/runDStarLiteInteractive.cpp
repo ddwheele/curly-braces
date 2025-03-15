@@ -56,14 +56,11 @@ DStarLite createDStarLiteAll() {
   vector<shared_ptr<DStarNode>> longRow;
   longRow.reserve(ROW_LEN*ROW_LEN);
 
-  cout << "created longRow" << endl;
   for(auto rw : nodes) {
     longRow.insert(longRow.end(), rw.begin(), rw.end());
   }
   longRow.push_back(start);
   longRow.push_back(goal);
-  cout << "longRow.size() = " << longRow.size() << endl;
-  cout << "edges = " << edges.size() << endl;
 
   DStarLite dsl(longRow, edges, weights, start, goal);
 
@@ -78,7 +75,6 @@ DStarLite createDStarLite(const unordered_set<char>& wanted, string goalchar) {
   double U = 2.5;
   double offset = 5;
   bool goalNodeWasLetter = false;
-  cout << "Creating nodes " << endl;
   vector<vector<optional<shared_ptr<DStarNode>>>> nodes;
   for(int r=0; r<ROW_LEN; r++) {
     vector<optional<shared_ptr<DStarNode>>> row;
@@ -96,9 +92,6 @@ DStarLite createDStarLite(const unordered_set<char>& wanted, string goalchar) {
     }
     nodes.push_back(row);
   }
-
-  cout << "nodes = "<< nodes.size() << ", " << nodes[0].size() << endl;
-  cout << "goalNodeWasLetter = " << goalNodeWasLetter << endl;
 
   shared_ptr<DStarNode> start = make_shared<DStarNode>("Start", 2, 10);
   if(!goalNodeWasLetter) {
@@ -135,7 +128,6 @@ DStarLite createDStarLite(const unordered_set<char>& wanted, string goalchar) {
 
   vector<shared_ptr<DStarNode>> longRow;
 
-  cout << "created longRow" << endl;
   for(auto rw : nodes) {
     for(auto n: rw) {
       if(n.has_value()) {

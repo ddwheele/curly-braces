@@ -118,11 +118,14 @@ void DStarLite::computeShortestPath() {
 			cout << "Examining " << *node << endl;
 		}
 		DStarNode::Key oldKey = node->getKey();
+		// Case 1: The Key got bigger, throw it back and look for a smaller one
 		if(node->computeKey(key_modifier) > oldKey ) {
 			if(PRINT_DEBUG) {
 				cout << "\t-key got bigger, put back in openSet" << endl;
 			}
 			openSet.insertNode(node);
+
+		// Case 2: G > RHS, relax G down to Rhs
 		} else if(node->getGn() > node->getRhs()) {
 			if(PRINT_DEBUG) {
 				cout << "\tG > RHS, relaxing G and calling the neighbors" << endl;
@@ -134,6 +137,7 @@ void DStarLite::computeShortestPath() {
 			for(auto& [ney, _] : cost[node]) {
 				updateVertex(ney);
 			}
+		// Case 3: G <= Rhs, set G=inf and propagate to neighbors
 		} else {
 			if(PRINT_DEBUG) {
 				cout << "\tG <= RHS, blowing up G and calling the neighbors" << endl;
@@ -147,13 +151,13 @@ void DStarLite::computeShortestPath() {
 				updateVertex(ney);
 			}
 			updateVertex(node);
+
 		}
+		drawMapAndWait();
   }
 //	start->setGn(start->getRhs());
 	if(PRINT_DEBUG) {
 		cout << "Shortest path computed in " << (maxSteps - stepsLeft) << " steps." << endl;
-	}
-	if(PRINT_DEBUG) {
 		printState();
 	}
 }
@@ -209,8 +213,11 @@ void DStarLite::findPathInteractive()  {
   cout << "\n%%%%%%%%%%%% STARTING AT NODE " << start->getName() << " %%%%%%%%%%%%\n" << endl;
 	lastStart = start;
 	initialize();
+		cout << "DONE INITIALIZING" << endl;
 	computeShortestPath();
-	int obstacleTime = 0;
+
+	cout << "@@@@@@@@@@@@@@@@@@@@@ DONE COMPUTING SHORTEST PATH @@@@@@@@@@@@@@@@@@@@@" << endl;
+
 	while(start != goal) {
 		if(Utils::equals(start->getGn(), numeric_limits<double>::max())) {
 			cout << "No path found" << endl;
@@ -245,6 +252,7 @@ void DStarLite::findPath()  {
   cout << "\n%%%%%%%%%%%% STARTING AT NODE " << start->getName() << " %%%%%%%%%%%%\n" << endl;
 	lastStart = start;
 	initialize();
+
 	computeShortestPath();
 	int obstacleTime = 0;
 	while(start != goal) {
