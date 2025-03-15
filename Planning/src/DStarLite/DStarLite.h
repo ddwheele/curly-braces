@@ -50,6 +50,9 @@ private:
   shared_ptr<DStarNode> start;
   float key_modifier;
 
+  // needed to update key_modifier
+  shared_ptr<DStarNode> lastStart;
+
   // the set of edges, with their weights
   unordered_map<shared_ptr<DStarNode>, unordered_map<shared_ptr<DStarNode>,double>> cost;
 
@@ -77,6 +80,11 @@ private:
   void computeShortestPath();
   void recalculateNode(const shared_ptr<DStarNode>& changed);
 
+  // for interactive
+  void doObstacleUpdates();
+
+  // for non-interactive
+  void applyTimedObstacles(int &obstacleTime);
 };
 
 #endif

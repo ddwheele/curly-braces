@@ -177,10 +177,37 @@ void DStarLite::initialize() {
 	openSet.insertNode(goal);
 }
 
+void DStarLite::doObstacleUpdates() {
+	// Ask user for obstacle updates
+	std::string obstaclesToRemove;
+	std::string obstaclesToPlace;
+	
+	std::cout << "Enter obstacles to place, or empty string: ";
+	std::getline(std::cin, obstaclesToPlace);  // Reads the entire line into the string variable
+
+	if(!currentObstacles.empty()) {
+		std::cout << "Enter obstacles to remove, or empty string: ";
+		std::getline(std::cin, obstaclesToRemove);  // Reads the entire line into the string variable
+	}
+
+	if(obstaclesToPlace.size() > 0 || obstaclesToRemove.size() > 0) {
+		key_modifier += start->distanceTo(*lastStart);
+		lastStart = start;
+	}
+
+	for(char toPlace: obstaclesToPlace) {
+		placeNamedObstacle(string(1,toPlace));
+	}
+
+	for(char toRemove: obstaclesToRemove) {
+		removeNamedObstacle(string(1,toRemove));
+	}
+}
+
 void DStarLite::findPathInteractive()  {
-	// handles single moving obstacle, specified in timedObstacles
+	drawMap();
   cout << "\n%%%%%%%%%%%% STARTING AT NODE " << start->getName() << " %%%%%%%%%%%%\n" << endl;
-	shared_ptr<DStarNode> lastStart = start;
+	lastStart = start;
 	initialize();
 	computeShortestPath();
 	int obstacleTime = 0;
@@ -189,6 +216,9 @@ void DStarLite::findPathInteractive()  {
 			cout << "No path found" << endl;
 			return;
 		}
+	
+		doObstacleUpdates();
+
 		double best = numeric_limits<double>::max();
 		// find the neighbor with lowest g + cost to start
 		shared_ptr<DStarNode> nextNode;
@@ -205,40 +235,7 @@ void DStarLite::findPathInteractive()  {
 		start = nextNode;
 
 		drawMap();
-
-		// Ask user for obstacle updates
-		std::string obstaclesToRemove;
-		std::string obstaclesToPlace;
-    
-    std::cout << "Enter obstacles to remove, or empty string: ";
-    std::getline(std::cin, obstaclesToRemove);  // Reads the entire line into the string variable
-
-    std::cout << "Enter obstacles to place, or empty string: ";
-    std::getline(std::cin, obstaclesToPlace);  // Reads the entire line into the string variable
-
-    for(char toRemove: obstaclesToRemove) {
-    	removeNamedObstacle(string(1,toRemove));
-    
-    }
-
-    for(char toPlace: obstaclesToPlace) {
-    	placeNamedObstacle(string(1,toPlace));
-    }
-
-		if(!timedObstacles.empty() && timedObstacles[obstacleTime]) {
-			// increment km by h(start, lastStart)
-			key_modifier += start->distanceTo(*lastStart);
-			lastStart = start;
-			// for all edge changes
-			// update edge cost in cost
-			placeObstacle(timedObstacles[obstacleTime]);
-			if(obstacleTime >0) {
-				removeObstacle(timedObstacles[obstacleTime-1]);
-			}
-			obstacleTime++;
-			// (vertices were updated inside the Obstacle functions)
-			computeShortestPath();
-		}
+		
 	}
   cout << "\n%%%%%%%%%%%%%%%% AT GOAL " << start->getName() << " %%%%%%%%%%%%%%%%\n" << endl;
 }
@@ -246,7 +243,7 @@ void DStarLite::findPathInteractive()  {
 void DStarLite::findPath()  {
 	// handles single moving obstacle, specified in timedObstacles
   cout << "\n%%%%%%%%%%%% STARTING AT NODE " << start->getName() << " %%%%%%%%%%%%\n" << endl;
-	shared_ptr<DStarNode> lastStart = start;
+	lastStart = start;
 	initialize();
 	computeShortestPath();
 	int obstacleTime = 0;
@@ -265,31 +262,32 @@ void DStarLite::findPath()  {
 				nextNode = ney;
 			}
 		}
-
 		// move to nextNode
 		cout << "\n%%%%%%%%%%%% ADVANCE TO NODE " << nextNode->getName() << " %%%%%%%%%%%%\n" << endl;
 		start = nextNode;
 
 		// did anything change?
-
-		if(!timedObstacles.empty() && timedObstacles[obstacleTime]) {
-			// increment km by h(start, lastStart)
-			key_modifier += start->distanceTo(*lastStart);
-			lastStart = start;
-			// for all edge changes
-			// update edge cost in cost
-			placeObstacle(timedObstacles[obstacleTime]);
-			if(obstacleTime >0) {
-				removeObstacle(timedObstacles[obstacleTime-1]);
-			}
-			obstacleTime++;
-			// (vertices were updated inside the Obstacle functions)
-			computeShortestPath();
-		}
+		applyTimedObstacles(obstacleTime);
 	}
   cout << "\n%%%%%%%%%%%%%%%% AT GOAL " << start->getName() << " %%%%%%%%%%%%%%%%\n" << endl;
 }
 
+void DStarLite::applyTimedObstacles(int &obstacleTime) {
+	if(!timedObstacles.empty() && timedObstacles[obstacleTime]) {
+		// increment km by h(start, lastStart)
+		key_modifier += start->distanceTo(*lastStart);
+		lastStart = start;
+		// for all edge changes
+		// update edge cost in cost
+		placeObstacle(timedObstacles[obstacleTime]);
+		if(obstacleTime > 0) {
+			removeObstacle(timedObstacles[obstacleTime-1]);
+		}
+		obstacleTime++;
+		// (vertices were updated inside the Obstacle functions)
+		computeShortestPath();
+	}
+}
 
 const vector<shared_ptr<DStarNode>>& DStarLite::getNodes() const {
 	return nodes;

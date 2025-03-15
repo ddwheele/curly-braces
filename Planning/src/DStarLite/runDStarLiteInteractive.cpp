@@ -172,18 +172,18 @@ DStarLite createDStarLite(const unordered_set<char>& wanted, string goalchar) {
 int main(int argc, char** argv) {
   cout << " Start" << endl;
  // DStarLite dsl = createDStarLiteAll();
-  unordered_set<char> nodes = {'A','B','C','D',
-    'F','G','H','I',
-  'K','L','M','N',
+  unordered_set<char> nodes = {
+    'G',
+  'K','L','M',
   'P','Q','R','S'};
   DStarLite dsl = createDStarLite(nodes, "S");
-  dsl.drawMapAndWait();
+
   dsl.findPathInteractive();
 
   // std::cout << "Hit enter to end program";
   // string x;
   // std::getline(std::cin, x);  // Reads the entire line into the string variable
-
+  dsl.drawMapAndWait();
   return 0;
 }
 
