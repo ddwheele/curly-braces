@@ -43,6 +43,10 @@ public:
         + "; k2 = min(" + Utils::infString(gn) + "," + Utils::infString(rhs) + ") = " + Utils::infString(k2);
     }
 
+    string toShortString() const {
+      return "(" + Utils::infString(k1) + ", " + Utils::infString(k2) + ")";
+    }
+
     inline bool operator<(const Key& other) { return k1 < other.k1 || Utils::equals(k1,other.k1) && k2 < other.k2; }
     inline bool operator>(const Key& other) { return k1 > other.k1 || Utils::equals(k1,other.k1) && k2 > other.k2; }
     inline bool operator==(const Key& other) { return Utils::equals(k1,other.k1) && Utils::equals(k2,other.k2); }
@@ -74,6 +78,9 @@ public:
   double getRhs() const;
   void setRhs(double _rhs);
 
+  bool isInOpenSet() const;
+  void setInOpenSet(bool inSet);
+
   bool operator<(const DStarNode& other) const;
   bool operator>(const DStarNode& other) const;
 
@@ -84,7 +91,7 @@ public:
   const vector<shared_ptr<DStarNode>>& getSuccessors() const;
 
   friend std::ostream& operator<<(std::ostream& os, const DStarNode& dsn) {
-    if(dsn.onOpenSet) {
+    if(dsn.inOpenSet) {
       return os << std::fixed << std::setprecision(2) << dsn.name
       << ": (" << dsn.x << "," << dsn.y
       << "), gn = " << Utils::infString(dsn.gn) << ", rhs = " << Utils::infString(dsn.rhs)
@@ -103,7 +110,7 @@ private:
   void initGnRhs();
 
   // this is only to help with debugging output
-  bool onOpenSet = false;
+  bool inOpenSet = false;
 
   // XXX truely cringe-worthy not to be able to use neighbors
   const vector<shared_ptr<DStarNode>> dStarNeighbors;

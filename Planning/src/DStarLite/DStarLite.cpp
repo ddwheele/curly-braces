@@ -56,8 +56,10 @@ void DStarLite::placeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
 		cost[obstacle][ney] += weight;
 		cost[ney][obstacle] += weight;
 		updateVertex(ney);
+		drawMapAndWait();
 	}
 	updateVertex(obstacle);
+	drawMapAndWait();
 }
 
 void DStarLite::removeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
@@ -95,6 +97,7 @@ void DStarLite::updateVertex(const std::shared_ptr<DStarNode>& node) {
 	}
 	if(openSet.contains(node)) {
 		openSet.deleteNode(node);
+		node->setInOpenSet(false);
 	}
 	if(!node->gnEqualsRhs()) {
 		if(PRINT_DEBUG) {
@@ -102,6 +105,7 @@ void DStarLite::updateVertex(const std::shared_ptr<DStarNode>& node) {
 		}
 		node->computeKey(key_modifier);
 		openSet.insertNode(node);
+		node->setInOpenSet(true);
 	}
 }
 
@@ -114,8 +118,9 @@ void DStarLite::computeShortestPath() {
 			break;
 		}
 		auto node = openSet.extractMin();
+		node->setInOpenSet(false);
 		if(PRINT_DEBUG) {
-			cout << "Examining " << *node << endl;
+			cout << "Popping node from queue: " << *node << endl;
 		}
 		DStarNode::Key oldKey = node->getKey();
 		// Case 1: The Key got bigger, throw it back and look for a smaller one
@@ -124,6 +129,7 @@ void DStarLite::computeShortestPath() {
 				cout << "\t-key got bigger, put back in openSet" << endl;
 			}
 			openSet.insertNode(node);
+			node->setInOpenSet(true);
 
 		// Case 2: G > RHS, relax G down to Rhs
 		} else if(node->getGn() > node->getRhs()) {
@@ -179,6 +185,7 @@ void DStarLite::initialize() {
 	goal->computeHeuristic(start);
 	goal->computeKey(key_modifier);
 	openSet.insertNode(goal);
+	goal->setInOpenSet(true);
 }
 
 void DStarLite::doObstacleUpdates() {
@@ -197,15 +204,19 @@ void DStarLite::doObstacleUpdates() {
 	if(obstaclesToPlace.size() > 0 || obstaclesToRemove.size() > 0) {
 		key_modifier += start->distanceTo(*lastStart);
 		lastStart = start;
+
+		for(char toPlace: obstaclesToPlace) {
+			placeNamedObstacle(string(1,toPlace));
+		}
+
+		for(char toRemove: obstaclesToRemove) {
+			removeNamedObstacle(string(1,toRemove));
+			drawMapAndWait();
+		}
+
+		computeShortestPath();
 	}
 
-	for(char toPlace: obstaclesToPlace) {
-		placeNamedObstacle(string(1,toPlace));
-	}
-
-	for(char toRemove: obstaclesToRemove) {
-		removeNamedObstacle(string(1,toRemove));
-	}
 }
 
 void DStarLite::findPathInteractive()  {
@@ -213,7 +224,7 @@ void DStarLite::findPathInteractive()  {
   cout << "\n%%%%%%%%%%%% STARTING AT NODE " << start->getName() << " %%%%%%%%%%%%\n" << endl;
 	lastStart = start;
 	initialize();
-		cout << "DONE INITIALIZING" << endl;
+	cout << "DONE INITIALIZING" << endl;
 	computeShortestPath();
 
 	cout << "@@@@@@@@@@@@@@@@@@@@@ DONE COMPUTING SHORTEST PATH @@@@@@@@@@@@@@@@@@@@@" << endl;
@@ -223,9 +234,7 @@ void DStarLite::findPathInteractive()  {
 			cout << "No path found" << endl;
 			return;
 		}
-	
 		doObstacleUpdates();
-
 		double best = numeric_limits<double>::max();
 		// find the neighbor with lowest g + cost to start
 		shared_ptr<DStarNode> nextNode;
@@ -240,9 +249,7 @@ void DStarLite::findPathInteractive()  {
 		// move to nextNode
 		cout << "\n%%%%%%%%%%%% ADVANCE TO NODE " << nextNode->getName() << " %%%%%%%%%%%%\n" << endl;
 		start = nextNode;
-
 		drawMap();
-		
 	}
   cout << "\n%%%%%%%%%%%%%%%% AT GOAL " << start->getName() << " %%%%%%%%%%%%%%%%\n" << endl;
 }
