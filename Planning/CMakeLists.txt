@@ -44,6 +44,7 @@ add_executable(dStarLite
 	${CMAKE_SOURCE_DIR}/src/DStarLite/runDStarLite.cpp
 	${CMAKE_SOURCE_DIR}/src/DStarLite/DStarNode.cpp
 	${CMAKE_SOURCE_DIR}/src/DStarLite/DStarLite.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarLite/AbstractDStarLite.cpp
 	${CMAKE_SOURCE_DIR}/src/DStarLite/DrawMapDStarLite.cpp
 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
 	${CMAKE_SOURCE_DIR}/src/Node.cpp
@@ -53,20 +54,22 @@ add_executable(dStarLiteInteractive
 	${CMAKE_SOURCE_DIR}/src/DStarLite/runDStarLiteInteractive.cpp
 	${CMAKE_SOURCE_DIR}/src/DStarLite/DStarNode.cpp
 	${CMAKE_SOURCE_DIR}/src/DStarLite/DStarLite.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarLite/AbstractDStarLite.cpp
 	${CMAKE_SOURCE_DIR}/src/DStarLite/DrawMapDStarLite.cpp
 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
 	${CMAKE_SOURCE_DIR}/src/Node.cpp
 	${CMAKE_SOURCE_DIR}/src/StarNode.cpp
 	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp)
-# add_executable(dStarLiteOptimized
-# 	${CMAKE_SOURCE_DIR}/src/DStarLite/runDStarLiteOptimized.cpp
-# 	${CMAKE_SOURCE_DIR}/src/DStarLite/DStarNode.cpp
-# 	${CMAKE_SOURCE_DIR}/src/DStarLite/DStarLiteOptimized.cpp
-# 	${CMAKE_SOURCE_DIR}/src/DStarLite/DrawMapDStarLite.cpp
-# 	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
-# 	${CMAKE_SOURCE_DIR}/src/Node.cpp
-# 	${CMAKE_SOURCE_DIR}/src/StarNode.cpp
-# 	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp)
+add_executable(dStarLiteOptimized
+	${CMAKE_SOURCE_DIR}/src/DStarLite/runDStarLiteOptimized.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarLite/DStarNode.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarLite/AbstractDStarLite.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarLite/DStarLiteOptimized.cpp
+	${CMAKE_SOURCE_DIR}/src/DStarLite/DrawMapDStarLite.cpp
+	${CMAKE_SOURCE_DIR}/src/Obstacle.cpp 
+	${CMAKE_SOURCE_DIR}/src/Node.cpp
+	${CMAKE_SOURCE_DIR}/src/StarNode.cpp
+	${CMAKE_SOURCE_DIR}/src/DrawMap.cpp)
 add_executable(runRRT
 	${CMAKE_SOURCE_DIR}/src/RRT/runRRT.cpp
 	${CMAKE_SOURCE_DIR}/src/RRT/DrawMapRrt.cpp
@@ -100,7 +103,7 @@ target_link_libraries(runAStar PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 target_link_libraries(aStarRandom PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 target_link_libraries(dStarLite PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 target_link_libraries(dStarLiteInteractive PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
-# target_link_libraries(dStarLiteOptimized PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
+target_link_libraries(dStarLiteOptimized PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 target_link_libraries(runRRT PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 #target_link_libraries(testPlanning PRIVATE ${OpenCV_LIBS} ${YAML_CPP_LIBRARIES})
 
@@ -110,7 +113,7 @@ target_include_directories(runAStar PRIVATE AStar/ ${OpenCV_INCLUDE_DIRS} ${YAML
 target_include_directories(aStarRandom PRIVATE AStar/ ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
 target_include_directories(dStarLite PRIVATE DStarLite/ ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
 target_include_directories(dStarLiteInteractive PRIVATE DStarLite/ ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
-# target_include_directories(dStarLiteOptimized PRIVATE DStarLite/ ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
+target_include_directories(dStarLiteOptimized PRIVATE DStarLite/ ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
 target_include_directories(runRRT PRIVATE RRT/ ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
 #target_include_directories(testPlanning PRIVATE /AStar /RRT /DStarLite ${OpenCV_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
 

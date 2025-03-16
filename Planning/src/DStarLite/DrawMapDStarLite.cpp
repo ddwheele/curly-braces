@@ -5,7 +5,7 @@
 
 using namespace std;
 
-DrawMapDStarLite::DrawMapDStarLite(const DStarLite& _dStarLite) : dStarLite(_dStarLite) {}
+DrawMapDStarLite::DrawMapDStarLite(const AbstractDStarLite& _dStarLite) : dStarLite(_dStarLite) {}
 
 void DrawMapDStarLite::drawMap()
 {
@@ -35,8 +35,6 @@ void DrawMapDStarLite::drawMapAndWait() {
   drawMap();
   cv::waitKey(0);
 }
-
-
 
 void DrawMapDStarLite::drawEdge(const DStarNode& n1, const DStarNode& n2, double weight) {
   int line_wt = FONT_THIN;

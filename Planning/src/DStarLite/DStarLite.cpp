@@ -9,77 +9,7 @@ DStarLite::DStarLite(const vector<shared_ptr<DStarNode>>& _nodes,
 											const vector<double>& weights,
 											const shared_ptr<DStarNode>& _start,
 											const shared_ptr<DStarNode>& _goal) 
-											: nodes(_nodes), start(_start), goal(_goal),
-											 dStarDrawMap(make_unique<DrawMapDStarLite>(*this)) {
-  
-	if(!edges.empty()) {
-		if(edges.size() != weights.size()) {
-			throw std::invalid_argument("weights and edges must be equal length");
-		}
-		for(int i=0; i<edges.size(); i++) {
-			cost[edges[i][0]][edges[i][1]] = weights[i];
-			cost[edges[i][1]][edges[i][0]] = weights[i];
-		}
-	} else {
-		cout << "there are no edges" << endl;
-	}
-}
-
-// turn a node into an obstacle
-void DStarLite::placeNamedObstacle(const string& obsName, int weight) {
-	for(auto nd : nodes) {
-		if(nd->getName() == obsName) {
-			placeObstacle(nd);
-			currentObstacles.insert(nd);
-		}
-	}
-}
-
-// make a node not an obstacle anymore
-void DStarLite::removeNamedObstacle(const string& obsName, int weight) {
-	for(auto nd : nodes) {
-		if(nd->getName() == obsName) {
-			removeObstacle(nd);
-			currentObstacles.erase(nd);
-		}
-	}
-}
-
-void DStarLite::placeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
-	if(!obstacle) {
-		return;
-	}
-	if(PRINT_DEBUG) {
-		cout << "OBSTACLE AT NODE " << obstacle->getName() << endl;
-	}
-	for(auto& [ney, cst] : cost[obstacle]) {
-		cost[obstacle][ney] += weight;
-		cost[ney][obstacle] += weight;
-		updateVertex(ney);
-		if(PRINT_DEBUG) {
-			drawMapAndWait();
-		}
-		
-	}
-	updateVertex(obstacle);
-	if(PRINT_DEBUG) {
-			drawMapAndWait();
-		}
-}
-
-void DStarLite::removeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
-	if(!obstacle) {
-		return;
-	}
-	if(PRINT_DEBUG) {
-		cout << "REMOVED OBSTACLE AT NODE " << obstacle->getName() << endl;
-	}
-	for(auto& [ney, cst] : cost[obstacle]) {
-		cost[obstacle][ney] -= weight;
-		cost[ney][obstacle] -= weight;
-		updateVertex(ney);
-	}
-	updateVertex(obstacle);
+											: AbstractDStarLite(_nodes, edges, weights, _start, _goal) {
 }
 
 void DStarLite::updateVertex(const std::shared_ptr<DStarNode>& node) {
@@ -195,36 +125,6 @@ void DStarLite::initialize() {
 	goal->setInOpenSet(true);
 }
 
-void DStarLite::doObstacleUpdates() {
-	// Ask user for obstacle updates
-	std::string obstaclesToRemove;
-	std::string obstaclesToPlace;
-	
-	std::cout << "Enter obstacles to place, or empty string: ";
-	std::getline(std::cin, obstaclesToPlace);  // Reads the entire line into the string variable
-
-	if(!currentObstacles.empty()) {
-		std::cout << "Enter obstacles to remove, or empty string: ";
-		std::getline(std::cin, obstaclesToRemove);  // Reads the entire line into the string variable
-	}
-
-	if(obstaclesToPlace.size() > 0 || obstaclesToRemove.size() > 0) {
-		key_modifier += start->distanceTo(*lastStart);
-		lastStart = start;
-
-		for(char toPlace: obstaclesToPlace) {
-			placeNamedObstacle(string(1,toPlace));
-		}
-
-		for(char toRemove: obstaclesToRemove) {
-			removeNamedObstacle(string(1,toRemove));
-		}
-
-		computeShortestPath();
-	}
-
-}
-
 void DStarLite::findPathInteractive()  {
 	drawMap();
   cout << "\n%%%%%%%%%%%% STARTING AT NODE " << start->getName() << " %%%%%%%%%%%%\n" << endl;
@@ -310,42 +210,5 @@ void DStarLite::applyTimedObstacles(int &obstacleTime) {
 	}
 }
 
-const vector<shared_ptr<DStarNode>>& DStarLite::getNodes() const {
-	return nodes;
-}
 
-const unordered_map<shared_ptr<DStarNode>, unordered_map<shared_ptr<DStarNode>,double>>& DStarLite::getCostMap() const {
-	return cost;
-}
 
-const shared_ptr<DStarNode>& DStarLite::getStartNode() const {
-	return start;
-}
-
-const unordered_set<shared_ptr<DStarNode>>& DStarLite::getCurrentObstacles() const {
-	return currentObstacles;
-}
-
-const vector<shared_ptr<DStarNode>> DStarLite::getNodeNeighbors(const shared_ptr<DStarNode>&node ) const {
-	vector<shared_ptr<DStarNode>> ret;
-	for(auto& [neigh, _] : cost) {
-		ret.push_back(neigh);
-	}
-	return ret;
-}
-
-void DStarLite::drawMap() const {
-	dStarDrawMap->drawMap();
-}
-
-void DStarLite::drawMapAndWait() const {
-	dStarDrawMap->drawMapAndWait();
-}
-
-void DStarLite::printState() const {
-	cout << "====================  D*Lite  ====================" << endl;
-	for(auto n : nodes) {
-		cout << *n << endl;
-	}
-	cout << "==================================================" << endl;
-}

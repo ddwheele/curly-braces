@@ -14,14 +14,14 @@ class DStarLite;
 
 class DrawMapDStarLite : public DrawMap {
 public:
-	DrawMapDStarLite(const DStarLite& _dstar);
+	DrawMapDStarLite(const AbstractDStarLite& _dstar);
 	
   void drawMap() override;
   void drawMapAndWait() override; 
   void drawFinalPath() override;
 
 private:
-  const DStarLite& dStarLite;
+  const AbstractDStarLite& dStarLite;
 
   void drawNode(const DStarNode& dnode, const cv::Scalar color = LT_GRAY);
   void drawEdge(const DStarNode& n1, const DStarNode& n2, double weight);

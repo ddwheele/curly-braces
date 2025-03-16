@@ -8,8 +8,8 @@
 #include <memory>
 
 #include "DStarLite.h"
-#include "../StarNode.h"
-#include "../Utils.h"
+#include "StarNode.h"
+#include "Utils.h"
 
 using namespace std;
 
