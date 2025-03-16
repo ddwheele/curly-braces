@@ -35,11 +35,17 @@ void DrawMapAStar::drawMap() {
 
 void DrawMapAStar::drawFinalPath() {
   auto curr = astar.getGoal();
+  shared_ptr<AStarNode> lastCurr;
   cout << "Initial node: ";
   curr->printMe();
   while(curr != nullptr) {
     curr->printMe();
+
+    if(lastCurr != nullptr) {
+      highlightAStarEdge(*curr, *lastCurr);
+    }
     highlightNode(*curr);
+    lastCurr = curr;
     curr = curr->getParent();
   }
   cv::imshow("AStar Map", mat);
@@ -47,9 +53,11 @@ void DrawMapAStar::drawFinalPath() {
 }
 
 void DrawMapAStar::highlightNode(const AStarNode& node) {
+  drawLabeledAStarNode(node);
+
   cv::Point nodeLoc = getCvPoint(node);
 
-  cv::circle(mat, nodeLoc, RADIUS_PX, GREEN, 2);
+  cv::circle(mat, nodeLoc, RADIUS_PX, GREEN, 4);
 }
 
 void DrawMapAStar::drawLabeledAStarNode(const AStarNode& anode) {
@@ -62,6 +70,16 @@ void DrawMapAStar::drawLabeledAStarNode(const AStarNode& anode) {
 	cv::putText(mat, text, nodeLoc + NODE_LABEL_OFFSET, 
 		FONT_FACE, FONT_SCALE_LARGE, BLACK, FONT_THICK);
 }
+
+void DrawMapAStar::highlightAStarEdge(const AStarNode& n1, const AStarNode& n2) {
+  cv::line(mat, getCvPoint(n1), 
+              getCvPoint(n2),
+              GREEN, 4);
+
+  drawLabeledAStarNode(n1);
+  drawLabeledAStarNode(n2);
+}
+
 
 void DrawMapAStar::drawAStarEdge(const AStarNode& n1, const AStarNode& n2, double weight) {
   cv::line(mat, getCvPoint(n1), 

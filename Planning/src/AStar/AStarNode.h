@@ -1,13 +1,18 @@
 #ifndef ASTAR_NODE_H
 #define ASTAR_NODE_H
 
+#include <limits>
 #include "Node.h"
+#include "Utils.h"
+
 
 using namespace std;
 
 class AStarNode : public Node  {
 public:
   AStarNode(string _name, double _x, double _y) : Node(_x, _y), name(_name) {
+    // gn is a double, but using float_max so it doesn't overflow if we add something to it
+    gn = numeric_limits<float>::max();
   };
 
   void computeHeuristic(shared_ptr<AStarNode> goal) {
@@ -43,7 +48,7 @@ public:
   }
 
   void printMe() const override {
-    cout <<name <<": ("<< x << ", " << y << "), gn=" << gn <<", hn=" << hn << endl;
+    cout <<name <<": ("<< x << ", " << y << "), gn=" << Utils::infString(gn) <<", hn=" << hn << ", total=" << Utils::infString(evaluate()) << endl;
   }
 
 private:

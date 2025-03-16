@@ -25,7 +25,7 @@ struct Utils {
 	}
 
 	static string infString(double d) {
-		if(equals(d, numeric_limits<double>::max())) {
+		if(equals(d, numeric_limits<double>::max()) || equals(d, numeric_limits<float>::max())) {
 			return "inf";
 		}
 		return std::format("{:.1f}", d);
