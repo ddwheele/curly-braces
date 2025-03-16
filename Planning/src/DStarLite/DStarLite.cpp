@@ -56,10 +56,15 @@ void DStarLite::placeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
 		cost[obstacle][ney] += weight;
 		cost[ney][obstacle] += weight;
 		updateVertex(ney);
-		drawMapAndWait();
+		if(PRINT_DEBUG) {
+			drawMapAndWait();
+		}
+		
 	}
 	updateVertex(obstacle);
-	drawMapAndWait();
+	if(PRINT_DEBUG) {
+			drawMapAndWait();
+		}
 }
 
 void DStarLite::removeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
@@ -159,7 +164,9 @@ void DStarLite::computeShortestPath() {
 			updateVertex(node);
 
 		}
-		drawMapAndWait();
+		if(PRINT_DEBUG) {
+			drawMapAndWait();
+		}
   }
 //	start->setGn(start->getRhs());
 	if(PRINT_DEBUG) {
@@ -211,7 +218,6 @@ void DStarLite::doObstacleUpdates() {
 
 		for(char toRemove: obstaclesToRemove) {
 			removeNamedObstacle(string(1,toRemove));
-			drawMapAndWait();
 		}
 
 		computeShortestPath();

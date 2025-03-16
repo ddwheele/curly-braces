@@ -17,11 +17,12 @@ void DrawMapDStarLite::drawMap()
       drawEdge(*src, *dst, wt);
     }
   }
-  for(auto node : dStarLite.getCurrentObstacles()) {    
-    obstacleNode(*node);
-  }
   for(auto node : dStarLite.getNodes()) {
     drawNode(*node);
+  }
+
+  for(auto node : dStarLite.getCurrentObstacles()) {    
+    obstacleNode(*node);
   }
 
   highlightNode(*dStarLite.getStartNode());
@@ -35,30 +36,7 @@ void DrawMapDStarLite::drawMapAndWait() {
   cv::waitKey(0);
 }
 
-void DrawMapDStarLite::drawNode(const DStarNode& dnode) {
-  cv::Point nodeLoc = getCvPoint(dnode);
 
-  cv::circle(mat, nodeLoc, RADIUS_PX, LT_GRAY, FILL_SHAPE);
-
-  std::string nameText = dnode.getName();
-  std::string gText = Utils::infString(dnode.getGn());
-  std::string rText = Utils::infString(dnode.getRhs());
-  cv::putText(mat, nameText, nodeLoc + NODE_LABEL_OFFSET, 
-    FONT_FACE, FONT_SCALE_LARGE, BLACK, FONT_THICK);
-
-  cv::putText(mat, "g=" + gText, nodeLoc + G_LABEL_OFFSET, 
-    FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
-
-  cv::putText(mat, "r=" + rText, nodeLoc + R_LABEL_OFFSET, 
-    FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
-
-  if(dnode.isInOpenSet()) {
-    std::string keyText = dnode.getKey().toShortString();
-    cv::putText(mat, keyText, nodeLoc + KEY_LABEL_OFFSET, 
-      FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
-  }
-
-}
 
 void DrawMapDStarLite::drawEdge(const DStarNode& n1, const DStarNode& n2, double weight) {
   int line_wt = FONT_THIN;
@@ -70,10 +48,12 @@ void DrawMapDStarLite::drawEdge(const DStarNode& n1, const DStarNode& n2, double
               getCvPoint(n2),
               BLACK, line_wt);
 
-  cv::Point midpoint = (getCvPoint(n1) + getCvPoint(n2)) / 2;
+  if(PRINT_LABELS) {
+    cv::Point midpoint = (getCvPoint(n1) + getCvPoint(n2)) / 2;
 
-  cv::putText(mat, format("{:.1f}", weight), midpoint, 
-     FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
+    cv::putText(mat, format("{:.1f}", weight), midpoint, 
+       FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
+  }
 }
 
 void DrawMapDStarLite::drawFinalPath()
@@ -81,16 +61,42 @@ void DrawMapDStarLite::drawFinalPath()
 
 }
 
+void DrawMapDStarLite::drawNode(const DStarNode& dnode, const cv::Scalar color) {
+  cv::Point nodeLoc = getCvPoint(dnode);
+
+  cv::circle(mat, nodeLoc, RADIUS_PX, color, FILL_SHAPE);
+
+  std::string nameText = dnode.getName();
+  std::string gText = Utils::infString(dnode.getGn());
+  std::string rText = Utils::infString(dnode.getRhs());
+
+  cv::Scalar labelColor = BLACK;
+  if(color == BLACK) {
+    labelColor = WHITE;
+  }
+
+  cv::putText(mat, nameText, nodeLoc + NODE_LABEL_OFFSET, 
+    FONT_FACE, FONT_SCALE_LARGE, labelColor, FONT_THICK);
+
+  cv::putText(mat, "g=" + gText, nodeLoc + G_LABEL_OFFSET, 
+    FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
+
+  cv::putText(mat, "rhs=" + rText, nodeLoc + R_LABEL_OFFSET, 
+    FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
+
+  if(dnode.isInOpenSet()) {
+    std::string keyText = dnode.getKey().toShortString();
+    cv::putText(mat, keyText, nodeLoc + KEY_LABEL_OFFSET, 
+      FONT_FACE, FONT_SCALE_SMALL, BLACK, FONT_THIN);
+  }
+}
+
 void DrawMapDStarLite::obstacleNode(const DStarNode &node)
 {
-  cv::Point nodeLoc = getCvPoint(node);
-
-  cv::circle(mat, nodeLoc, RADIUS_PX, BLACK, 5);
+  drawNode(node, BLACK);
 }
 
 void DrawMapDStarLite::highlightNode(const DStarNode &node)
 {
-  cv::Point nodeLoc = getCvPoint(node);
-
-  cv::circle(mat, nodeLoc, RADIUS_PX, GREEN, 2);
+  drawNode(node, GREEN);
 }

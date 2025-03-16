@@ -23,17 +23,17 @@ public:
 private:
   const DStarLite& dStarLite;
 
-  void drawNode(const DStarNode& dnode);
+  void drawNode(const DStarNode& dnode, const cv::Scalar color = LT_GRAY);
   void drawEdge(const DStarNode& n1, const DStarNode& n2, double weight);
   void highlightNode(const DStarNode &node);
   void obstacleNode(const DStarNode &node);
 
   static constexpr int FONT_FACE = cv::FONT_HERSHEY_SIMPLEX;
   static constexpr int FILL_SHAPE = -1;
-  static constexpr double FONT_SCALE_LARGE = 0.75;
+  static constexpr double FONT_SCALE_LARGE = 1.2;
   static constexpr double FONT_SCALE_SMALL = 0.75;
   static constexpr double FONT_THIN = 1;
-  static constexpr double FONT_THICK = 2;
+  static constexpr double FONT_THICK = 4;
   static constexpr double LABEL_OFFSET_RATIO = 0.6;
   static inline cv::Point NODE_LABEL_OFFSET = 
     cv::Point(-RADIUS_PX*LABEL_OFFSET_RATIO, RADIUS_PX*LABEL_OFFSET_RATIO);
@@ -50,6 +50,8 @@ private:
   // size of map, in "world units"
   double UNIT_X_SIZE = 20;
   double UNIT_Y_SIZE = 20;
+
+  bool PRINT_LABELS = false;
 };
 
 #endif

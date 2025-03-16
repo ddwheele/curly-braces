@@ -27,7 +27,7 @@ protected:
   void drawColoredNode(const Node& n, 
  		const cv::Scalar& color) const;
 
-  static constexpr int RADIUS_PX = 15; // for drawing Node
+  static constexpr int RADIUS_PX = 25; // for drawing Node
 
   static inline cv::Scalar WHITE = cv::Scalar(255, 255, 255);
 	static inline cv::Scalar BLACK = cv::Scalar(0, 0, 0);
