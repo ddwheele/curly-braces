@@ -171,11 +171,7 @@ int main(int argc, char** argv) {
   // DStarLite dsl = createDStarLite(nodes, "S");
 
   dsl.findPathInteractive();
-
-  // std::cout << "Hit enter to end program";
-  // string x;
-  // std::getline(std::cin, x);  // Reads the entire line into the string variable
-  dsl.drawMapAndWait();
+  
   return 0;
 }
 
