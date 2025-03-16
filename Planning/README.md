@@ -9,6 +9,7 @@ Requires OpenCV to display images, and YAML to read in config files.
 		* Text output only
 	* `dStarLiteInteractive` runs D* Lite on a graph of 25 nodes in a grid between Start and Goal Nodes
 		* At each iteration, user is prompted to list nodes to become obstacles, or list nodes to stop being obstacles
+		* Example output:
 
 	<img src="./DStarLite.png" width="600">
 
