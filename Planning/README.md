@@ -19,11 +19,16 @@ Requires OpenCV to display images, and YAML to read in config files.
 	<img src="./RRT.png" width="300">
 
 * D* Lite 
-	* `dStarLite` runs D* Lite on a graph of 25 nodes in a grid between Start and Goal Nodes
-	* At each iteration, user is prompted to list nodes to become obstacles, or list nodes to stop being obstacles
-	* Original D* Lite paper https://idm-lab.org/bib/abstracts/papers/aaai02b.pdf
+	* Based on original D* Lite paper https://idm-lab.org/bib/abstracts/papers/aaai02b.pdf
+	* `dStarLite` runs D* Lite on a hard-coded graph of 5 nodes, with a moving obstacle also hard-coded in
+		* Text output only
+	* `dStarLiteInteractive` runs D* Lite on a graph of 25 nodes in a grid between Start and Goal Nodes
+		* At each iteration, user is prompted to list nodes to become obstacles, or list nodes to stop being obstacles
 
 	<img src="./DStarLite.png" width="300">
+
+
+
 
 To build:
 
@@ -38,7 +43,8 @@ Then run one of the following programs from the build folder. Type any key to cl
 
 ```
 ./aStarRandom 
-./dStarLite 
+./dStarLite
+./dStarLiteInteractive
 ./runAStar ../astar_params.yaml
 ./runRRT ../rrt_params.yaml
 ```
