@@ -37,14 +37,14 @@ void DrawMapDStarLite::drawMapAndWait() {
 }
 
 void DrawMapDStarLite::drawEdge(const DStarNode& n1, const DStarNode& n2, double weight) {
-  int line_wt = FONT_THIN;
+  cv::Scalar color = LT_GRAY;
   if(weight > 500) {
-    line_wt = FONT_THICK;
+    color = WHITE;
   }
 
   cv::line(mat, getCvPoint(n1), 
               getCvPoint(n2),
-              BLACK, line_wt);
+              color, FONT_THICK);
 
   if(PRINT_LABELS) {
     cv::Point midpoint = (getCvPoint(n1) + getCvPoint(n2)) / 2;

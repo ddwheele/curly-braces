@@ -14,7 +14,7 @@ DStarLite::DStarLite(const vector<shared_ptr<DStarNode>>& _nodes,
 
 void DStarLite::updateVertex(const std::shared_ptr<DStarNode>& node) {
 	if(PRINT_DEBUG) {
-		cout << "Updating " << *node << endl;
+		cout << "Updating Vertex: " << *node << endl;
 	}
 	if(node != goal) {
 		// set rhs to minimum of cost through neighbors
@@ -55,7 +55,8 @@ void DStarLite::computeShortestPath() {
 		auto node = openSet.extractMin();
 		node->setInOpenSet(false);
 		if(PRINT_DEBUG) {
-			cout << "Popping node from queue: " << *node << endl;
+			cout << "------------------------------------" << endl;
+			cout << "^^^^^^ Popping node @@ " << *node << endl;
 		}
 		DStarNode::Key oldKey = node->getKey();
 		// Case 1: The Key got bigger, throw it back and look for a smaller one
@@ -98,8 +99,15 @@ void DStarLite::computeShortestPath() {
 			drawMapAndWait();
 		}
   }
-//	start->setGn(start->getRhs());
+	cout << "OpenSet size=" <<openSet.getSize() << endl;
+	if(openSet.getSize() > 0) {
+		cout << "Head of OpenSet = " << *openSet.peek() << endl;
+		DStarNode::Key startKey = start->computeKey(key_modifier);
+		cout << "Start Key = " << startKey.toString() << endl;
+	}
+
 	if(PRINT_DEBUG) {
+		cout << "FINISHED computeShortestPath." << endl;
 		cout << "Shortest path computed in " << (maxSteps - stepsLeft) << " steps." << endl;
 		printState();
 	}
@@ -177,11 +185,14 @@ void DStarLite::findPathInteractive()  {
 	cout << "@@@@@@@@@@@@@@@@@@@@@ DONE COMPUTING SHORTEST PATH @@@@@@@@@@@@@@@@@@@@@" << endl;
 
 	while(start != goal) {
+		cout <<"- TOP OF WHILE LOOP IN findPathInteractive()" << endl;
 		if(Utils::equals(start->getGn(), numeric_limits<double>::max())) {
 			cout << "No path found" << endl;
 			return;
 		}
+		cout <<"- there exists a path to start" << endl;
 		doObstacleUpdates();
+		cout << "=== finished updating for new obstacles ===" << endl;
 		double best = numeric_limits<double>::max();
 		// find the neighbor with lowest g + cost to start
 		shared_ptr<DStarNode> nextNode;
@@ -192,7 +203,7 @@ void DStarLite::findPathInteractive()  {
 				nextNode = ney;
 			}
 		}
-
+		cout << "=== I found the best node to move to ===" << endl;
 		// move to nextNode
 		cout << "\n%%%%%%%%%%%% ADVANCE TO NODE " << nextNode->getName() << " %%%%%%%%%%%%\n" << endl;
 		start = nextNode;
@@ -202,6 +213,8 @@ void DStarLite::findPathInteractive()  {
 }
 
 void DStarLite::findPath()  {
+	// THIS IS PROBABLY NOT THE FUNCTION YOU WANT
+
 	// handles single moving obstacle, specified in timedObstacles
   cout << "\n%%%%%%%%%%%% STARTING AT NODE " << start->getName() << " %%%%%%%%%%%%\n" << endl;
 	lastStart = start;
@@ -210,10 +223,12 @@ void DStarLite::findPath()  {
 	computeShortestPath();
 	int obstacleTime = 0;
 	while(start != goal) {
+		cout <<"- TOP OF WHILE LOOP IN findPath()" << endl;
 		if(Utils::equals(start->getGn(), numeric_limits<double>::max())) {
 			cout << "No path found" << endl;
 			return;
 		}
+		cout <<"- there exists a path to start" << endl;
 		double best = numeric_limits<double>::max();
 		// find the neighbor with lowest g + cost to start
 		shared_ptr<DStarNode> nextNode;
@@ -224,6 +239,7 @@ void DStarLite::findPath()  {
 				nextNode = ney;
 			}
 		}
+
 		// move to nextNode
 		cout << "\n%%%%%%%%%%%% ADVANCE TO NODE " << nextNode->getName() << " %%%%%%%%%%%%\n" << endl;
 		start = nextNode;
@@ -250,6 +266,3 @@ void DStarLite::applyTimedObstacles(int &obstacleTime) {
 		computeShortestPath();
 	}
 }
-
-
-

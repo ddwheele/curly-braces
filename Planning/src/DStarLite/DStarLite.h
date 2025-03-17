@@ -25,7 +25,7 @@ public:
   void setTimedObstacles(vector<shared_ptr<DStarNode>>& timedObstacles);
 
   // turn a node into an obstacle
-  void placeNamedObstacle(const string& obsName, double weight = 1000) override;
+  void placeNamedObstacle(const string& obsName, double weight = 10000) override;
 
   // make a node not an obstacle anymore
   void removeNamedObstacle(const string& obsName, double weight = 10000) override;

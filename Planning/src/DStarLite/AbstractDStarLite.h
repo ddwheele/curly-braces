@@ -35,12 +35,14 @@ public:
   void printState() const;
 
     // turn a node into an obstacle
-  virtual void placeNamedObstacle(const string& obsName, double weight = 1000) = 0;
+  virtual void placeNamedObstacle(const string& obsName, double weight = 10000) = 0;
 
   // make a node not an obstacle anymore
   virtual void removeNamedObstacle(const string& obsName, double weight = 10000) = 0;
 
 protected:
+  bool PRINT_DEBUG = false;
+
   virtual void initialize() = 0;
   virtual void updateVertex(const shared_ptr<DStarNode>&node) = 0;
   virtual void computeShortestPath() = 0;
@@ -66,8 +68,6 @@ protected:
   unordered_set<shared_ptr<DStarNode>> currentObstacles;
 
   static const int maxSteps = 1000;
-
-  bool PRINT_DEBUG = false;
 
   // for interactive
   void doObstacleUpdates();

@@ -162,13 +162,14 @@ DStarLite createDStarLite(const unordered_set<char>& wanted, string goalchar) {
 */
 int main(int argc, char** argv) {
   DStarLite dsl = createDStarLiteAll();
-  // unordered_set<char> nodes = {
-  //   'G',
-  // 'K','L','M',
-  // 'P','Q','R','S'};
-  // DStarLite dsl = createDStarLite(nodes, "S");
+  //  unordered_set<char> nodes = {
+  //   'A','B',
+  //  'K','L',
+  //  'H'};
+  //  DStarLite dsl = createDStarLite(nodes, "H");
 
   dsl.findPathInteractive();
+  cout << "FINAL MAP" << endl;
   dsl.drawMapAndWait();
   
   return 0;

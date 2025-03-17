@@ -20,11 +20,14 @@ AbstractDStarLite::AbstractDStarLite(const vector<shared_ptr<DStarNode>>& _nodes
 			cost[edges[i][0]][edges[i][1]] = weights[i];
 			cost[edges[i][1]][edges[i][0]] = weights[i];
 			if(PRINT_DEBUG) {
-				//cout << edges[i][0]->getName() << " to " << edges[i][1]->getName() << " = " << weights[i] << endl;
+				cout << edges[i][0]->getName() << " to " << edges[i][1]->getName() << " = " << weights[i] << endl;
 			}
 		}
 	} else {
 		cout << "there are no edges" << endl;
+	}
+	for(auto nd : nodes) {
+		nd->computeHeuristic(goal);
 	}
 }
 
