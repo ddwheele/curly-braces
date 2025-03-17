@@ -109,7 +109,7 @@ void DStarLite::computeShortestPath() {
 void DStarLite::placeNamedObstacle(const string& obsName, double weight) {
 	for(auto nd : nodes) {
 		if(nd->getName() == obsName) {
-			placeObstacle(nd);
+			updateEdgesTo(nd, weight);
 			currentObstacles.insert(nd);
 		}
 	}
@@ -119,13 +119,13 @@ void DStarLite::placeNamedObstacle(const string& obsName, double weight) {
 void DStarLite::removeNamedObstacle(const string& obsName, double weight) {
 	for(auto nd : nodes) {
 		if(nd->getName() == obsName) {
-			removeObstacle(nd);
+			updateEdgesTo(nd, -weight);
 			currentObstacles.erase(nd);
 		}
 	}
 }
 
-void DStarLite::placeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
+void DStarLite::updateEdgesTo(shared_ptr<DStarNode>& obstacle, double weight) {
 	if(!obstacle) {
 		return;
 	}
@@ -143,24 +143,8 @@ void DStarLite::placeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
 	updateVertex(obstacle);
 	if(PRINT_DEBUG) {
 			drawMapAndWait();
-		}
+	}
 }
-
-void DStarLite::removeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
-	if(!obstacle) {
-		return;
-	}
-	if(PRINT_DEBUG) {
-		cout << "REMOVED OBSTACLE AT NODE " << obstacle->getName() << endl;
-	}
-	for(auto& [ney, cst] : cost[obstacle]) {
-		cost[obstacle][ney] -= weight;
-		cost[ney][obstacle] -= weight;
-		updateVertex(ney);
-	}
-	updateVertex(obstacle);
-}
-
 
 void DStarLite::setTimedObstacles(vector<shared_ptr<DStarNode>>& _timedObstacles) {
 	timedObstacles = _timedObstacles;
@@ -257,9 +241,9 @@ void DStarLite::applyTimedObstacles(int &obstacleTime) {
 		lastStart = start;
 		// for all edge changes
 		// update edge cost in cost
-		placeObstacle(timedObstacles[obstacleTime]);
+		updateEdgesTo(timedObstacles[obstacleTime], 1000);
 		if(obstacleTime > 0) {
-			removeObstacle(timedObstacles[obstacleTime-1]);
+			updateEdgesTo(timedObstacles[obstacleTime-1], -1000);
 		}
 		obstacleTime++;
 		// (vertices were updated inside the Obstacle functions)

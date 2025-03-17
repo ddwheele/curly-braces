@@ -52,11 +52,9 @@ void AbstractDStarLite::doObstacleUpdates() {
 		for(char toRemove: obstaclesToRemove) {
 			removeNamedObstacle(string(1,toRemove));
 		}
-
 		computeShortestPath();
 	}
 }
-
 
 const vector<shared_ptr<DStarNode>>& AbstractDStarLite::getNodes() const {
 	return nodes;

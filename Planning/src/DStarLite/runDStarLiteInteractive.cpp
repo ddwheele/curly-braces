@@ -169,6 +169,7 @@ int main(int argc, char** argv) {
   // DStarLite dsl = createDStarLite(nodes, "S");
 
   dsl.findPathInteractive();
+  dsl.drawMapAndWait();
   
   return 0;
 }

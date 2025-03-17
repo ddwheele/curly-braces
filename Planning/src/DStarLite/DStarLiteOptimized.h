@@ -18,21 +18,21 @@ public:
 			const shared_ptr<DStarNode>& _goal);
   void findPath() override;
 
-    // add weight to all edges to obstacle
-  void placeObstacle(shared_ptr<DStarNode>& obstacle, double weight = 10000);
-  // remove weight from all edges to obstacle
-  void removeObstacle(shared_ptr<DStarNode>& noObstacle, double weight = 10000);
+  // turn a node into an obstacle
+  void placeNamedObstacle(const string& obsName, double weight = 1000) override;
+
+  // make a node not an obstacle anymore
+  void removeNamedObstacle(const string& obsName, double weight = 10000) override;
 
 private:
+  int DEBUG_LEVEL = 3;// 0 for no output, the higher the number the more output
   void initialize() override;
   void updateVertex(const shared_ptr<DStarNode>&node) override;
   void computeShortestPath() override;
 
   // turn a node into an obstacle
-  void placeNamedObstacle(const string& obsName, double weight = 10000) override;
+  void updateEdgesTo(shared_ptr<DStarNode>& obstacle, double weight) override;
 
-  // make a node not an obstacle anymore
-  void removeNamedObstacle(const string& obsName, double weight = 10000) override;
 };
 
 #endif

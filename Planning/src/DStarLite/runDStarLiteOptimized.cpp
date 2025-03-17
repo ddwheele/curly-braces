@@ -64,8 +64,6 @@ DStarLiteOptimized createDStarLiteOptimized() {
   return dsl;
 }
 
-
-
 int main(int argc, char** argv) {
   DStarLiteOptimized dsl = createDStarLiteOptimized();
   cout << "Calling DSLO findPath()" << endl;

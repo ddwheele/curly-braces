@@ -34,6 +34,12 @@ public:
   void drawMapAndWait() const;
   void printState() const;
 
+    // turn a node into an obstacle
+  virtual void placeNamedObstacle(const string& obsName, double weight = 1000) = 0;
+
+  // make a node not an obstacle anymore
+  virtual void removeNamedObstacle(const string& obsName, double weight = 10000) = 0;
+
 protected:
   virtual void initialize() = 0;
   virtual void updateVertex(const shared_ptr<DStarNode>&node) = 0;
@@ -61,16 +67,14 @@ protected:
 
   static const int maxSteps = 1000;
 
-  bool PRINT_DEBUG = true;
+  bool PRINT_DEBUG = false;
 
   // for interactive
   void doObstacleUpdates();
 
-    // turn a node into an obstacle
-  virtual void placeNamedObstacle(const string& obsName, double weight= 10000) = 0;
+  // turn a node into an obstacle
+  virtual void updateEdgesTo(shared_ptr<DStarNode>& obstacle, double weight) = 0;
 
-  // make a node not an obstacle anymore
-  virtual void removeNamedObstacle(const string& obsName, double weight= 10000) = 0;
 };
 
 
