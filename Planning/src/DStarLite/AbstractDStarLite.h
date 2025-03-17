@@ -27,10 +27,8 @@ public:
   const shared_ptr<DStarNode>& getStartNode() const;
 
   const unordered_set<shared_ptr<DStarNode>>& getCurrentObstacles() const;
-  // add weight to all edges to obstacle
-  void placeObstacle(shared_ptr<DStarNode>& obstacle, int weight = 10000);
-  // remove weight from all edges to obstacle
-  void removeObstacle(shared_ptr<DStarNode>& noObstacle, int weight = 10000);
+
+
 
   const unordered_map<shared_ptr<DStarNode>, unordered_map<shared_ptr<DStarNode>,double>>& getCostMap() const;
 
@@ -70,11 +68,11 @@ protected:
   // for interactive
   void doObstacleUpdates();
 
-  // turn a node into an obstacle
-  void placeNamedObstacle(const string& obsName, int weight = 10000);
+    // turn a node into an obstacle
+  virtual void placeNamedObstacle(const string& obsName, double weight= 10000) = 0;
 
   // make a node not an obstacle anymore
-  void removeNamedObstacle(const string& obsName, int weight = 10000);
+  virtual void removeNamedObstacle(const string& obsName, double weight= 10000) = 0;
 };
 
 

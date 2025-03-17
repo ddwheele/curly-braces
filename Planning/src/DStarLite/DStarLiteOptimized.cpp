@@ -40,7 +40,7 @@ void DStarLiteOptimized::updateVertex(const std::shared_ptr<DStarNode>& node) {
     node->computeKey(key_modifier);
     openSet.insertNode(node);
 		node->setInOpenSet(true); 
-  } else if(node->gnEqualsRhs && openSet.contains(node)) {
+  } else if(node->gnEqualsRhs() && openSet.contains(node)) {
     // if consistent, remove from open set
     openSet.deleteNode(node);
 		node->setInOpenSet(false);
@@ -72,28 +72,44 @@ void DStarLiteOptimized::computeShortestPath() {
 	    // inform predecessors they may have better value now
 			for(auto& [ney, wt] : cost[node]) {
         if(ney != goal) {
-          ney->setRhs(min(ney->getRhs(), wt));
+          ney->setRhs(min(ney->getRhs(), wt+node->getGn()));
           updateVertex(ney);
         }
 			}
-      // Case 3: 
+      // Case 3: blow up G
     } else {
       double gOld = node->getGn();
       node->setGn(numeric_limits<double>::max());
-      // go through all predecessors
-      // inform predecessors they may have better value now
+      // go through all predecessors of node
 			for(auto& [ney, wt] : cost[node]) {
+        // if the neighbor was depending on node
         if(ney->getRhs() == (wt + gOld)) {
           if(ney != goal) {
-            // ... fill in here line 27"
+            // update the neighbor to depend on the best other alternative
+            double lowest = numeric_limits<double>::max();
+            for(auto& [neyney, neywt] : cost[ney]) {
+              lowest = min(lowest, neywt + neyney->getGn());
+            }
+
+            ney->setRhs(lowest);
           }
-        }
-          ney->setRhs(min(ney->getRhs(), wt));
           updateVertex(ney);
         }
+        ney->setRhs(min(ney->getRhs(), wt));        
 			}
+      // also process the node itself the same way
+      if(node->getRhs() ==  gOld) {
+        if(node != goal) {
+          // update the neighbor to depend on the best other alternative
+          double lowest = numeric_limits<double>::max();
+          for(auto& [neyney, neywt] : cost[node]) {
+            lowest = min(lowest, neywt + neyney->getGn());
+          }
+          node->setRhs(lowest);
+        }
+        updateVertex(node);
+      }
     }
-
   }
 }
 
@@ -101,7 +117,121 @@ void DStarLiteOptimized::findPathInteractive()  {
 	
 }
 
+// corresponds to Main in paper
 void DStarLiteOptimized::findPath()  {
-  cout << "DStarLiteOptimized::findPath() not implemented. Please use DStarLiteOptimized::findPathInteractive()" << endl;
+  cout << "\n%%%%%%%%%%%% STARTING AT NODE " << start->getName() << " %%%%%%%%%%%%\n" << endl;
+  shared_ptr<DStarNode> lastStart = start;
+  initialize();
+  computeShortestPath();
+  while(start != goal) {
+	  if(Utils::equals(start->getGn(), numeric_limits<double>::max())) {
+			cout << "No path found" << endl;
+			return;
+		}
+
+    // go through successors of start
+		// find the neighbor with lowest g + cost to start
+    double best = numeric_limits<double>::max();
+		for(auto& [ney, wt] : cost[start]) {
+			double est = ney->getGn() + wt;
+			if(est < best) {
+				best = est;
+				start = ney;
+			}
+		}
+    // move to nextNode
+		cout << "\n%%%%%%%%%%%% ADVANCE TO NODE " << start->getName() << " %%%%%%%%%%%%\n" << endl;
+
+    // did anything change? 
+    doObstacleUpdates();
+
+  } // while
 }
 
+// turn a node into an obstacle
+void DStarLiteOptimized::placeNamedObstacle(const string& obsName, double weight) {
+	for(auto nd : nodes) {
+		if(nd->getName() == obsName) {
+			placeObstacle(nd);
+			currentObstacles.insert(nd);
+		}
+	}
+}
+
+// make a node not an obstacle anymore
+void DStarLiteOptimized::removeNamedObstacle(const string& obsName, double weight) {
+	for(auto nd : nodes) {
+		if(nd->getName() == obsName) {
+			removeObstacle(nd);
+			currentObstacles.erase(nd);
+		}
+	}
+}
+
+void DStarLiteOptimized::placeObstacle(shared_ptr<DStarNode>& obstacle, double weight) {
+	if(!obstacle) {
+		return;
+	}
+	if(PRINT_DEBUG) {
+		cout << "OBSTACLE AT NODE " << obstacle->getName() << endl;
+	}
+	for(auto& [ney, cst] : cost[obstacle]) {
+    double oldCost = cost[obstacle][ney];
+		cost[obstacle][ney] += weight;
+		cost[ney][obstacle] += weight;
+
+    if(oldCost > cost[obstacle][ney]) {
+      if(obstacle != goal) {
+        obstacle->setRhs(min(obstacle->getRhs(), cost[obstacle][ney] + ney->getGn()));
+      }
+    } else if(obstacle->getRhs() == (oldCost + ney->getGn())) {
+      if(obstacle != goal) {
+        double lowest = numeric_limits<double>::max();
+        for(auto& [neyney, neycost] : cost[ney]) {
+          if((neycost + neyney->getGn()) < lowest) {
+            lowest = neycost + neyney->getGn();
+          }
+        }
+        obstacle->setRhs(lowest);
+      }
+    }
+		updateVertex(ney);
+		if(PRINT_DEBUG) {
+			drawMapAndWait();
+		}
+	}
+}
+
+void DStarLiteOptimized::removeObstacle(shared_ptr<DStarNode>& obstacle, double weight) {
+	if(!obstacle) {
+		return;
+	}
+	if(PRINT_DEBUG) {
+		cout << "OBSTACLE AT NODE " << obstacle->getName() << endl;
+	}
+	for(auto& [ney, cst] : cost[obstacle]) {
+    double oldCost = cost[obstacle][ney];
+		cost[obstacle][ney] -= weight;
+		cost[ney][obstacle] -= weight;
+
+    if(oldCost > cost[obstacle][ney]) {
+      if(obstacle != goal) {
+        obstacle->setRhs(min(obstacle->getRhs(), cost[obstacle][ney] + ney->getGn()));
+      }
+    } else if(obstacle->getRhs() == (oldCost + ney->getGn())) {
+      if(obstacle != goal) {
+        double lowest = numeric_limits<double>::max();
+        for(auto& [neyney, neycost] : cost[ney]) {
+          if((neycost + neyney->getGn()) < lowest) {
+            lowest = neycost + neyney->getGn();
+          }
+        }
+        obstacle->setRhs(lowest);
+      }
+    }
+		updateVertex(ney);
+		if(PRINT_DEBUG) {
+			drawMapAndWait();
+		}
+	}
+}

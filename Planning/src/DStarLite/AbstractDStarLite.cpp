@@ -25,64 +25,6 @@ AbstractDStarLite::AbstractDStarLite(const vector<shared_ptr<DStarNode>>& _nodes
 	}
 }
 
-// turn a node into an obstacle
-void AbstractDStarLite::placeNamedObstacle(const string& obsName, int weight) {
-	for(auto nd : nodes) {
-		if(nd->getName() == obsName) {
-			placeObstacle(nd);
-			currentObstacles.insert(nd);
-		}
-	}
-}
-
-// make a node not an obstacle anymore
-void AbstractDStarLite::removeNamedObstacle(const string& obsName, int weight) {
-	for(auto nd : nodes) {
-		if(nd->getName() == obsName) {
-			removeObstacle(nd);
-			currentObstacles.erase(nd);
-		}
-	}
-}
-
-void AbstractDStarLite::placeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
-	if(!obstacle) {
-		return;
-	}
-	if(PRINT_DEBUG) {
-		cout << "OBSTACLE AT NODE " << obstacle->getName() << endl;
-	}
-	for(auto& [ney, cst] : cost[obstacle]) {
-		cost[obstacle][ney] += weight;
-		cost[ney][obstacle] += weight;
-		updateVertex(ney);
-		if(PRINT_DEBUG) {
-			drawMapAndWait();
-		}
-		
-	}
-	updateVertex(obstacle);
-	if(PRINT_DEBUG) {
-			drawMapAndWait();
-		}
-}
-
-void AbstractDStarLite
-::removeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
-	if(!obstacle) {
-		return;
-	}
-	if(PRINT_DEBUG) {
-		cout << "REMOVED OBSTACLE AT NODE " << obstacle->getName() << endl;
-	}
-	for(auto& [ney, cst] : cost[obstacle]) {
-		cost[obstacle][ney] -= weight;
-		cost[ney][obstacle] -= weight;
-		updateVertex(ney);
-	}
-	updateVertex(obstacle);
-}
-
 void AbstractDStarLite::doObstacleUpdates() {
 	// Ask user for obstacle updates
 	std::string obstaclesToRemove;
@@ -111,6 +53,7 @@ void AbstractDStarLite::doObstacleUpdates() {
 		computeShortestPath();
 	}
 }
+
 
 const vector<shared_ptr<DStarNode>>& AbstractDStarLite::getNodes() const {
 	return nodes;

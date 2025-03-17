@@ -105,6 +105,63 @@ void DStarLite::computeShortestPath() {
 	}
 }
 
+// turn a node into an obstacle
+void DStarLite::placeNamedObstacle(const string& obsName, double weight) {
+	for(auto nd : nodes) {
+		if(nd->getName() == obsName) {
+			placeObstacle(nd);
+			currentObstacles.insert(nd);
+		}
+	}
+}
+
+// make a node not an obstacle anymore
+void DStarLite::removeNamedObstacle(const string& obsName, double weight) {
+	for(auto nd : nodes) {
+		if(nd->getName() == obsName) {
+			removeObstacle(nd);
+			currentObstacles.erase(nd);
+		}
+	}
+}
+
+void DStarLite::placeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
+	if(!obstacle) {
+		return;
+	}
+	if(PRINT_DEBUG) {
+		cout << "OBSTACLE AT NODE " << obstacle->getName() << endl;
+	}
+	for(auto& [ney, cst] : cost[obstacle]) {
+		cost[obstacle][ney] += weight;
+		cost[ney][obstacle] += weight;
+		updateVertex(ney);
+		if(PRINT_DEBUG) {
+			drawMapAndWait();
+		}
+	}
+	updateVertex(obstacle);
+	if(PRINT_DEBUG) {
+			drawMapAndWait();
+		}
+}
+
+void DStarLite::removeObstacle(shared_ptr<DStarNode>& obstacle, int weight) {
+	if(!obstacle) {
+		return;
+	}
+	if(PRINT_DEBUG) {
+		cout << "REMOVED OBSTACLE AT NODE " << obstacle->getName() << endl;
+	}
+	for(auto& [ney, cst] : cost[obstacle]) {
+		cost[obstacle][ney] -= weight;
+		cost[ney][obstacle] -= weight;
+		updateVertex(ney);
+	}
+	updateVertex(obstacle);
+}
+
+
 void DStarLite::setTimedObstacles(vector<shared_ptr<DStarNode>>& _timedObstacles) {
 	timedObstacles = _timedObstacles;
 }

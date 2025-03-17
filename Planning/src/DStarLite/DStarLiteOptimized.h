@@ -20,11 +20,21 @@ public:
 
   void findPathInteractive();
 
-private:
+    // add weight to all edges to obstacle
+  void placeObstacle(shared_ptr<DStarNode>& obstacle, double weight = 10000);
+  // remove weight from all edges to obstacle
+  void removeObstacle(shared_ptr<DStarNode>& noObstacle, double weight = 10000);
 
+private:
   void initialize() override;
   void updateVertex(const shared_ptr<DStarNode>&node) override;
   void computeShortestPath() override;
+
+  // turn a node into an obstacle
+  void placeNamedObstacle(const string& obsName, double weight = 10000) override;
+
+  // make a node not an obstacle anymore
+  void removeNamedObstacle(const string& obsName, double weight = 10000) override;
 };
 
 #endif

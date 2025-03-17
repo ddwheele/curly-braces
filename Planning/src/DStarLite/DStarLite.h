@@ -24,6 +24,11 @@ public:
   void findPathInteractive();
   void setTimedObstacles(vector<shared_ptr<DStarNode>>& timedObstacles);
 
+  // add weight to all edges to obstacle
+  void placeObstacle(shared_ptr<DStarNode>& obstacle, int weight = 10000);
+  // remove weight from all edges to obstacle
+  void removeObstacle(shared_ptr<DStarNode>& noObstacle, int weight = 10000);
+
 private: 
   // which node the obstacle is on a time i+1;
   vector<shared_ptr<DStarNode>> timedObstacles;
@@ -34,6 +39,12 @@ private:
 
   // for non-interactive
   void applyTimedObstacles(int &obstacleTime);
+
+    // turn a node into an obstacle
+  void placeNamedObstacle(const string& obsName, double weight ) override;
+
+  // make a node not an obstacle anymore
+  void removeNamedObstacle(const string& obsName, double weight = 10000) override;
 };
 
 #endif
