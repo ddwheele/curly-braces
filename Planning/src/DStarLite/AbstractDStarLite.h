@@ -28,8 +28,6 @@ public:
 
   const unordered_set<shared_ptr<DStarNode>>& getCurrentObstacles() const;
 
-
-
   const unordered_map<shared_ptr<DStarNode>, unordered_map<shared_ptr<DStarNode>,double>>& getCostMap() const;
 
   void drawMap() const;
@@ -63,7 +61,7 @@ protected:
 
   static const int maxSteps = 1000;
 
-  bool PRINT_DEBUG = false;
+  bool PRINT_DEBUG = true;
 
   // for interactive
   void doObstacleUpdates();

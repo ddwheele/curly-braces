@@ -63,7 +63,6 @@ DStarLite createDStarLiteAll() {
   longRow.push_back(goal);
 
   DStarLite dsl(longRow, edges, weights, start, goal);
-
   return dsl;
 }
 
@@ -162,7 +161,6 @@ DStarLite createDStarLite(const unordered_set<char>& wanted, string goalchar) {
 *
 */
 int main(int argc, char** argv) {
- // cout << " Start" << endl;
   DStarLite dsl = createDStarLiteAll();
   // unordered_set<char> nodes = {
   //   'G',

@@ -18,8 +18,6 @@ public:
 			const shared_ptr<DStarNode>& _goal);
   void findPath() override;
 
-  void findPathInteractive();
-
     // add weight to all edges to obstacle
   void placeObstacle(shared_ptr<DStarNode>& obstacle, double weight = 10000);
   // remove weight from all edges to obstacle

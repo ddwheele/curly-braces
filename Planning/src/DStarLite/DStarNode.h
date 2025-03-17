@@ -93,13 +93,11 @@ public:
   friend std::ostream& operator<<(std::ostream& os, const DStarNode& dsn) {
     if(dsn.inOpenSet) {
       return os << std::fixed << std::setprecision(2) << dsn.name
-      << ": (" << dsn.x << "," << dsn.y
-      << "), gn = " << Utils::infString(dsn.gn) << ", rhs = " << Utils::infString(dsn.rhs)
+      << ": gn = " << Utils::infString(dsn.gn) << ", rhs = " << Utils::infString(dsn.rhs)
       << ", key= {" << dsn.key.toString() << "}";
     }
     return os << std::fixed << std::setprecision(2) << dsn.name
-      << ": (" << dsn.x << "," << dsn.y
-      << "), gn = " << Utils::infString(dsn.gn) << ", rhs = " << Utils::infString(dsn.rhs);
+      << ": gn = " << Utils::infString(dsn.gn) << ", rhs = " << Utils::infString(dsn.rhs);
   }
 
 private:
