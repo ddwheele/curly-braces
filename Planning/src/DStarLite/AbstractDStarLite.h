@@ -41,7 +41,7 @@ public:
   virtual void removeNamedObstacle(const string& obsName, double weight = 10000) = 0;
 
 protected:
-  bool PRINT_DEBUG = false;
+  bool PRINT_DEBUG = true;
 
   virtual void initialize() = 0;
   virtual void updateVertex(const shared_ptr<DStarNode>&node) = 0;

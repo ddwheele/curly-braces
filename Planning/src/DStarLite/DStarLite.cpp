@@ -138,6 +138,7 @@ void DStarLite::updateEdgesTo(shared_ptr<DStarNode>& obstacle, double weight) {
 		return;
 	}
 	if(PRINT_DEBUG) {
+		cout << "ooooooooooooooooooooooooooooooo " << weight << endl;
 		cout << "OBSTACLE AT NODE " << obstacle->getName() << endl;
 	}
 	for(auto& [ney, cst] : cost[obstacle]) {
