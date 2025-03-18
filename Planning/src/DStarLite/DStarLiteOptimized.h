@@ -25,7 +25,7 @@ public:
   void removeNamedObstacle(const string& obsName, double weight = 10000) override;
 
 private:
-  int DEBUG_LEVEL = 3;// 0 for no output, the higher the number the more output
+  int DEBUG_LEVEL = 0;// 0 for no output, the higher the number the more output
   void initialize() override;
   void updateVertex(const shared_ptr<DStarNode>&node) override;
   void computeShortestPath() override;

@@ -7,8 +7,9 @@ Requires OpenCV to display images, and YAML to read in config files.
 	* Based on original D* Lite paper https://idm-lab.org/bib/abstracts/papers/aaai02b.pdf
 	* `dStarLite` runs D* Lite on a hard-coded graph of 5 nodes, with a moving obstacle also hard-coded in
 		* Text output only
-	* `dStarLiteInteractive` runs D* Lite on a graph of 25 nodes in a grid between Start and Goal Nodes
+	* `dStarLiteInteractive` and `dStarLiteOptimized` both run D* Lite on a graph of 25 nodes in a grid between Start and Goal Nodes
 		* At each iteration, user is prompted to list nodes to become obstacles, or list nodes to stop being obstacles
+		* Behavior should be identical, but dStarLiteInteractive uses the standard D* Lite algorithm and dStarLiteOptimized uses the optimized algorithm
 		* Example output:
 
 	<img src="./DStarLite.png" width="600">
@@ -44,6 +45,7 @@ Then run one of the following programs from the build folder. Type any key to cl
 ./aStarRandom 
 ./dStarLite
 ./dStarLiteInteractive
+./dStarLiteOptimized
 ./runAStar ../astar_params.yaml
 ./runRRT ../rrt_params.yaml
 ```
