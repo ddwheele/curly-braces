@@ -117,8 +117,8 @@ void DStarLite::computeShortestPath() {
 void DStarLite::placeNamedObstacle(const string& obsName, double weight) {
 	for(auto nd : nodes) {
 		if(nd->getName() == obsName) {
-			updateEdgesTo(nd, weight);
 			currentObstacles.insert(nd);
+			updateEdgesTo(nd, weight);
 		}
 	}
 }
@@ -127,8 +127,8 @@ void DStarLite::placeNamedObstacle(const string& obsName, double weight) {
 void DStarLite::removeNamedObstacle(const string& obsName, double weight) {
 	for(auto nd : nodes) {
 		if(nd->getName() == obsName) {
-			updateEdgesTo(nd, -weight);
 			currentObstacles.erase(nd);
+			updateEdgesTo(nd, -weight);
 		}
 	}
 }
