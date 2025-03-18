@@ -151,8 +151,8 @@ void DStarLiteOptimized::computeShortestPath() {
 void DStarLiteOptimized::placeNamedObstacle(const string& obsName, double weight) {
 	for(auto nd : nodes) {
 		if(nd->getName() == obsName) {
+      currentObstacles.insert(nd);
 			updateEdgesTo(nd, weight);
-			currentObstacles.insert(nd);
 		}
 	}
 }
@@ -249,9 +249,10 @@ void DStarLiteOptimized::findPath()  {
 		}
     // move to nextNode
 		cout << "\n%%%%%%%%%%%% ADVANCE TO NODE " << start->getName() << " %%%%%%%%%%%%\n" << endl;
-
+    drawMap();
+    
     // did anything change? 
     doObstacleUpdates();
-    drawMap();
+
   } 
 }
