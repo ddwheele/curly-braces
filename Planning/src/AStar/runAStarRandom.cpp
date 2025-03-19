@@ -71,7 +71,7 @@ vector<shared_ptr<StarNode>> createNodes(int numNodes) {
  
 int main(int argc, char** argv) {
   vector<shared_ptr<StarNode>> nodes = createNodes(6);
-  AStarRandom aStarRandom(nodes);
+  AStarRandom aStarRandom(std::move(nodes));
   aStarRandom.findPath();
   return 0;
 }

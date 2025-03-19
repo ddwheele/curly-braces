@@ -9,7 +9,7 @@
 
 class AStarRandom : public PathPlanner {
 public:
-	AStarRandom(vector<shared_ptr<StarNode>> nodes);
+	AStarRandom(const vector<shared_ptr<StarNode>>& nodes);
 
 	void findPath() override;
 

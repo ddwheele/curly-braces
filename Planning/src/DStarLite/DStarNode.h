@@ -62,29 +62,29 @@ public:
     };
   };
 
-  DStarNode(string _name, double _x, double _y);
-  DStarNode(string _name);
+  DStarNode(const string& _name, const double _x, const double _y);
+  DStarNode(const string& _name);
 
-  DStarNode(char _name, double _x, double _y);
-  DStarNode(char _name);
+  DStarNode(const char _name, const double _x, const double _y);
+  DStarNode(const char _name);
 
   // make sure hn calculated frst!
-  Key computeKey(double km); // takes a key modifier
+  Key computeKey(const double km); // takes a key modifier
 
   Key getKey() const;
 
   bool gnEqualsRhs() const;
 
   double getRhs() const;
-  void setRhs(double _rhs);
+  void setRhs(const double _rhs);
 
   bool isInOpenSet() const;
-  void setInOpenSet(bool inSet);
+  void setInOpenSet(const bool inSet);
 
   bool operator<(const DStarNode& other) const;
   bool operator>(const DStarNode& other) const;
 
-  // XXX defeats the whole purpose of inheritance - there's really no better way to do this????
+  // passing by value because this Node cares about its neighbors (wants to share ownership)
   bool addDStarNeighbor(shared_ptr<DStarNode> n);
   const vector<shared_ptr<DStarNode>>& getDStarNeighbors() const;
   const vector<shared_ptr<DStarNode>>& getPredecessors() const;

@@ -1,7 +1,7 @@
 #include <limits>
 #include "AStarRandom.h"
 
-AStarRandom::AStarRandom(vector<shared_ptr<StarNode>> nodes) : nodes(nodes), drawMap(*this) {
+AStarRandom::AStarRandom(const vector<shared_ptr<StarNode>>& nodes) : nodes(std::move(nodes)), drawMap(*this) {
 	for(const auto& n : nodes) {
     n->setGn(numeric_limits<float>::max());
 		if(n->getName() == "Start") {

@@ -114,7 +114,7 @@ void DStarLite::computeShortestPath() {
 }
 
 // turn a node into an obstacle
-void DStarLite::placeNamedObstacle(const string& obsName, double weight) {
+void DStarLite::placeNamedObstacle(const string& obsName, const double weight) {
 	for(auto nd : nodes) {
 		if(nd->getName() == obsName) {
 			currentObstacles.insert(nd);
@@ -124,7 +124,7 @@ void DStarLite::placeNamedObstacle(const string& obsName, double weight) {
 }
 
 // make a node not an obstacle anymore
-void DStarLite::removeNamedObstacle(const string& obsName, double weight) {
+void DStarLite::removeNamedObstacle(const string& obsName, const double weight) {
 	for(auto nd : nodes) {
 		if(nd->getName() == obsName) {
 			currentObstacles.erase(nd);
@@ -133,7 +133,7 @@ void DStarLite::removeNamedObstacle(const string& obsName, double weight) {
 	}
 }
 
-void DStarLite::updateEdgesTo(shared_ptr<DStarNode>& obstacle, double weight) {
+void DStarLite::updateEdgesTo(shared_ptr<DStarNode>& obstacle, const double weight) {
 	if(!obstacle) {
 		return;
 	}

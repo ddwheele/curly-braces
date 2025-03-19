@@ -17,14 +17,14 @@ struct Utils {
 
 	static constexpr double EPSILON = 0.00001;
 
-	static bool equals(double a, double b) {
+	static bool equals(const double a, const double b) {
 	  if(abs(a - b) < EPSILON) {
 	    return true;
 	  }
 	  return false;
 	}
 
-	static string infString(double d) {
+	static string infString(const double d) {
 		if(equals(d, numeric_limits<double>::max()) || equals(d, numeric_limits<float>::max())) {
 			return "inf";
 		}

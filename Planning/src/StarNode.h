@@ -12,10 +12,10 @@ using namespace std;
 class StarNode : public Node {
 public:
 
-  StarNode(string _name, double _x, double _y);
-  StarNode(string _name);
+  StarNode(const string& _name, const double _x, const double _y);
+  StarNode(const string& _name);
 
-  double computeHeuristic(shared_ptr<StarNode> goal);
+  double computeHeuristic(const shared_ptr<StarNode>& goal);
 
   // return fn for A*
   double evaluate() const;
@@ -23,7 +23,7 @@ public:
   const string& getName() const;
 
   double getGn() const;
-  void setGn(double _gn);
+  void setGn(const double _gn);
 
   void setParent(shared_ptr<StarNode> newParent);
   shared_ptr<StarNode> getParent() const;

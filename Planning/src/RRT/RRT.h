@@ -13,15 +13,15 @@ using namespace std;
 
 class RRT : public PathPlanner {
 public:
-  RRT(shared_ptr<RrtNode> _start,
-    shared_ptr<RrtNode> _goal, 
+  RRT(const shared_ptr<RrtNode>& _start,
+    const shared_ptr<RrtNode>& _goal, 
     const vector<Obstacle>& _obstacles,
     double _stepSize=0.2);
 
   void findPath() override;
   void printMe() const;
   shared_ptr<RrtNode> findNearest(const vector<shared_ptr<RrtNode>>& tree,
-   double x, double y) const;
+   const double x, const double y) const;
 
   const vector<Obstacle>& getObstacles() const;
   const RrtNode& getStart() const;

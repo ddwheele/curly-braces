@@ -8,7 +8,8 @@
 
 using namespace std;
 
-void addEdge(vector<vector<shared_ptr<DStarNode>>>& edges, vector<double>& weights, shared_ptr<DStarNode>& a, shared_ptr<DStarNode>& b, double w) {
+void addEdge(vector<vector<shared_ptr<DStarNode>>>& edges, vector<double>& weights, 
+    const shared_ptr<DStarNode>& a, const shared_ptr<DStarNode>& b, double w) {
   edges.push_back({a,b});
   weights.push_back(w);
   a->addDStarNeighbor(b);
@@ -25,7 +26,7 @@ DStarLite createDStarLiteAll() {
   for(int r=0; r<ROW_LEN; r++) {
     vector<shared_ptr<DStarNode>> row;
     for(int c=0; c<ROW_LEN; c++) {
-      row.push_back( make_shared<DStarNode>('A'+c+(r*ROW_LEN), c*U+offset, r*U+ offset) );
+      row.emplace_back( make_shared<DStarNode>('A'+c+(r*ROW_LEN), c*U+offset, r*U+ offset) );
     }
     nodes.push_back(row);
   }
@@ -67,7 +68,7 @@ DStarLite createDStarLiteAll() {
 }
 
 // wanted is subset of lettered nodes from the chart above, goalchar can be a wanted node or 
-DStarLite createDStarLite(const unordered_set<char>& wanted, string goalchar) {
+DStarLite createDStarLite(const unordered_set<char>& wanted, const string goalchar) {
   shared_ptr<DStarNode> goal ;
   // create nodes
   int ROW_LEN = 5;

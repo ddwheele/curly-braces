@@ -3,11 +3,11 @@
 
 using namespace std;
 
-Node::Node(double _x, double _y) 
+Node::Node(const double _x, const double _y) 
   : x(_x), y(_y) {
 }
 
-double Node::distanceTo(double ox, double oy) const {
+double Node::distanceTo(const double ox, const double oy) const {
   double dx = x - ox;
   double dy = y - oy;
   return sqrt( dx*dx + dy*dy );

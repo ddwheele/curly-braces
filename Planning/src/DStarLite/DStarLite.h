@@ -25,10 +25,10 @@ public:
   void setTimedObstacles(vector<shared_ptr<DStarNode>>& timedObstacles);
 
   // turn a node into an obstacle
-  void placeNamedObstacle(const string& obsName, double weight = 10000) override;
+  void placeNamedObstacle(const string& obsName, const double weight = 10000) override;
 
   // make a node not an obstacle anymore
-  void removeNamedObstacle(const string& obsName, double weight = 10000) override;
+  void removeNamedObstacle(const string& obsName, const double weight = 10000) override;
 
 private: 
   // which node the obstacle is on a time i+1;
@@ -42,7 +42,7 @@ private:
   void applyTimedObstacles(int &obstacleTime);
 
   // add weight to all edges to obstacle
-  void updateEdgesTo(shared_ptr<DStarNode>& obstacle, double weight) override;
+  void updateEdgesTo(shared_ptr<DStarNode>& obstacle, const double weight) override;
 };
 
 #endif

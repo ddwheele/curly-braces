@@ -2,11 +2,11 @@
 #include "StarNode.h"
 #include "Utils.h"
 
-StarNode::StarNode(string _name, double _x, double _y) :
+StarNode::StarNode(const string& _name, const double _x, const double _y) :
   Node(_x, _y), name(_name), rng(std::random_device{}()), dist(margin, Utils::WIDTH-margin)  {
   }
 
-StarNode::StarNode(string _name) : 
+StarNode::StarNode(const string& _name) : 
   name(_name), rng(std::random_device{}()), dist(margin, Utils::WIDTH-margin) {
     // create random coordinates
 
@@ -15,7 +15,7 @@ StarNode::StarNode(string _name) :
     cout << "Creating StarNode " << name << " at " << x <<", " << y << endl;
   }
 
-  double StarNode::computeHeuristic(shared_ptr<StarNode> goal) {
+  double StarNode::computeHeuristic(const shared_ptr<StarNode>& goal) {
     // let's use Euclidean distance for heuristic
     double xdiff = goal->x - x;
     double ydiff = goal->y - y;
@@ -45,7 +45,7 @@ StarNode::StarNode(string _name) :
     return gn;
   }
 
-  void StarNode::setGn(double _gn) {
+  void StarNode::setGn(const double _gn) {
     gn = _gn;
   }
 

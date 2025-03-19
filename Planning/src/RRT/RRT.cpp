@@ -7,13 +7,13 @@
 using namespace std;
 
 
-RRT::RRT(shared_ptr<RrtNode> _start, shared_ptr<RrtNode> _goal, const vector<Obstacle>& _obstacles, double _stepSize) 
+RRT::RRT(const shared_ptr<RrtNode>& _start, const shared_ptr<RrtNode>& _goal, const vector<Obstacle>& _obstacles, double _stepSize) 
  : start(std::move(_start)), goal(std::move(_goal)), stepSize(_stepSize), obstacles(_obstacles), drawMap(*this) {
   startTree.push_back(start);
   goalTree.push_back(goal);
 }
 
-shared_ptr<RrtNode> RRT::findNearest(const vector<shared_ptr<RrtNode>>& tree, double x, double y) const {
+shared_ptr<RrtNode> RRT::findNearest(const vector<shared_ptr<RrtNode>>& tree, const double x, const double y) const {
   shared_ptr<RrtNode> ret;
   double closest = std::numeric_limits<double>::max();
   for(const auto& RrtNode : tree) {

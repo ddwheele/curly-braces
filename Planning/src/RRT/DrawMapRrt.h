@@ -19,7 +19,7 @@ public:
 private:
   const RRT& rrt; 
   void drawRrtNode(const RrtNode& n,
-  	const cv::Scalar& color, int width=1) const;
+  	const cv::Scalar& color, const int width=1) const;
 
   void drawObstacle(const Obstacle& o) const;
 };

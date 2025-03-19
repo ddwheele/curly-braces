@@ -49,7 +49,7 @@ void DrawMapRrt::drawFinalPath() {
   cv::waitKey(0);
 }
 
-void DrawMapRrt::drawRrtNode(const RrtNode& n, const cv::Scalar& color, int width) const {
+void DrawMapRrt::drawRrtNode(const RrtNode& n, const cv::Scalar& color, const int width) const {
   cv::line(mat, getCvPoint(n), 
                 getCvPoint(*n.parent),
                 color, width);

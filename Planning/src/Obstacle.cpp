@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Obstacle::Obstacle(double x1, double y1, double x2, double y2) {
+Obstacle::Obstacle(const double x1, const double y1, const double x2, const double y2) {
   minx = min(x1, x2);
   maxx = max(x1, x2);
   miny = min(y1, y2);

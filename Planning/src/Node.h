@@ -14,9 +14,9 @@ public:
 
   Node() {}
 
-  Node(double _x, double _y);
+  Node(const double _x, const double _y);
 
-  double distanceTo(double ox, double oy) const;
+  double distanceTo(const double ox, const double oy) const;
 
   double distanceTo(const Node& other) const;
 

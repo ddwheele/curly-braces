@@ -11,7 +11,7 @@ using namespace std;
 
 class Obstacle {
 public:
-  Obstacle(double x1, double y1, double x2, double y2);
+  Obstacle(const double x1, const double y1, const double x2, const double y2);
 
   // checks the line between a Node and its parent
   bool intersects(const RrtNode& n) const;

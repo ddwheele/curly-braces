@@ -35,16 +35,16 @@ public:
   void printState() const;
 
     // turn a node into an obstacle
-  virtual void placeNamedObstacle(const string& obsName, double weight = 10000) = 0;
+  virtual void placeNamedObstacle(const string& obsName, const double weight = 10000) = 0;
 
   // make a node not an obstacle anymore
-  virtual void removeNamedObstacle(const string& obsName, double weight = 10000) = 0;
+  virtual void removeNamedObstacle(const string& obsName, const double weight = 10000) = 0;
 
 protected:
   bool PRINT_DEBUG = false;
 
   virtual void initialize() = 0;
-  virtual void updateVertex(const shared_ptr<DStarNode>&node) = 0;
+  virtual void updateVertex(const shared_ptr<DStarNode>& node) = 0;
   virtual void computeShortestPath() = 0;
 
   unique_ptr<IDrawMap> dStarDrawMap;
@@ -73,7 +73,7 @@ protected:
   void doObstacleUpdates();
 
   // turn a node into an obstacle
-  virtual void updateEdgesTo(shared_ptr<DStarNode>& obstacle, double weight) = 0;
+  virtual void updateEdgesTo(shared_ptr<DStarNode>& obstacle, const double weight) = 0;
 
 };
 

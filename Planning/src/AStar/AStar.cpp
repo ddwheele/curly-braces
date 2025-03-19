@@ -4,7 +4,7 @@
 
 AStar::AStar(const vector<shared_ptr<AStarNode>>& nodes,
 	const vector<pair<shared_ptr<AStarNode>,shared_ptr<AStarNode>>>& edges, 
-	const vector<double>& weights) : nodes(nodes), drawMap(make_unique<DrawMapAStar>(*this)) {
+	const vector<double>& weights) : nodes(std::move(nodes)), drawMap(make_unique<DrawMapAStar>(*this)) {
   
 	for(const auto& n : nodes) {
 		if(n->getName() == "Start") {

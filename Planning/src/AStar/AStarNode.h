@@ -15,7 +15,7 @@ public:
     gn = numeric_limits<float>::max();
   };
 
-  void computeHeuristic(shared_ptr<AStarNode> goal) {
+  void computeHeuristic(const shared_ptr<AStarNode>& goal) {
     // let's use Euclidean distance for heuristic
     double xdiff = goal->x - x;
     double ydiff = goal->y - y;

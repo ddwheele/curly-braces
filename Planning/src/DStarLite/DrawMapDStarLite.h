@@ -24,7 +24,7 @@ private:
   const AbstractDStarLite& dStarLite;
 
   void drawNode(const DStarNode& dnode, const cv::Scalar color = LT_GRAY);
-  void drawEdge(const DStarNode& n1, const DStarNode& n2, double weight);
+  void drawEdge(const DStarNode& n1, const DStarNode& n2, const double weight);
   void highlightNode(const DStarNode &node);
   void obstacleNode(const DStarNode &node);
 

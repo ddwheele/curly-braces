@@ -36,7 +36,7 @@ void DrawMapDStarLite::drawMapAndWait() {
   cv::waitKey(0);
 }
 
-void DrawMapDStarLite::drawEdge(const DStarNode& n1, const DStarNode& n2, double weight) {
+void DrawMapDStarLite::drawEdge(const DStarNode& n1, const DStarNode& n2, const double weight) {
   cv::Scalar color = LT_GRAY;
   if(weight > 500) {
     color = WHITE;

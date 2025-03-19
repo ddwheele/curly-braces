@@ -19,19 +19,19 @@ public:
   void findPath() override;
 
   // turn a node into an obstacle
-  void placeNamedObstacle(const string& obsName, double weight = 1000) override;
+  void placeNamedObstacle(const string& obsName, const double weight = 1000) override;
 
   // make a node not an obstacle anymore
-  void removeNamedObstacle(const string& obsName, double weight = 10000) override;
+  void removeNamedObstacle(const string& obsName, const double weight = 10000) override;
 
 private:
   int DEBUG_LEVEL = 0;// 0 for no output, the higher the number the more output
   void initialize() override;
-  void updateVertex(const shared_ptr<DStarNode>&node) override;
+  void updateVertex(const shared_ptr<DStarNode>& node) override;
   void computeShortestPath() override;
 
   // turn a node into an obstacle
-  void updateEdgesTo(shared_ptr<DStarNode>& obstacle, double weight) override;
+  void updateEdgesTo(shared_ptr<DStarNode>& obstacle, const double weight) override;
 
 };
 

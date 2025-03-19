@@ -8,7 +8,8 @@ class RrtNode : public Node {
 public:
 	shared_ptr<RrtNode> parent;
 
-  RrtNode(double _x, double _y, shared_ptr<RrtNode> _parent = nullptr) : Node(_x, _y), parent(_parent) {
+  RrtNode(const double _x, const double _y, const shared_ptr<RrtNode>& _parent = nullptr) 
+      : Node(_x, _y), parent(_parent) {
   };
 
   /**
@@ -19,7 +20,8 @@ public:
    * 
    * returns ptr to Node that is STEP_SIZE toward rx, ry, with papa as parent
    */
-  static shared_ptr<RrtNode> growToward(const shared_ptr<RrtNode>& papa, double rx, double ry, double stepSize) {
+  static shared_ptr<RrtNode> growToward(const shared_ptr<RrtNode>& papa,
+       const double rx, const double ry, const double stepSize) {
   	double xdist = rx - papa->x;
     double ydist = ry - papa->y;
 

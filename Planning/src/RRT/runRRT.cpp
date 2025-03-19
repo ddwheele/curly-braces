@@ -8,7 +8,7 @@
 
 using namespace std;
 
-RRT loadYamlToRrt(string params_file) {
+RRT loadYamlToRrt(const string& params_file) {
   // Load the YAML file
   YAML::Node config = YAML::LoadFile(params_file);
 

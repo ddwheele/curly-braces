@@ -3,19 +3,19 @@
 #include <memory>
 
 
-DStarNode::DStarNode(string _name, double _x, double _y) : StarNode(_name, _x, _y) {
+DStarNode::DStarNode(const string& _name, const double _x, const double _y) : StarNode(_name, _x, _y) {
   initGnRhs();
 }
 
-DStarNode::DStarNode(string _name) : StarNode(_name) {
+DStarNode::DStarNode(const string& _name) : StarNode(_name) {
   initGnRhs();
 }
 
-DStarNode::DStarNode(char _name, double _x, double _y) : StarNode(string(1,_name), _x, _y) {
+DStarNode::DStarNode(const char _name, const double _x, const double _y) : StarNode(string(1,_name), _x, _y) {
   initGnRhs();
 }
 
-DStarNode::DStarNode(char _name) : StarNode(string(1,_name)) {
+DStarNode::DStarNode(const char _name) : StarNode(string(1,_name)) {
   initGnRhs();
 }
 
@@ -28,7 +28,7 @@ DStarNode::Key DStarNode::getKey() const {
   return key;
 }
 
-DStarNode::Key DStarNode::computeKey(double km) {
+DStarNode::Key DStarNode::computeKey(const double km) {
   key.update(gn, rhs, hn, km);
   return key;
 }
@@ -41,7 +41,7 @@ double DStarNode::getRhs() const {
   return rhs;
 }
 
-void DStarNode::setRhs(double _rhs) {
+void DStarNode::setRhs(const double _rhs) {
   rhs = _rhs;
 }
 
@@ -49,7 +49,7 @@ bool DStarNode::isInOpenSet() const {
   return inOpenSet;
 }
 
-void DStarNode::setInOpenSet(bool inSet) {
+void DStarNode::setInOpenSet(const bool inSet) {
   inOpenSet = inSet;
 }
 

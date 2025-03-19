@@ -37,7 +37,7 @@ AStar loadYamlToAStar(string params_file) {
     weights.push_back(w);
   }
 
-  AStar astar(nodes, edges, weights);
+  AStar astar(std::move(nodes), std::move(edges), std::move(weights));
   return astar;
 }
 
@@ -58,6 +58,6 @@ int main(int argc, char** argv) {
   }
 
   AStar astar = loadYamlToAStar(params_file);
-    astar.findPath();
+  astar.findPath();
 	return 0;
 }
