@@ -49,7 +49,7 @@ StarNode::StarNode(const string& _name) :
     gn = _gn;
   }
 
-  void StarNode::setParent(shared_ptr<StarNode> newParent) {
+  void StarNode::setParent(const shared_ptr<StarNode> newParent) {
     parent = newParent;
   }
 
@@ -57,7 +57,7 @@ StarNode::StarNode(const string& _name) :
     return parent;
   }
 
-  bool StarNode::addNeighbor(shared_ptr<StarNode> n) {
+  bool StarNode::addNeighbor(const shared_ptr<StarNode> n) {
     auto res = neighbors.insert(n);
     return res.second; // returns true if insert was successful
   }

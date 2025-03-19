@@ -25,10 +25,10 @@ public:
   double getGn() const;
   void setGn(const double _gn);
 
-  void setParent(shared_ptr<StarNode> newParent);
+  void setParent(const shared_ptr<StarNode> newParent);
   shared_ptr<StarNode> getParent() const;
 
-  bool addNeighbor(shared_ptr<StarNode> n);
+  bool addNeighbor(const shared_ptr<StarNode> n);
   unordered_set<shared_ptr<StarNode>> getNeighbors() const;
 
   static constexpr double MAX_DOUBLE = std::numeric_limits<double>::max();
