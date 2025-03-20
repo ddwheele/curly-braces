@@ -10,7 +10,7 @@
 
 using namespace std;
 
-AStar loadYamlToAStar(string params_file) {
+AStar loadYamlToAStar(const string& params_file) {
   // Load the YAML file
   YAML::Node config = YAML::LoadFile(params_file);
 
@@ -19,10 +19,8 @@ AStar loadYamlToAStar(string params_file) {
     string name = node["name"].as<string>();
     double x = node["x"].as<double>();
     double y = node["y"].as<double>();
-    shared_ptr<AStarNode> nd = make_shared<AStarNode>(name, x, y);
-    node_map[name] = nd;
+    node_map[name] = make_shared<AStarNode>(name, x, y);
   }
-
   vector<shared_ptr<AStarNode>> nodes(std::views::values(node_map).begin(), std::views::values(node_map).end());
 
 	vector<pair<shared_ptr<AStarNode>,shared_ptr<AStarNode>>> edges;
@@ -33,12 +31,10 @@ AStar loadYamlToAStar(string params_file) {
     string dst = edge["d"].as<string>();
     double w = edge["w"].as<double>();
 
-    edges.push_back({node_map[src], node_map[dst]});
+    edges.emplace_back(node_map[src], node_map[dst]);
     weights.push_back(w);
   }
-
-  AStar astar(std::move(nodes), std::move(edges), std::move(weights));
-  return astar;
+  return AStar(std::move(nodes), std::move(edges), std::move(weights));
 }
 
 int main(int argc, char** argv) {

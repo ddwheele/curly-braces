@@ -25,6 +25,7 @@ public:
 protected:
   cv::Mat mat;
  
+  // used by DrawMapRrt
   void drawColoredNode(const Node& n, 
  		const cv::Scalar& color) const;
 

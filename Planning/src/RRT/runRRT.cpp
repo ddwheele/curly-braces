@@ -28,8 +28,7 @@ RRT loadYamlToRrt(const string& params_file) {
     double y1 = obstacle["y1"].as<double>();
     double x2 = obstacle["x2"].as<double>();
     double y2 = obstacle["y2"].as<double>();
-    Obstacle obs(x1, y1, x2, y2);
-    obstacles.push_back(obs);
+    obstacles.emplace_back(x1, y1, x2, y2);
   }
   cout << "Finished reading params_file"<< endl;
   cout << "stepSize = " << stepSize << endl;
