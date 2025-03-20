@@ -21,7 +21,7 @@ public:
   void findPath() override;
   void printMe() const;
   shared_ptr<RrtNode> findNearest(const vector<shared_ptr<RrtNode>>& tree,
-   const double x, const double y) const;
+    const double x, const double y) const;
 
   const vector<Obstacle>& getObstacles() const;
   const RrtNode& getStart() const;
@@ -42,6 +42,7 @@ private:
   vector<shared_ptr<RrtNode>> startTree;
   vector<shared_ptr<RrtNode>> goalTree;
   vector<Obstacle> obstacles;
+  // linkRrtNodes are the Nodes in each tree that are close enough to join
   shared_ptr<RrtNode> linkRrtNode1;
   shared_ptr<RrtNode> linkRrtNode2;
   double stepSize;

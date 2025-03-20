@@ -8,7 +8,7 @@ using namespace std;
 
 
 RRT::RRT(const shared_ptr<RrtNode>& _start, const shared_ptr<RrtNode>& _goal, const vector<Obstacle>& _obstacles, double _stepSize) 
- : start(std::move(_start)), goal(std::move(_goal)), stepSize(_stepSize), obstacles(_obstacles), drawMap(*this) {
+ : start(std::move(_start)), goal(std::move(_goal)), obstacles(std::move(_obstacles)), stepSize(_stepSize), drawMap(*this) {
   startTree.push_back(start);
   goalTree.push_back(goal);
 }
@@ -53,11 +53,10 @@ void RRT::findPath() {
       nearest = findNearest(goalTree, randX, randY); 
     }
 
-    // Make new RrtNode and add to tree if they don't intersect obstacle
+    // Make new RrtNode and add to tree if it doesn't intersect obstacle
     shared_ptr<RrtNode> candidateRrtNode = RrtNode::growToward(nearest, randX, randY, stepSize);
 
     if(hitsAnObstacle(candidateRrtNode)) {
-
       continue;
     }
     shared_ptr<RrtNode> nearestOther;
@@ -72,16 +71,22 @@ void RRT::findPath() {
     if(!nearestOther) {
       candidateRrtNode->printMe();
     }
+
     double nx = nearestOther->x;
     double ny = nearestOther->y;
+    
     if(candidateRrtNode->distanceTo(nx, ny) < stepSize) {
+      
+      shared_ptr<RrtNode> linker = make_shared<RrtNode>(candidateRrtNode->x, candidateRrtNode->y, nearestOther);
 
-      linkRrtNode1 = candidateRrtNode;
-      linkRrtNode2 = nearestOther;
-      cout << i << " steps" << endl;
-      drawMap.drawMap();
-      drawMap.drawFinalPath();
-      return;
+      // verify linker does not hit an obstacle
+      if(!hitsAnObstacle(linker)) {
+        linkRrtNode1 = candidateRrtNode;
+        linkRrtNode2 = nearestOther;
+        cout << i << " steps" << endl;
+        drawMap.drawFinalPath();
+        return;
+      }
     }
 
     drawMap.drawMap();
@@ -90,7 +95,6 @@ void RRT::findPath() {
   }
   cout << "Ran out of steps! " << Utils::NUM_STEPS << endl;
 }
-
 
 void RRT::printMe() const {
   cout << "Start: ";

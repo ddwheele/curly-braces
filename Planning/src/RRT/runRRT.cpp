@@ -34,8 +34,7 @@ RRT loadYamlToRrt(const string& params_file) {
   cout << "Finished reading params_file"<< endl;
   cout << "stepSize = " << stepSize << endl;
 
-  RRT rrt(start, goal, obstacles, stepSize);
-  return rrt;
+  return RRT(std::move(start), std::move(goal), std::move(obstacles), stepSize);
 }
 
 int main(int argc, char** argv) {

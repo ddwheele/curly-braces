@@ -12,6 +12,7 @@ class PathPlanner;
 class DrawMap : public IDrawMap {
 public:
 
+	// is the point within the drawing canvas?
   static bool isInBounds(const double x, const double y) {
 		if(x >=0 && x <= Utils::WIDTH && y>=0 && y <= Utils::HEIGHT) {
 			return true;

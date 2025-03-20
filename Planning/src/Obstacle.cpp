@@ -21,6 +21,7 @@ bool Obstacle::pointIsInside(const double x, const double y) const {
   return false;
 }
 
+// return true if RrtNode, parent, or line btw them is inside obstacle; false otherwise
 bool Obstacle::intersects(const RrtNode& n) const{
   // no parent or parent is same point
   if(!n.parent || (Utils::equals(n.x, n.parent->x) && Utils::equals(n.y, n.parent->y))) {
@@ -32,7 +33,7 @@ bool Obstacle::intersects(const RrtNode& n) const{
     return true;
   }
 
-  double lx, ly, rx, ry; // label as left and right points
+  double lx, ly, rx, ry; // rename node and parent as left and right
   if(n.x < n.parent->x) {
     // point is lefter
     lx = n.x;
@@ -45,7 +46,7 @@ bool Obstacle::intersects(const RrtNode& n) const{
     lx = n.parent->x;
     ly = n.parent->y;
   } else {
-    // line is vertical, label as upper and lower
+    // line is vertical, rename as top and bottom points
     double tx,ty, bx, by;
     if(n.y > n.parent->y) {
       tx = n.x;
@@ -58,7 +59,7 @@ bool Obstacle::intersects(const RrtNode& n) const{
       tx = n.parent->x;
       ty = n.parent->y;
     }
-    // vertical line can't intersect obstacle
+    // given endpoints, vertical line can't intersect obstacle
     if(ty < miny || by > maxy || (tx < minx) || (tx > maxx)) {
       return false;
     }
@@ -66,15 +67,39 @@ bool Obstacle::intersects(const RrtNode& n) const{
     return true;
   }
 
-  // line can't intersect obstacle
+  // given endpoints, line can't intersect obstacle
   if(rx < minx || lx > maxx || (ly < miny && ry < miny) || (ly > maxy && ry > maxy)) {
     return false;
   }
 
-  // TODO: cases where boundary slope is vertical
+  // TODO: cases where boundary slope is vertical (boundary is line btw left pt and relevant obstacle corner)
   if(Utils::equals(lx,minx) || Utils::equals(lx,maxx)) {
     cout << "Unimplemented case" << endl;
   }
+
+  /*
+  * Slope of line segment must be in between upper and lower slopes 
+  * for that ninth, in order to intersect the obstacle.
+  * 
+  *                   upper slope for Left ninth
+  *               |  /          |
+  *     Upper       /  Above        Upper
+  *     Left      |/            |   Right
+  *               /
+  * - - - - - - -/############### - - - - - - 
+  *             / ###############
+  *     Left   /  ## Obstacle ###   Right
+  *            \  ###############
+  *             \ ###############
+  * - - - - - - -\############### - - - - - - 
+  *               \
+  *     Lower     |\            |   Lower
+  *     Left        \ Below         Right
+  *               |  \          |
+  *                   \
+  *               |    lower slope for Left ninth
+ */
+
 
   // divide into ninths and find boundary slopes
   double actualSlope = (ly-ry) / (lx-rx);

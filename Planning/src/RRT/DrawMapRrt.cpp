@@ -45,7 +45,7 @@ void DrawMapRrt::drawFinalPath() {
               getCvPoint(*rrt.getLinkRrtNode2()),
               BLUE, 2);
 
-  cv::imshow("Tree", mat);
+  cv::imshow("RRT Tree", mat);
   cv::waitKey(0);
 }
 
