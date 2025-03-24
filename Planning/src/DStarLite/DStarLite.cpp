@@ -4,6 +4,7 @@
 #include "DStarLite.h"
 #include "DrawMapDStarLite.h"
 
+// call base class to create adjacency matrix (ie cost map) and compute heuristics
 DStarLite::DStarLite(const vector<shared_ptr<DStarNode>>& _nodes,
 											const vector<vector<shared_ptr<DStarNode>>>& edges, 
 											const vector<double>& weights,
@@ -12,6 +13,7 @@ DStarLite::DStarLite(const vector<shared_ptr<DStarNode>>& _nodes,
 											: AbstractDStarLite(_nodes, edges, weights, _start, _goal) {
 }
 
+// make sure RHS points to the best neighbor; if inconsistent, put on open queue
 void DStarLite::updateVertex(const std::shared_ptr<DStarNode>& node) {
 	if(PRINT_DEBUG) {
 		cout << "Updating Vertex: " << *node << endl;
@@ -44,14 +46,18 @@ void DStarLite::updateVertex(const std::shared_ptr<DStarNode>& node) {
 	}
 }
 
+// process open set until Start is consistent, and all nodes with smaller keys than Start are processed
 void DStarLite::computeShortestPath() {
 	int stepsLeft = maxSteps;
+
+	// process open set until Start is consistent, and all nodes with smaller keys than Start are processed
  	while(openSet.getSize() > 0 && 
  	((openSet.peek()->getKey() < start->computeKey(key_modifier)) || !Utils::equals(start->getRhs(), start->getGn()) )) {
 		if(stepsLeft-- <=0 ) {
 			cout << "Did not find a path in " << maxSteps<< " iterations. Aborting." << endl;
 			break;
 		}
+		// get the node with lowest expected path cost, break ties with steps to here (g)
 		auto node = openSet.extractMin();
 		node->setInOpenSet(false);
 		if(PRINT_DEBUG) {
@@ -67,7 +73,7 @@ void DStarLite::computeShortestPath() {
 			openSet.insertNode(node);
 			node->setInOpenSet(true);
 
-		// Case 2: G > RHS, relax G down to Rhs
+		// Case 2: G > RHS, relax G down to Rhs and tell all neighbors
 		} else if(node->getGn() > node->getRhs()) {
 			if(PRINT_DEBUG) {
 				cout << "\tG > RHS, relaxing G and calling the neighbors" << endl;
@@ -113,7 +119,7 @@ void DStarLite::computeShortestPath() {
 	}
 }
 
-// turn a node into an obstacle
+// turn a node into an obstacle (add weight to each edge)
 void DStarLite::placeNamedObstacle(const string& obsName, const double weight) {
 	for(auto nd : nodes) {
 		if(nd->getName() == obsName) {
@@ -123,7 +129,7 @@ void DStarLite::placeNamedObstacle(const string& obsName, const double weight) {
 	}
 }
 
-// make a node not an obstacle anymore
+// make a node not an obstacle anymore (subtract weight from each edge)
 void DStarLite::removeNamedObstacle(const string& obsName, const double weight) {
 	for(auto nd : nodes) {
 		if(nd->getName() == obsName) {
@@ -133,6 +139,7 @@ void DStarLite::removeNamedObstacle(const string& obsName, const double weight) 
 	}
 }
 
+// Add the given weight to all edges touching an obstacle
 void DStarLite::updateEdgesTo(shared_ptr<DStarNode>& obstacle, const double weight) {
 	if(!obstacle) {
 		return;
@@ -159,8 +166,8 @@ void DStarLite::setTimedObstacles(vector<shared_ptr<DStarNode>>& _timedObstacles
 	timedObstacles = _timedObstacles;
 }
 
-// must have start and goal nodes defined
-// all nodes must have calculated heuristic
+// must have start and goal nodes defined before calling
+// all nodes must have calculated heuristic before calling
 void DStarLite::initialize() {
 	openSet.clear();
 	key_modifier = 0;
@@ -175,6 +182,7 @@ void DStarLite::initialize() {
 	goal->setInOpenSet(true);
 }
 
+// call this to run D* Lite and specify obstacles interactively
 void DStarLite::findPathInteractive()  {
 	drawMap();
   cout << "\n%%%%%%%%%%%% STARTING AT NODE " << start->getName() << " %%%%%%%%%%%%\n" << endl;
@@ -183,17 +191,15 @@ void DStarLite::findPathInteractive()  {
 	cout << "DONE INITIALIZING" << endl;
 	computeShortestPath();
 
-	cout << "@@@@@@@@@@@@@@@@@@@@@ DONE COMPUTING SHORTEST PATH @@@@@@@@@@@@@@@@@@@@@" << endl;
-
 	while(start != goal) {
-		cout <<"- TOP OF WHILE LOOP IN findPathInteractive()" << endl;
 		if(Utils::equals(start->getGn(), numeric_limits<double>::max())) {
 			cout << "No path found" << endl;
 			return;
 		}
-		cout <<"- there exists a path to start" << endl;
+
+		// update obstacles and recompute shortest path
 		doObstacleUpdates();
-		cout << "=== finished updating for new obstacles ===" << endl;
+		
 		double best = numeric_limits<double>::max();
 		// find the neighbor with lowest g + cost to start
 		shared_ptr<DStarNode> nextNode;
@@ -204,8 +210,8 @@ void DStarLite::findPathInteractive()  {
 				nextNode = ney;
 			}
 		}
-		cout << "=== I found the best node to move to ===" << endl;
-		// move to nextNode
+	
+		// move to the best neighbor
 		cout << "\n%%%%%%%%%%%% ADVANCE TO NODE " << nextNode->getName() << " %%%%%%%%%%%%\n" << endl;
 		start = nextNode;
 		drawMap();
@@ -213,10 +219,10 @@ void DStarLite::findPathInteractive()  {
   cout << "\n%%%%%%%%%%%%%%%% AT GOAL " << start->getName() << " %%%%%%%%%%%%%%%%\n" << endl;
 }
 
+// handles a single moving obstacle, specified in timedObstacles
+// call this to run D* Lite if you have specified a list of timed obstacles
 void DStarLite::findPath()  {
 	// THIS IS PROBABLY NOT THE FUNCTION YOU WANT
-
-	// handles single moving obstacle, specified in timedObstacles
   cout << "\n%%%%%%%%%%%% STARTING AT NODE " << start->getName() << " %%%%%%%%%%%%\n" << endl;
 	lastStart = start;
 	initialize();
@@ -224,12 +230,10 @@ void DStarLite::findPath()  {
 	computeShortestPath();
 	int obstacleTime = 0;
 	while(start != goal) {
-		cout <<"- TOP OF WHILE LOOP IN findPath()" << endl;
 		if(Utils::equals(start->getGn(), numeric_limits<double>::max())) {
 			cout << "No path found" << endl;
 			return;
 		}
-		cout <<"- there exists a path to start" << endl;
 		double best = numeric_limits<double>::max();
 		// find the neighbor with lowest g + cost to start
 		shared_ptr<DStarNode> nextNode;
@@ -241,7 +245,7 @@ void DStarLite::findPath()  {
 			}
 		}
 
-		// move to nextNode
+		// move to the best neighbor
 		cout << "\n%%%%%%%%%%%% ADVANCE TO NODE " << nextNode->getName() << " %%%%%%%%%%%%\n" << endl;
 		start = nextNode;
 
@@ -251,6 +255,7 @@ void DStarLite::findPath()  {
   cout << "\n%%%%%%%%%%%%%%%% AT GOAL " << start->getName() << " %%%%%%%%%%%%%%%%\n" << endl;
 }
 
+// findPath() calls this to apply the specified timed obstacles to the graph
 void DStarLite::applyTimedObstacles(int &obstacleTime) {
 	if(!timedObstacles.empty() && timedObstacles[obstacleTime]) {
 		// increment km by h(start, lastStart)

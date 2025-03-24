@@ -4,6 +4,7 @@
 #include "AbstractDStarLite.h"
 #include "DrawMapDStarLite.h"
 
+// create adjacency matrix (ie cost map) and compute heuristics
 AbstractDStarLite::AbstractDStarLite(const vector<shared_ptr<DStarNode>>& _nodes,
 											const vector<vector<shared_ptr<DStarNode>>>& edges, 
 											const vector<double>& weights,
@@ -31,8 +32,8 @@ AbstractDStarLite::AbstractDStarLite(const vector<shared_ptr<DStarNode>>& _nodes
 	}
 }
 
+// Ask user for obstacle updates, apply them to graph, and recompute shortest path
 void AbstractDStarLite::doObstacleUpdates() {
-	// Ask user for obstacle updates
 	std::string obstaclesToRemove;
 	std::string obstaclesToPlace;
 	

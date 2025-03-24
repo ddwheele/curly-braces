@@ -9,8 +9,15 @@
 
 using namespace std;
 
+/**
+ * Node class suitable for use in D* Lite algorithm
+ * Keeps track of its Key
+ */
 class DStarNode : public StarNode {
 public:
+  /**
+   * Class for D* Lite key
+   */
   struct Key {
     double k1;
     double k2;
@@ -20,10 +27,12 @@ public:
     double hn;
     double km;
 
+    // initialize to inf
     Key() : k1(numeric_limits<double>::max()), k2(numeric_limits<double>::max()) {}
 
     Key(double _k1, double _k2) : k1(_k1), k2(_k2) { }
 
+    // set values of key components
     void update(double _gn, double _rhs, double _hn, double _km) {
       gn = _gn;
       rhs = _rhs;
@@ -47,12 +56,13 @@ public:
       return "(" + Utils::infString(k1) + ", " + Utils::infString(k2) + ")";
     }
 
+    // Override comparisons so Key can be used in Min Heap
     inline bool operator<(const Key& other) { return k1 < other.k1 || Utils::equals(k1,other.k1) && k2 < other.k2; }
     inline bool operator>(const Key& other) { return k1 > other.k1 || Utils::equals(k1,other.k1) && k2 > other.k2; }
     inline bool operator==(const Key& other) { return Utils::equals(k1,other.k1) && Utils::equals(k2,other.k2); }
     inline bool operator!=(const Key& other) { return !(*this==other); }
 
-    // option 2: define hash inside the class itself
+
     struct Hash {
         size_t operator()(const Key& k) const {
             size_t h1 = std::hash<double>{}(k.k1);
@@ -61,15 +71,17 @@ public:
         }
     };
   };
-
+  // create node at given coordinates
   DStarNode(const string& _name, const double _x, const double _y);
-  DStarNode(const string& _name);
-
   DStarNode(const char _name, const double _x, const double _y);
+
+  // create node at random coordinates
+  DStarNode(const string& _name);
   DStarNode(const char _name);
 
   // make sure hn calculated frst!
-  Key computeKey(const double km); // takes a key modifier
+  // takes a key modifier, updates key based on current gn, rhs, and hn values
+  Key computeKey(const double km); 
 
   Key getKey() const;
 
@@ -103,14 +115,13 @@ public:
 private:
   Key key;
   double rhs;
-  const int maxIterations = 1000;
 
   void initGnRhs();
 
   // this is only to help with debugging output
   bool inOpenSet = false;
 
-  // XXX truely cringe-worthy not to be able to use neighbors
+  // XXX truely horrendous not to be able to use neighbors
   const vector<shared_ptr<DStarNode>> dStarNeighbors;
 };
 

@@ -9,8 +9,12 @@
 
 using namespace std;
 
+/**
+ * Draws the final path found by AStarRandom as an OpenCV image
+ */
 DrawMapAStarRandom::DrawMapAStarRandom(const AStarRandom& _astar) : astar(_astar) {}
 
+// calculate size of canvas in units to fit all nodes on it
 void DrawMapAStarRandom::calculateUnitSize() {
   if(UNIT_X_SIZE > 0 && UNIT_Y_SIZE > 0) {
     return;
@@ -24,6 +28,7 @@ void DrawMapAStarRandom::calculateUnitSize() {
   UNIT_Y_SIZE = maxY + 1;
 }
 
+// Draw all edges and nodes in graph
 void DrawMapAStarRandom::drawMap() {
   calculateUnitSize();
   mat = cv::Mat(UNIT_X_SIZE*Utils::SCALE, UNIT_Y_SIZE*Utils::SCALE, CV_8UC3, WHITE);
@@ -36,6 +41,7 @@ void DrawMapAStarRandom::drawMap() {
 
 }
 
+// Highlight the final path in green
 void DrawMapAStarRandom::drawFinalPath() {
   auto curr = astar.getGoal();
   cout << "Initial node: ";

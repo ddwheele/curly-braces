@@ -7,8 +7,13 @@ using namespace std;
 
 // ONLY WORKS FOR POINTER TYPES
 
-// A min-heap is a complete binary tree in which the value of each node is less than 
-// the value of its left child and right child.
+/**
+ * Provides a min-heap implementation that allows for deletion of current nodes. 
+ * Meant to be used for D* Lite
+ * 
+ * A min-heap is a complete binary tree in which the value of each node is less than 
+ * the value of its left child and right child.
+ */
 template <typename T>
 class UpdateableMinHeap {
 public:
@@ -28,6 +33,7 @@ public:
     buildHeap(arr);
   }
 
+  // remove all data from MinHeap
   void clear() {
     int defaultCapacity = 10;
     this->size = 0;
@@ -53,6 +59,7 @@ public:
     }
     size++;
     int i = size - 1;
+    // put new value at the end
     data[i] = value;
 
     // while parent of i > child i
@@ -158,10 +165,12 @@ private:
 
     // If smallest is not root
     if (smallest != i) {
-        swap(data[i], data[smallest]);  
+        // make the root the smallest thing
+        swap(data[i], data[smallest]);
+        // heapify the child that was swapped (down to the leaf)
         heapify(smallest);                
     }
-}
+  }
 
   // Builds a min heap from a given data.
   void buildHeap(const vector<T>& arr) {

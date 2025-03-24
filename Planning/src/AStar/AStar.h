@@ -3,14 +3,17 @@
 
 #include <vector>
 #include <memory>
+#include <map>
 #include "PathPlanner.h"
 #include "AStarNode.h"
-#include <map>
-//#include "DrawMapAStar.h"
+
 #include "IDrawMap.h"
 
 using namespace std;
 
+/**
+ * Finds the shortest path through the given undirected graph from node named "Start" to node named "Goal"
+ */
 class AStar : public PathPlanner {
 public:
 	AStar(const vector<shared_ptr<AStarNode>>& nodes,

@@ -9,6 +9,7 @@ using namespace std;
 
 DrawMapAStar::DrawMapAStar(const AStar& _astar) : astar(_astar) {}
 
+// calculate the size the canvas needs to be (in units, not pixels) to contain all nodes
 void DrawMapAStar::calculateUnitSize() {
   if(UNIT_X_SIZE > 0 && UNIT_Y_SIZE > 0) {
     return;
@@ -22,6 +23,7 @@ void DrawMapAStar::calculateUnitSize() {
   UNIT_Y_SIZE = maxY + 1;
 }
 
+// Draw all edges and nodes in graph
 void DrawMapAStar::drawMap() {
   calculateUnitSize();
   mat = cv::Mat(UNIT_X_SIZE*Utils::SCALE, UNIT_Y_SIZE*Utils::SCALE, CV_8UC3, WHITE);
@@ -33,6 +35,7 @@ void DrawMapAStar::drawMap() {
   }
 }
 
+// Highlight the final path in green
 void DrawMapAStar::drawFinalPath() {
   auto curr = astar.getGoal();
   shared_ptr<AStarNode> lastCurr;

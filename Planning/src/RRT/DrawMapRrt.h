@@ -9,6 +9,10 @@
 
 class RRT;
 
+/**
+ * Displays an RRT object as an OpenCV image
+ * Can display intermediate states
+ */
 class DrawMapRrt : public DrawMap {
 public:
 	DrawMapRrt(const RRT& _rrt);

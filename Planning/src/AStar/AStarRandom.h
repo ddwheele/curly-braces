@@ -7,6 +7,9 @@
 #include "StarNode.h"
 #include "DrawMapAStarRandom.h"
 
+/**
+ * Finds the shortest path through the given undirected graph from node named "Start" to node named "Goal"
+ */
 class AStarRandom : public PathPlanner {
 public:
 	AStarRandom(const vector<shared_ptr<StarNode>>& nodes);

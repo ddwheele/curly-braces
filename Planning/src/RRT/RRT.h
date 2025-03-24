@@ -11,15 +11,21 @@
 
 using namespace std;
 
+/**
+ * Uses RRT to find a path from start to goal that avoids obstacles
+ */
 class RRT : public PathPlanner {
 public:
+  // construct with start node, goal node, list of obstacles, and optional size of steps to grow tree
   RRT(const shared_ptr<RrtNode>& _start,
     const shared_ptr<RrtNode>& _goal, 
     const vector<Obstacle>& _obstacles,
     double _stepSize=0.2);
 
+  // use RRT to find a path from start to goal, avoiding obstacles, and display as image
   void findPath() override;
   void printMe() const;
+  // find the node in the given tree that is closest to the given x,y 
   shared_ptr<RrtNode> findNearest(const vector<shared_ptr<RrtNode>>& tree,
     const double x, const double y) const;
 

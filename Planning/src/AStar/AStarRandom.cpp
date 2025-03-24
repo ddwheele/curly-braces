@@ -1,7 +1,10 @@
 #include <limits>
 #include "AStarRandom.h"
 
-AStarRandom::AStarRandom(const vector<shared_ptr<StarNode>>& nodes) : nodes(std::move(nodes)), drawMap(*this) {
+AStarRandom::AStarRandom(const vector<shared_ptr<StarNode>>& nodes) 
+: nodes(std::move(nodes)), drawMap(*this) {
+
+  // set all g to inf, except Start g = 0
 	for(const auto& n : nodes) {
     n->setGn(numeric_limits<float>::max());
 		if(n->getName() == "Start") {
@@ -12,6 +15,7 @@ AStarRandom::AStarRandom(const vector<shared_ptr<StarNode>>& nodes) : nodes(std:
 		}
 	}
 
+  // Create adjacency matrix. Graph is undirected
   for(auto node : nodes) {
     for(auto neigh : node->getNeighbors()) {
       double dist = node->distanceTo(*neigh);
@@ -22,6 +26,7 @@ AStarRandom::AStarRandom(const vector<shared_ptr<StarNode>>& nodes) : nodes(std:
   }
 }
 
+// finds shortest path and displays it as OpenCV image
 void AStarRandom::findPath(){
 
   if(!start || !goal) {
@@ -33,6 +38,7 @@ void AStarRandom::findPath(){
    cout << "Goal = ";
   goal->printMe();
 
+  // compute heuristic to goal
   for(auto n : nodes) {
     n->computeHeuristic(goal);
   }
@@ -42,25 +48,27 @@ void AStarRandom::findPath(){
 
   std::priority_queue<shared_ptr<StarNode>,vector<shared_ptr<StarNode>>,decltype(cmp)> open(cmp);
   open.push(start);
+   
+  // f = cost to get here + heuristic = estimated total path cost to goal
   while(!open.empty()) {
+    // pop node with lowest estimated cost
     auto nd1 = open.top();
     open.pop();
-    //cout << "Considering ";
-    //nd1->printMe();
 
     if(nd1 == goal) {
       cout <<"Final Path Length = " << nd1->getGn() << endl;
       break;
     }
-    auto neigh = adj[nd1];
-    for(auto& pr: neigh) {
-      auto nd2 = pr.first;
-      double w = pr.second;
+        // go through the neighbors of node nd1
+    for(auto& [nd2, w]: adj[nd1]) {
       // cost to neighbor = cost to old node + edge length
       double tentativeG = nd1->getGn() + w;
+       // if the cost to neighbor improves going through nd1
       if(tentativeG < nd2->getGn()) {
+        // update the neighbor's g
         nd2->setGn(tentativeG); 
         nd2->setParent(nd1);
+        // put it in the queue
         open.push(nd2);
       }
     }

@@ -9,6 +9,10 @@
 
 class DrawMapDStarLite;
 
+/** 
+ * Finds the shortest path through the given undirected graph from start node to given goal node,
+ * using the original D* Lite algorithm
+ */
 class DStarLiteOptimized : public AbstractDStarLite {
 public:
   DStarLiteOptimized(const vector<shared_ptr<DStarNode>>& _nodes,

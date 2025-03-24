@@ -9,6 +9,9 @@
 
 class AStar;
 
+/**
+ * Draws the final path found by AStar as an OpenCV image
+ */
 class DrawMapAStar : public DrawMap {
 public:
 	DrawMapAStar(const AStar & _astar);

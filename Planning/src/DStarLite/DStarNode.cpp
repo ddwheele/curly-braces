@@ -7,6 +7,7 @@ DStarNode::DStarNode(const string& _name, const double _x, const double _y) : St
   initGnRhs();
 }
 
+// create node at random coordinates
 DStarNode::DStarNode(const string& _name) : StarNode(_name) {
   initGnRhs();
 }
@@ -15,6 +16,7 @@ DStarNode::DStarNode(const char _name, const double _x, const double _y) : StarN
   initGnRhs();
 }
 
+// create node at random coordinates
 DStarNode::DStarNode(const char _name) : StarNode(string(1,_name)) {
   initGnRhs();
 }

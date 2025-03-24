@@ -9,9 +9,15 @@
 
 #include "../PathPlanner.h"
 
-// Base of both DStarLite and DStarLiteOptimized
+/**
+ * Abstract base class of both DStarLite and DStarLiteOptimized
+ * 
+ * Finds the shortest path through the given undirected graph from start node to given goal node,
+ * using D* Lite algorithm
+ */
 class AbstractDStarLite : public PathPlanner {
 public:
+  // create adjacency matrix (ie cost map) and compute heuristics
   AbstractDStarLite(const vector<shared_ptr<DStarNode>>& _nodes,
 			const vector<vector<shared_ptr<DStarNode>>>& edges, 
 			const vector<double>& weights,
@@ -63,13 +69,13 @@ protected:
   // the locally inconsistent vertices
   UpdateableMinHeap<shared_ptr<DStarNode>> openSet;
 
-
   // nodes currently denoted as obstacles
   unordered_set<shared_ptr<DStarNode>> currentObstacles;
 
   static const int maxSteps = 1000;
 
-  // for interactive
+  // for interactive version
+  // Ask user for obstacle updates, apply them to graph, and recompute shortest path
   void doObstacleUpdates();
 
   // turn a node into an obstacle

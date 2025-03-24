@@ -15,11 +15,12 @@
 using namespace std;
  
 vector<shared_ptr<StarNode>> createNodes(int numNodes) {
-  // create nodes
   vector<shared_ptr<StarNode>> nodes;
+  // create Start in upper left, Goal in lower right
   shared_ptr<StarNode> start = make_shared<StarNode>("Start", 1,1);
   shared_ptr<StarNode> goal = make_shared<StarNode>("Goal", Utils::WIDTH-1,Utils::HEIGHT-1);
 
+  // create numNodes Nodes at random coordinates
   for(int i=0; i<numNodes; i++) {
     nodes.push_back(make_shared<StarNode>(string(1, 'A' + i)));
   }
@@ -40,6 +41,7 @@ vector<shared_ptr<StarNode>> createNodes(int numNodes) {
     }
   }
 
+  // connect Start to its 2 nearest neighbors
   start->printMe();
   cout <<"\t has these neighbors" << endl;
   start->orderNeighbors(nodes);
@@ -51,6 +53,7 @@ vector<shared_ptr<StarNode>> createNodes(int numNodes) {
       nodes[i+1]->addNeighbor(start);
     }
 
+  // connect Goal to ist 2 nearest neighbors
   goal->orderNeighbors(nodes);
   goal->printMe();
   cout <<"\t has these neighbors" << endl;
